@@ -52,8 +52,8 @@ export default function AboutPage() {
     >
       {/* Section 1: Our story (white) */}
       <section className="bg-slate-50 py-28 first:pt-10">
-        <div className="grid gap-12 lg:grid-cols-[0.55fr_0.45fr] lg:items-center lg:gap-20">
-          <div className="relative min-h-[420px] overflow-hidden rounded-[4px] border border-slate-200/60 bg-white shadow-2xl shadow-brand-blue/5 lg:min-h-[640px]">
+        <div className="grid gap-12 lg:grid-cols-[1.1fr_0.9fr] lg:items-center lg:gap-20">
+          <div className="relative w-full overflow-hidden rounded-[4px] border border-slate-200/60 bg-white shadow-2xl shadow-brand-blue/5">
             <Image
               src={IMG_STORY}
               alt="Hydropower site placeholder — engineering and construction"
@@ -62,6 +62,7 @@ export default function AboutPage() {
               sizes="(min-width: 1024px) 40vw, 100vw"
               priority={false}
             />
+            <div className="relative aspect-[4/5] w-full" aria-hidden />
             <div
               className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/30 to-transparent"
               aria-hidden
@@ -71,17 +72,18 @@ export default function AboutPage() {
           <div>
             <div className="flex items-stretch gap-4">
               <span className="w-[2px] shrink-0 bg-brand-cyan" aria-hidden />
-              <div>
+              <div className="w-full">
                 <p className="text-xs font-semibold uppercase tracking-[0.22em] text-brand-cyan">
                   Our story
                 </p>
-                <h2 className="mt-3 max-w-none font-heading text-3xl font-bold leading-[1.2] tracking-tight text-brand-blue md:text-4xl lg:text-[46px]">
-                  A Decade of Engineering Excellence.
+                <h2 className="mt-3 max-w-none font-heading text-3xl font-bold leading-[1.2] tracking-tight text-brand-blue md:text-5xl lg:text-6xl">
+                  A Decade of{" "}
+                  <span className="whitespace-nowrap">Engineering Excellence</span>.
                 </h2>
               </div>
             </div>
 
-            <div className="mt-8 max-w-2xl space-y-6 font-sans text-base leading-relaxed text-brand-slate/90 md:text-[17px] md:leading-8">
+            <div className="mt-8 space-y-6 font-sans text-base leading-relaxed text-brand-slate/90 md:text-[17px] md:leading-8">
               <p>
                 <strong>Unitech Hydropower Company Limited</strong> was first
                 registered as a <strong>Private Limited</strong> company under

@@ -11,8 +11,8 @@ export function AboutPreview() {
   return (
     <section className="border-b border-brand-slate/10 bg-slate-50 py-24 md:py-24">
       <div className="mx-auto max-w-[1440px] px-8 md:px-20">
-        <div className="grid gap-12 lg:grid-cols-[0.55fr_0.45fr] lg:items-center lg:gap-20">
-          <div>
+        <div className="grid gap-12 lg:grid-cols-[1fr_1.1fr] lg:items-center lg:gap-20">
+          <div className="max-w-2xl">
             <div className="flex items-stretch gap-4">
               <span className="w-[2px] shrink-0 bg-brand-cyan" aria-hidden />
               <div>
@@ -20,7 +20,8 @@ export function AboutPreview() {
                   About us
                 </p>
                 <h2 className="mt-3 max-w-none font-heading text-3xl font-bold leading-tight tracking-tight text-brand-blue lg:text-5xl">
-                  A Decade of Engineering Excellence.
+                  A Decade of{" "}
+                  <span className="whitespace-nowrap">Engineering Excellence</span>.
                 </h2>
               </div>
             </div>
