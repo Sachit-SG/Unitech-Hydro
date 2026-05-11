@@ -135,7 +135,7 @@ export function NewsSection() {
             >
               <Link
                 href="/news"
-                className="group flex h-full w-[min(520px,92vw)] flex-col overflow-hidden rounded-[4px] border border-slate-200/80 bg-white shadow-sm transition-[border-color,box-shadow] hover:border-brand-cyan/60 hover:shadow-[0_0_0_1px_rgba(0,210,255,0.22),0_12px_34px_-18px_rgba(0,26,51,0.28)] sm:w-[min(520px,72vw)] md:w-[min(520px,46vw)] lg:w-[calc((100%-2*1.5rem)/3)]"
+                className="group flex h-full flex-none w-[min(520px,92vw)] flex-col overflow-hidden rounded-[4px] border border-slate-200/80 bg-white shadow-sm transition-[border-color,box-shadow] hover:border-brand-cyan/60 hover:shadow-[0_0_0_1px_rgba(0,210,255,0.22),0_12px_34px_-18px_rgba(0,26,51,0.28)] sm:w-[min(520px,72vw)] md:w-[min(520px,46vw)] lg:w-[440px] xl:w-[460px]"
               >
                 <div className="relative h-48 w-full overflow-hidden rounded-t-[4px]">
                   <Image
