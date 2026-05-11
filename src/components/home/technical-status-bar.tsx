@@ -66,7 +66,7 @@ export function TechnicalStatusBar({
         dockedToHero
           ? "absolute bottom-0 left-0 right-0 z-30 border-t border-white/15 backdrop-blur-lg"
           : "rounded-[4px] border-y border-brand-slate/10 backdrop-blur-md",
-        dockedToHero ? "bg-brand-blue/80 py-6" : "bg-white/45 py-14",
+        dockedToHero ? "bg-brand-blue/80 h-20" : "bg-white/45 py-14",
         className,
       )}
       aria-labelledby="technical-status-heading"
@@ -76,61 +76,90 @@ export function TechnicalStatusBar({
       </h2>
       <div
         className={cn(
-          "mx-auto flex max-w-[1440px] flex-col items-stretch justify-center px-8 md:flex-row md:px-20",
-          dockedToHero
-            ? "divide-y divide-white/15 md:divide-x md:divide-y-0 md:divide-white/20"
-            : "divide-y divide-brand-slate/15 md:divide-x md:divide-y-0 md:divide-brand-slate/20",
+          "mx-auto relative grid h-full max-w-[1440px] grid-cols-2 items-center px-8 md:px-20",
         )}
       >
-        <div className="flex flex-1 flex-col items-center py-5 text-center md:px-6 md:py-0">
-          <p
-            className={cn(
-              "font-heading text-3xl font-bold tabular-nums tracking-tight",
-              dockedToHero ? "text-glacier" : "text-brand-blue",
-            )}
-          >
-            {operationalMw}
-            <span className="text-brand-cyan"> MW</span>
-          </p>
-          <p
-            className={cn(
-              "mt-1 text-xs font-semibold uppercase tracking-widest",
-              dockedToHero ? "text-white/75" : "text-brand-slate/70",
-            )}
-          >
-            Operational
-          </p>
+        <div className="flex items-center justify-center text-center md:px-6">
+          <div className="flex items-baseline gap-3 leading-none">
+            <p
+              className={cn(
+                "font-heading text-3xl font-bold tabular-nums tracking-tight leading-none",
+                dockedToHero ? "text-glacier" : "text-brand-blue",
+              )}
+            >
+              {operationalMw}
+              <span className="ml-1 text-2xl font-bold leading-none text-[#00EAFF]">
+                MW
+              </span>
+            </p>
+            <span
+              className={cn(
+                "text-sm font-bold leading-none",
+                dockedToHero ? "text-white/40" : "text-brand-slate/40",
+              )}
+              aria-hidden
+            >
+              •
+            </span>
+            <p
+              className={cn(
+                "text-sm font-bold uppercase tracking-[0.1em] leading-none",
+                dockedToHero ? "text-white/85" : "text-brand-slate/70",
+              )}
+            >
+              Operational
+            </p>
+          </div>
         </div>
 
-        <div className="flex flex-1 flex-col items-center py-5 text-center md:px-6 md:py-0">
+        <div className="flex flex-col items-center justify-center text-center leading-none md:px-6">
+          <div className="flex items-baseline gap-3 leading-none">
+            <p
+              className={cn(
+                "font-heading text-3xl font-bold tabular-nums tracking-tight leading-none",
+                dockedToHero ? "text-glacier" : "text-brand-blue",
+              )}
+            >
+              {pipelineMw}
+              <span className="ml-1 text-2xl font-bold leading-none text-[#00EAFF]">
+                MW
+              </span>
+            </p>
+            <span
+              className={cn(
+                "text-sm font-bold leading-none",
+                dockedToHero ? "text-white/40" : "text-brand-slate/40",
+              )}
+              aria-hidden
+            >
+              •
+            </span>
+            <p
+              className={cn(
+                "text-sm font-bold uppercase tracking-[0.1em] leading-none",
+                dockedToHero ? "text-white/85" : "text-brand-slate/70",
+              )}
+            >
+              In pipeline
+            </p>
+          </div>
           <p
             className={cn(
-              "font-heading text-3xl font-bold tabular-nums tracking-tight",
-              dockedToHero ? "text-glacier" : "text-brand-blue",
-            )}
-          >
-            {pipelineMw}
-            <span className="text-brand-cyan"> MW</span>
-          </p>
-          <p
-            className={cn(
-              "mt-1 text-xs font-semibold uppercase tracking-widest",
-              dockedToHero ? "text-white/75" : "text-brand-slate/70",
-            )}
-          >
-            In pipeline
-          </p>
-          <p
-            className={cn(
-              "mt-2 inline-flex max-w-[14rem] items-center justify-center rounded-[4px] px-2 py-1 text-[11px] leading-snug",
-              dockedToHero
-                ? "bg-brand-blue/80 text-white/70"
-                : "bg-brand-blue/10 text-brand-blue",
+              "mt-1 text-xs leading-none",
+              dockedToHero ? "text-white/60" : "text-brand-slate/60",
             )}
           >
             Middle Iwa Khola — feasibility stage
           </p>
         </div>
+
+        <span
+          className={cn(
+            "pointer-events-none absolute left-1/2 top-1/2 h-8 w-px -translate-x-1/2 -translate-y-1/2",
+            dockedToHero ? "bg-white/20" : "bg-brand-slate/20",
+          )}
+          aria-hidden
+        />
       </div>
     </section>
   );

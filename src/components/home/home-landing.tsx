@@ -73,8 +73,8 @@ export function HomeLanding() {
         />
 
         <div className="relative z-10 h-[100vh]">
-          <div className="flex min-h-0 h-full flex-col">
-            <div className="flex min-h-0 flex-1 flex-col justify-center px-4 pb-44 pt-28 md:px-8 md:pb-40 md:pt-32 lg:pl-14 lg:pr-10">
+          <div className="mx-auto flex h-full max-w-[1440px] flex-col px-6 md:px-20">
+            <div className="flex min-h-0 flex-1 flex-col items-start justify-center pb-44 pt-28 md:pb-40 md:pt-32">
               <div className="w-full max-w-3xl">
                 <div className="flex items-stretch gap-5 md:gap-6">
                   <div

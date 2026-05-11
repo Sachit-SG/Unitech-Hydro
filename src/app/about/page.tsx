@@ -119,40 +119,46 @@ export default function AboutPage() {
               </p>
             </div>
 
-            <div className="mt-10 flex flex-wrap gap-3">
-              <div className="w-fit rounded-[4px] border border-slate-200/80 bg-white px-4 py-3 shadow-sm">
-                <div className="flex items-center gap-2">
-                  <CalendarDays className="h-4 w-4 text-brand-cyan" aria-hidden />
-                  <p className="text-xs font-semibold uppercase tracking-widest text-brand-slate/55">
-                    Est.
-                  </p>
+            <div className="mt-8 flex w-full flex-row flex-nowrap items-stretch gap-2">
+              <div className="w-[112px] flex-none rounded-[4px] border border-slate-200/80 bg-white px-3 py-2 shadow-sm">
+                <div className="flex items-start justify-between gap-2">
+                  <div className="min-w-0">
+                    <p className="text-[10px] font-bold uppercase tracking-[0.22em] text-brand-slate/55">
+                      Est.
+                    </p>
+                    <p className="mt-1.5 font-heading text-sm font-bold text-brand-blue">
+                      2014
+                    </p>
+                  </div>
+                  <CalendarDays className="mt-0.5 h-4 w-4 text-brand-cyan" aria-hidden />
                 </div>
-                <p className="mt-2 font-heading text-sm font-bold text-brand-blue">
-                  2014
-                </p>
               </div>
-              <div className="w-fit rounded-[4px] border border-slate-200/80 bg-white px-4 py-3 shadow-sm">
-                <div className="flex items-center gap-2">
-                  <Landmark className="h-4 w-4 text-brand-cyan" aria-hidden />
-                  <p className="text-xs font-semibold uppercase tracking-widest text-brand-slate/55">
-                    Public Ltd
-                  </p>
+
+              <div className="w-[132px] flex-none rounded-[4px] border border-slate-200/80 bg-white px-3 py-2 shadow-sm">
+                <div className="flex items-start justify-between gap-2">
+                  <div className="min-w-0">
+                    <p className="text-[10px] font-bold uppercase tracking-[0.22em] text-brand-slate/55">
+                      Public Ltd
+                    </p>
+                    <p className="mt-1.5 font-heading text-sm font-bold text-brand-blue">
+                      2023
+                    </p>
+                  </div>
+                  <Landmark className="mt-0.5 h-4 w-4 text-brand-cyan" aria-hidden />
                 </div>
-                <p className="mt-2 font-heading text-sm font-bold text-brand-blue">
-                  2023
-                </p>
               </div>
-              <div className="w-fit rounded-[4px] border border-slate-200/80 bg-white px-4 py-3 shadow-sm">
-                <div className="flex items-center gap-2">
-                  <p className="text-xs font-semibold uppercase tracking-widest text-brand-slate/55">
-                    Project location
-                  </p>
-                </div>
-                <div className="mt-2 flex items-center gap-2">
-                  <MapPin className="h-4 w-4 text-brand-cyan" aria-hidden />
-                  <p className="font-heading text-sm font-bold text-brand-blue">
-                    Taplejung &amp; Panchthar, Nepal
-                  </p>
+
+              <div className="min-w-0 flex-1 rounded-[4px] border border-slate-200/80 bg-white px-3 py-2 shadow-sm">
+                <div className="flex items-start justify-between gap-2">
+                  <div className="min-w-0">
+                    <p className="text-[10px] font-bold uppercase tracking-[0.22em] text-brand-slate/55">
+                      Location
+                    </p>
+                    <p className="mt-1.5 font-heading text-sm font-bold leading-tight text-brand-blue">
+                      Taplejung &amp; Panchthar, Nepal
+                    </p>
+                  </div>
+                  <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-brand-cyan" aria-hidden />
                 </div>
               </div>
             </div>
@@ -220,42 +226,51 @@ export default function AboutPage() {
       </section>
 
       {/* Section 3: Capital structure (white) */}
-      <section id="investment-profile" className="border-t border-slate-200/60 py-28">
-        <div className="text-center">
-          <p className="text-xs font-semibold uppercase tracking-[0.22em] text-brand-cyan">
-            Capital structure
-          </p>
-          <h2 className="mx-auto mt-3 max-w-[18ch] text-balance font-heading text-4xl font-bold leading-[1.2] tracking-tight text-brand-blue lg:text-5xl">
-            Investment Profile.
-          </h2>
-        </div>
+      <section
+        id="investment-profile"
+        className="w-full border-t border-slate-200/60 bg-[#0B2043] py-28 text-white"
+      >
+        <div className="mx-auto max-w-[1440px] px-8 md:px-20">
+          <div className="text-center">
+            <p className="text-xs font-semibold uppercase tracking-[0.22em] text-[#00EAFF]">
+              Capital structure
+            </p>
+            <h2 className="mx-auto mt-3 max-w-[18ch] text-balance font-heading text-4xl font-bold leading-[1.2] tracking-tight text-white lg:text-5xl">
+              Investment Profile.
+            </h2>
+            <p className="mx-auto mt-5 max-w-2xl font-sans text-sm leading-relaxed text-slate-100/85">
+              Clean, high-contrast metrics designed for widescreen readability and
+              investor-grade presentation.
+            </p>
+          </div>
 
-        <div className="mt-14 grid gap-6 lg:grid-cols-3 lg:gap-10">
-          {(
-            [
-              { label: "Authorized capital", value: "120 Cr" },
-              { label: "Issued capital", value: "98.5 Cr" },
-              { label: "Paid-up capital", value: "78.8 Cr" },
-            ] as const
-          ).map((stat) => (
-            <div
-              key={stat.label}
-              className="rounded-[4px] border border-slate-200/80 bg-white p-8 shadow-sm transition-[border-color,box-shadow] hover:border-brand-cyan/60 hover:shadow-[0_0_0_1px_rgba(0,210,255,0.18)]"
-            >
-              <div className="flex items-center justify-between gap-6">
-                <p className="text-xs font-semibold uppercase tracking-widest text-brand-slate/55">
-                  {stat.label}
+          <div className="mt-14 grid gap-6 lg:grid-cols-3 lg:gap-10">
+            {(
+              [
+                { label: "Authorized capital", value: "120 Cr" },
+                { label: "Issued capital", value: "98.5 Cr" },
+                { label: "Paid-up capital", value: "78.8 Cr" },
+              ] as const
+            ).map((stat) => (
+              <div
+                key={stat.label}
+                className="rounded-[4px] border border-white/10 bg-[#162D51] p-8 shadow-sm transition-[border-color,box-shadow,transform] hover:-translate-y-0.5 hover:border-[#00EAFF]/50 hover:shadow-[0_0_0_1px_rgba(0,234,255,0.22),0_18px_48px_-26px_rgba(0,0,0,0.55)]"
+              >
+                <div className="flex items-center justify-between gap-6">
+                  <p className="text-xs font-semibold uppercase tracking-widest text-slate-100/75">
+                    {stat.label}
+                  </p>
+                  <Activity className="h-4 w-4 text-[#00EAFF]" aria-hidden />
+                </div>
+                <p className="mt-5 font-heading text-4xl font-bold tabular-nums tracking-tight text-[#00EAFF] md:text-5xl">
+                  {stat.value}
                 </p>
-                <Activity className="h-4 w-4 text-brand-cyan" aria-hidden />
+                <p className="mt-3 font-sans text-sm text-slate-100/75">
+                  Stat sheet (NPR crores) — values aligned to company materials.
+                </p>
               </div>
-              <p className="mt-5 font-heading text-4xl font-bold tabular-nums tracking-tight text-brand-blue md:text-5xl">
-                {stat.value}
-              </p>
-              <p className="mt-3 font-sans text-sm text-brand-slate/70">
-                Stat sheet (NPR crores) — values aligned to company materials.
-              </p>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
       </section>
 
