@@ -46,27 +46,44 @@ function useCountUp(
 
 type TechnicalStatusBarProps = {
   dockedToHero?: boolean;
+  /** Slim blue ribbon for in-flow hero placement (not pinned to viewport bottom). */
+  heroRibbon?: boolean;
+  /** Full-width strip directly under the hero — solid investment navy, no top gap. */
+  postHero?: boolean;
+  /** When set, gates count-up (e.g. reveal after scroll expansion completes). */
+  countEnabled?: boolean;
   className?: string;
 };
 
 export function TechnicalStatusBar({
   dockedToHero = false,
+  heroRibbon = false,
+  postHero = false,
+  countEnabled,
   className,
 }: TechnicalStatusBarProps) {
   const ref = useRef<HTMLElement>(null);
   const inView = useInView(ref, { once: true, amount: 0.2 });
+  const countGate = countEnabled !== undefined ? countEnabled : inView;
 
-  const operationalMw = useCountUp(5.8, 1, inView, 0);
-  const pipelineMw = useCountUp(15, 0, inView, 0.1);
+  const operationalMw = useCountUp(5.8, 1, countGate, 0);
+  const pipelineMw = useCountUp(15, 0, countGate, 0.1);
+
+  const dockedVisual = dockedToHero || heroRibbon || postHero;
 
   return (
     <section
       ref={ref}
       className={cn(
-        dockedToHero
-          ? "absolute bottom-0 left-0 right-0 z-30 border-t border-white/15 backdrop-blur-lg"
-          : "rounded-[4px] border-y border-brand-slate/10 backdrop-blur-md",
-        dockedToHero ? "bg-brand-blue/80 h-20" : "bg-white/45 py-14",
+        postHero
+          ? "relative z-10 mt-0 w-full border-t border-white/10 bg-[#0B2043] py-6 md:py-5"
+          : dockedToHero
+            ? "absolute bottom-0 left-0 right-0 z-30 border-t border-white/15 backdrop-blur-lg"
+            : heroRibbon
+              ? "relative z-30 w-full border-t border-white/15 backdrop-blur-lg"
+              : "rounded-[4px] border-y border-brand-slate/10 backdrop-blur-md",
+        !postHero && (dockedToHero || heroRibbon) ? "bg-brand-blue/80 h-20" : null,
+        !postHero && !dockedToHero && !heroRibbon ? "bg-white/45 py-14" : null,
         className,
       )}
       aria-labelledby="technical-status-heading"
@@ -84,7 +101,7 @@ export function TechnicalStatusBar({
             <p
               className={cn(
                 "font-heading text-3xl font-bold tabular-nums tracking-tight leading-none",
-                dockedToHero ? "text-glacier" : "text-brand-blue",
+                dockedVisual ? "text-glacier" : "text-brand-blue",
               )}
             >
               {operationalMw}
@@ -95,7 +112,7 @@ export function TechnicalStatusBar({
             <span
               className={cn(
                 "text-sm font-bold leading-none",
-                dockedToHero ? "text-white/40" : "text-brand-slate/40",
+                dockedVisual ? "text-white/40" : "text-brand-slate/40",
               )}
               aria-hidden
             >
@@ -104,7 +121,7 @@ export function TechnicalStatusBar({
             <p
               className={cn(
                 "text-sm font-bold uppercase tracking-[0.1em] leading-none",
-                dockedToHero ? "text-white/85" : "text-brand-slate/70",
+                dockedVisual ? "text-white/85" : "text-brand-slate/70",
               )}
             >
               Operational
@@ -117,7 +134,7 @@ export function TechnicalStatusBar({
             <p
               className={cn(
                 "font-heading text-3xl font-bold tabular-nums tracking-tight leading-none",
-                dockedToHero ? "text-glacier" : "text-brand-blue",
+                dockedVisual ? "text-glacier" : "text-brand-blue",
               )}
             >
               {pipelineMw}
@@ -128,7 +145,7 @@ export function TechnicalStatusBar({
             <span
               className={cn(
                 "text-sm font-bold leading-none",
-                dockedToHero ? "text-white/40" : "text-brand-slate/40",
+                dockedVisual ? "text-white/40" : "text-brand-slate/40",
               )}
               aria-hidden
             >
@@ -137,7 +154,7 @@ export function TechnicalStatusBar({
             <p
               className={cn(
                 "text-sm font-bold uppercase tracking-[0.1em] leading-none",
-                dockedToHero ? "text-white/85" : "text-brand-slate/70",
+                dockedVisual ? "text-white/85" : "text-brand-slate/70",
               )}
             >
               In pipeline
@@ -146,7 +163,7 @@ export function TechnicalStatusBar({
           <p
             className={cn(
               "mt-1 text-xs leading-none",
-              dockedToHero ? "text-white/60" : "text-brand-slate/60",
+              dockedVisual ? "text-white/60" : "text-brand-slate/60",
             )}
           >
             Middle Iwa Khola — feasibility stage
@@ -156,7 +173,7 @@ export function TechnicalStatusBar({
         <span
           className={cn(
             "pointer-events-none absolute left-1/2 top-1/2 h-8 w-px -translate-x-1/2 -translate-y-1/2",
-            dockedToHero ? "bg-white/20" : "bg-brand-slate/20",
+            dockedVisual ? "bg-white/20" : "bg-brand-slate/20",
           )}
           aria-hidden
         />

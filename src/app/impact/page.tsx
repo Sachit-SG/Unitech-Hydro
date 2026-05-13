@@ -14,7 +14,6 @@ export default function ImpactPage() {
   return (
     <PageShell
       title="Sustainability & local impact"
-      subtitle="How Unitech Hydropower frames its mandate — from company-context.md, without inventing metrics."
       heroImageSrc={HERO_IMPACT}
       heroOverlayClassName="bg-black/40"
     >

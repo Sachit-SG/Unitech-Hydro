@@ -1,7 +1,9 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import { UserRound } from "lucide-react";
+import { GalleryBentoTile } from "@/components/gallery/gallery-bento-tile";
 import { PageShell } from "@/components/page-shell";
+import { galleryBentoItems } from "@/lib/gallery-data";
 
 export const metadata: Metadata = {
   title: "Gallery",
@@ -30,29 +32,6 @@ const operationsTeam = [
   { name: "Shrina Ghimire", title: "Account / Admin Officer" },
 ] as const;
 
-const sitePhotos = [
-  {
-    src: "https://images.unsplash.com/photo-1509395176047-4a66953fd231?auto=format&fit=crop&w=1600&q=80",
-    label: "Headworks",
-  },
-  {
-    src: "https://images.unsplash.com/photo-1621905251189-08b45d6a269e?auto=format&fit=crop&w=1600&q=80",
-    label: "Powerhouse works",
-  },
-  {
-    src: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?auto=format&fit=crop&w=1600&q=80",
-    label: "Landscape",
-  },
-  {
-    src: "https://images.unsplash.com/photo-1466611653911-95081537e5b7?auto=format&fit=crop&w=1600&q=80",
-    label: "Transmission corridor",
-  },
-  {
-    src: "https://images.unsplash.com/photo-1559136555-9303baea8ebd?auto=format&fit=crop&w=1600&q=80",
-    label: "Engineering schematic",
-  },
-] as const;
-
 function SectionHeader({
   kicker,
   title,
@@ -71,6 +50,27 @@ function SectionHeader({
           {title}
         </h2>
       </div>
+    </div>
+  );
+}
+
+function SubsectionHeading({
+  title,
+  description,
+}: {
+  title: string;
+  description?: string;
+}) {
+  return (
+    <div>
+      <h3 className="font-heading text-xl font-bold tracking-tight text-brand-blue md:text-2xl">
+        {title}
+      </h3>
+      {description ? (
+        <p className="mt-2 max-w-2xl text-sm leading-relaxed text-brand-slate/75 md:text-[15px]">
+          {description}
+        </p>
+      ) : null}
     </div>
   );
 }
@@ -132,67 +132,39 @@ export default function GalleryPage() {
   return (
     <PageShell
       title="Gallery"
-      subtitle="Leadership profiles and the operations team — extracted from company-context.md."
       heroImageSrc={HERO_GALLERY}
       heroOverlayClassName="bg-black/45"
     >
-      <section className="py-28 first:pt-10">
-        <SectionHeader kicker="Section 01" title="Board of Directors" />
-        <div className="mt-14 grid gap-8 lg:grid-cols-3">
+      <section className="py-20 first:pt-10 md:py-24">
+        <SectionHeader kicker="Leadership" title="Board of Directors" />
+        <div className="mt-10 grid gap-8 lg:grid-cols-3">
           {board.map((p) => (
             <ProfileCard key={p.name} name={p.name} title={p.title} />
           ))}
         </div>
-      </section>
 
-      <section className="border-t border-slate-200/60 py-28">
-        <SectionHeader kicker="Section 02" title="Management & team" />
-        <p className="mt-4 max-w-2xl font-sans text-base leading-relaxed text-brand-slate/85 md:text-lg md:leading-8">
-          A compact view of the operations team named in the web production
-          extract. Expand this section only with approved org details.
-        </p>
-        <div className="mt-14 grid gap-4 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5">
-          {operationsTeam.map((p) => (
-            <TeamCard key={p.name} name={p.name} title={p.title} />
-          ))}
+        <div className="mt-12 border-t border-slate-200/60 pt-10 md:mt-14 md:pt-12">
+          <SubsectionHeading
+            title="Management & team"
+            description="Operations leadership and core office roles."
+          />
+          <div className="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+            {operationsTeam.map((p) => (
+              <TeamCard key={p.name} name={p.name} title={p.title} />
+            ))}
+          </div>
         </div>
       </section>
 
-      <section className="border-t border-slate-200/60 py-28">
-        <SectionHeader kicker="Section 03" title="Project gallery" />
-        <p className="mt-4 max-w-2xl font-sans text-base leading-relaxed text-brand-slate/85 md:text-lg md:leading-8">
-          Placeholder imagery for Headworks, Powerhouse, and site landscapes.
-          Replace with approved project photography and captions.
+      <section className="border-t border-slate-200/60 py-20 md:py-24">
+        <SectionHeader kicker="Project gallery" title="Sites & systems" />
+        <p className="mt-4 max-w-2xl font-sans text-sm leading-relaxed text-brand-slate/75 md:text-base">
+          Hover a tile for site and location, then open the full project strip.
         </p>
 
-        <div className="mt-14 columns-1 gap-5 sm:columns-2 lg:columns-3">
-          {sitePhotos.map((p) => (
-            <figure
-              key={p.label}
-              className="group mb-5 break-inside-avoid overflow-hidden rounded-[4px] border border-slate-200/80 bg-white shadow-sm transition-[border-color,box-shadow] hover:border-brand-cyan/60 hover:shadow-[0_0_0_1px_rgba(0,210,255,0.35)]"
-            >
-              <div className="relative aspect-[4/3] overflow-hidden bg-slate-100">
-                <Image
-                  src={p.src}
-                  alt={`${p.label} photo placeholder`}
-                  fill
-                  className="object-cover object-center transition-transform duration-300 group-hover:scale-[1.03]"
-                  sizes="(min-width: 1024px) 28vw, 100vw"
-                />
-                <div
-                  className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/25 to-transparent"
-                  aria-hidden
-                />
-              </div>
-              <figcaption className="px-5 py-4">
-                <p className="font-heading text-sm font-bold text-brand-blue">
-                  {p.label}
-                </p>
-                <p className="mt-0.5 font-sans text-xs text-brand-slate/65">
-                  Site photo placeholder
-                </p>
-              </figcaption>
-            </figure>
+        <div className="mt-10 grid grid-cols-1 gap-4 md:h-[800px] md:grid-cols-4 md:grid-rows-2 md:gap-4 md:overflow-hidden">
+          {galleryBentoItems.map((item) => (
+            <GalleryBentoTile key={item.id} item={item} />
           ))}
         </div>
       </section>

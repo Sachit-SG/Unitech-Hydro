@@ -32,7 +32,6 @@ export default function ContactPage() {
   return (
     <PageShell
       title="Contact"
-      subtitle="Registered office in Lalitpur-1, Kupondole — channels from company disclosures."
       heroImageSrc={HERO_KUPONDOLE}
       heroOverlayClassName="bg-black/45"
       heroPriority

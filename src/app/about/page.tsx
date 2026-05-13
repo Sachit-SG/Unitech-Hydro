@@ -7,7 +7,6 @@ import {
   Landmark,
   MapPin,
   UserRound,
-  Zap,
 } from "lucide-react";
 import { PageShell } from "@/components/page-shell";
 
@@ -45,7 +44,6 @@ export default function AboutPage() {
   return (
     <PageShell
       title="About Us"
-      subtitle="A single corporate master page — story, leadership, investment profile, governance, and reference — aligned to company-context.md."
       heroImageSrc={HERO_LANDSCAPE}
       heroOverlayClassName="bg-black/45"
       heroPriority
@@ -100,7 +98,8 @@ export default function AboutPage() {
               </p>
               <p>
                 We develop run-of-river hydropower with modern technology,
-                environmental responsibility, and transparent delivery.
+                environmental responsibility, and transparent delivery—fueling
+                national development through sustainable energy.
               </p>
               <p>
                 <Link
@@ -198,10 +197,6 @@ export default function AboutPage() {
                 stakeholder participation — guided by <strong>integrity</strong>,
                 <strong> accountability</strong>, and <strong>innovation</strong>.
               </p>
-              <p className="text-xs leading-relaxed text-brand-slate/60">
-                Condensed from themes recorded in{" "}
-                <span className="font-medium text-brand-slate">company-context.md</span>.
-              </p>
             </div>
           </div>
 
@@ -228,7 +223,7 @@ export default function AboutPage() {
       {/* Section 3: Capital structure (white) */}
       <section
         id="investment-profile"
-        className="w-full border-t border-slate-200/60 bg-[#0B2043] py-28 text-white"
+        className="relative left-1/2 w-screen max-w-[100vw] -translate-x-1/2 border-t border-slate-200/60 bg-[#0B2043] py-28 text-white"
       >
         <div className="mx-auto max-w-[1440px] px-8 md:px-20">
           <div className="text-center">
@@ -347,76 +342,6 @@ export default function AboutPage() {
                 </div>
               ))}
             </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Section 5: Corporate reference (white) */}
-      <section className="border-t border-slate-200/60 py-28">
-        <div className="flex items-start gap-4">
-          <span className="mt-1 h-8 w-[2px] shrink-0 bg-brand-cyan" aria-hidden />
-          <div>
-            <p className="text-xs font-semibold uppercase tracking-[0.22em] text-brand-cyan">
-              Corporate reference
-            </p>
-            <h2 className="mt-3 max-w-[22ch] text-balance font-heading text-4xl font-bold leading-[1.2] tracking-tight text-brand-blue lg:text-5xl">
-              Technical facts, clean and precise.
-            </h2>
-          </div>
-        </div>
-
-        <div className="mt-14 grid gap-6 md:grid-cols-3 md:gap-8">
-          <div className="rounded-[4px] border border-slate-200/80 bg-white p-8 shadow-sm">
-            <p className="text-[10px] font-bold uppercase tracking-[0.22em] text-brand-slate/50">
-              Registration history
-            </p>
-            <dl className="mt-6 space-y-5 font-sans text-sm text-brand-slate/80">
-              <div>
-                <dt className="text-xs font-semibold uppercase tracking-widest text-brand-slate/55">
-                  Private (BS 2071)
-                </dt>
-                <dd className="mt-2 font-semibold text-brand-slate">
-                  BS 2071/06/10 · 127161/071/072
-                </dd>
-              </div>
-              <div>
-                <dt className="text-xs font-semibold uppercase tracking-widest text-brand-slate/55">
-                  Public (BS 2079)
-                </dt>
-                <dd className="mt-2 font-semibold text-brand-slate">
-                  BS 2079/10/06 · 306353/079/080
-                </dd>
-              </div>
-            </dl>
-          </div>
-
-          <div className="rounded-[4px] border border-slate-200/80 bg-white p-8 shadow-sm">
-            <p className="text-[10px] font-bold uppercase tracking-[0.22em] text-brand-slate/50">
-              Project location
-            </p>
-            <div className="mt-6 flex items-start gap-3">
-              <MapPin className="mt-0.5 h-5 w-5 text-brand-cyan" aria-hidden />
-              <p className="font-sans text-sm leading-relaxed text-brand-slate/85">
-                Taplejung &amp; Panchthar, Nepal (operating and pipeline
-                footprint as disclosed).
-              </p>
-            </div>
-          </div>
-
-          <div className="rounded-[4px] border border-slate-200/80 bg-white p-8 shadow-sm">
-            <p className="text-[10px] font-bold uppercase tracking-[0.22em] text-brand-slate/50">
-              Operational capacity
-            </p>
-            <div className="mt-6 flex items-center gap-3">
-              <Zap className="h-5 w-5 text-brand-cyan" aria-hidden />
-              <p className="font-heading text-lg font-bold text-brand-blue">
-                5.8 MW
-              </p>
-            </div>
-            <p className="mt-2 font-sans text-sm text-brand-slate/75">
-              Upper Phawa Khola — commercial operation disclosed with COD BS
-              2081/01/08.
-            </p>
           </div>
         </div>
       </section>

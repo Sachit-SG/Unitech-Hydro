@@ -58,7 +58,6 @@ export default function NewsPage() {
   return (
     <PageShell
       title="News"
-      subtitle="Notices, AGM materials, and corporate updates will appear here as they are published."
       heroImageSrc={HERO_NEWS}
       heroOverlayClassName="bg-black/45"
     >
