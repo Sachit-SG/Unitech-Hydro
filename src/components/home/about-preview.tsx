@@ -4,7 +4,9 @@ import Image from "next/image";
 import Link from "next/link";
 import { CalendarDays, Landmark, MapPin } from "lucide-react";
 
-const ABOUT_IMAGE = "/dam2.jpg";
+import { SITE_IMAGES } from "@/lib/site-config";
+
+const ABOUT_IMAGE = SITE_IMAGES.upperPhawaHeadworks;
 
 const shortDescription =
   "The Company was established on 2071/06/20 under the Companies Act of Nepal. Initially, the company was registered as a Private Limited and then converted public limited on 2079/10/19 to facilitate business growth and attract public investment. The office is located at Lalitpur-01, Kupondole, Lalitpur Metropolitan City, Lalitpur district.";

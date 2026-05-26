@@ -7,6 +7,7 @@ import { CapitalStructureInfographic } from "@/components/about/capital-structur
 import { CompanyTimelineShowcase } from "@/components/about/company-timeline-showcase";
 import { LeadershipGrid } from "@/components/about/leadership-profile-card";
 import { PageShell } from "@/components/page-shell";
+import { SITE_IMAGES } from "@/lib/site-config";
 
 export const metadata: Metadata = {
   title: "About Us",
@@ -14,8 +15,8 @@ export const metadata: Metadata = {
     "Welcome to Unitech Hydropower Company Limited — corporate profile, Chairman’s message, board, capital structure, and mission.",
 };
 
-const HERO_IMAGE = "/dam2.jpg";
-const INTRO_IMAGE = "/images/nepal-glacier-river.jpg";
+const HERO_IMAGE = SITE_IMAGES.upperPhawaHeadworks;
+const INTRO_IMAGE = SITE_IMAGES.nepalGlacierRiver;
 
 const shortDescription =
   "The Company was established on 2071/06/20 under the Companies Act of Nepal. Initially, the company was registered as a Private Limited and then converted public limited on 2079/10/19 to facilitate business growth and attract public investment. The office is located at Lalitpur-01, Kupondole, Lalitpur Metropolitan City, Lalitpur district.";

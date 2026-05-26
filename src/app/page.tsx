@@ -2,17 +2,21 @@ import type { Metadata } from "next";
 import { HomeLanding } from "@/components/home/home-landing";
 import { TechnicalStatusBar } from "@/components/home/technical-status-bar";
 import { ScrollExpandMedia } from "@/components/ui/scroll-expansion-hero";
+import { SITE_IMAGES, SITE_NAME } from "@/lib/site-config";
+
+const homeDescription =
+  "Energy for a Developing Nation. Unitech Hydropower Company Limited — Upper Phawa Khola (5.8 MW) and Iwa Khola (15.0 MW) run-of-river hydropower in Nepal.";
 
 export const metadata: Metadata = {
   title: {
-    absolute: "Unitech Hydropower Company Limited",
+    absolute: SITE_NAME,
   },
-  description:
-    "Energy for a Developing Nation. Unitech Hydropower Company Limited — Upper Phawa Khola (5.8 MW) and Iwa Khola (15.0 MW) run-of-river hydropower.",
+  description: homeDescription,
+  alternates: { canonical: "/" },
   openGraph: {
-    title: "Unitech Hydropower Company Limited",
-    description:
-      "Energy for a Developing Nation. Clean, renewable run-of-river hydropower in Nepal.",
+    title: SITE_NAME,
+    description: homeDescription,
+    images: [{ url: SITE_IMAGES.upperPhawaHeadworks, alt: "Upper Phawa Khola headworks" }],
   },
 };
 
@@ -21,8 +25,8 @@ export default function Home() {
     <>
       <ScrollExpandMedia
         mediaType="image"
-        mediaSrc="/dam2.jpg"
-        bgImageSrc="/dam2.jpg"
+        mediaSrc={SITE_IMAGES.upperPhawaHeadworks}
+        bgImageSrc={SITE_IMAGES.upperPhawaHeadworks}
         title="Energy for a Developing Nation"
         scrollToExpand="SCROLL TO EXPAND"
         textBlend={true}

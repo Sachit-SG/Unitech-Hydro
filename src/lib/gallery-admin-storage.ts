@@ -4,6 +4,7 @@ import {
   type GalleryDetailImage,
   type GalleryImageCategory,
 } from "@/lib/gallery-data";
+import { normalizeLegacyImageSrc } from "@/lib/site-config";
 
 export const GALLERY_ALBUMS_STORAGE_KEY = "unitech_gallery_albums_v1";
 
@@ -48,7 +49,7 @@ export function loadStoredAlbums(): AdminGalleryAlbums | null {
         )
         .map((row) => ({
           id: row.id,
-          src: row.src,
+          src: normalizeLegacyImageSrc(row.src),
           alt: row.alt,
           category: row.category,
         }));
@@ -84,7 +85,7 @@ export function getAdminAlbumImages(projectId: string): AdminGalleryImage[] {
 
 export function getPublicAlbumImages(projectId: string): GalleryDetailImage[] {
   return getAdminAlbumImages(projectId).map(({ src, alt, category }) => ({
-    src,
+    src: normalizeLegacyImageSrc(src),
     alt,
     category,
   }));

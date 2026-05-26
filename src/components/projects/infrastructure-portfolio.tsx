@@ -13,15 +13,16 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { cn } from "@/lib/cn";
 import type { SpecRow } from "@/lib/project-technical-data";
 import { iwaSalientRows } from "@/lib/project-technical-data";
+import { SITE_IMAGES } from "@/lib/site-config";
 
 const ease = [0.22, 1, 0.36, 1] as const;
 
 const HERO_IMAGE = "/hero-bg.jpg";
 
 const UPPER_GALLERY = [
-  { src: "/dam2.jpg", alt: "Upper Phawa Khola — headworks and dam works" },
-  { src: "/images/iwa-khola-operational.jpg", alt: "Upper Phawa Khola — operational corridor" },
-  { src: "/dam.jpg", alt: "Upper Phawa Khola — civil works on Phawa Khola" },
+  { src: SITE_IMAGES.upperPhawaHeadworks, alt: "Upper Phawa Khola — intake and headworks" },
+  { src: SITE_IMAGES.iwaKholaOperational, alt: "Upper Phawa Khola — operational corridor" },
+  { src: SITE_IMAGES.upperPhawaCivilWorks, alt: "Upper Phawa Khola — civil works on Phawa Khola" },
 ] as const;
 
 const IWA_GALLERY = [
@@ -29,7 +30,7 @@ const IWA_GALLERY = [
     src: "https://images.unsplash.com/photo-1559136555-9303baea8ebd?auto=format&fit=crop&w=1600&q=85",
     alt: "Iwa Khola — feasibility-stage river corridor",
   },
-  { src: "/dam2.jpg", alt: "Iwa Khola — reference civil layout" },
+  { src: SITE_IMAGES.upperPhawaHeadworks, alt: "Iwa Khola — reference civil layout" },
   {
     src: "https://images.unsplash.com/photo-1466611653911-95081537e5b7?auto=format&fit=crop&w=1600&q=85",
     alt: "Iwa Khola — infrastructure and transmission context",

@@ -1,3 +1,5 @@
+import { SITE_IMAGES } from "@/lib/site-config";
+
 /** Slugs must match `src/app/gallery/[id]/page.tsx` static params. */
 
 export type GalleryBentoPlacement = "large" | "tall" | "small";
@@ -63,7 +65,7 @@ export const galleryBentoItems: GalleryBentoItem[] = [
     placement: "large",
     gridClass:
       "md:col-span-2 md:row-span-1 md:col-start-2 md:row-start-2 min-h-[220px] md:min-h-0",
-    imageSrc: "/dam2.jpg",
+    imageSrc: SITE_IMAGES.upperPhawaHeadworks,
     imageAlt: "Upper Phawa Khola — Unitech Hydropower project photography",
     projectName: "Intake & headworks",
     location: "Civil structures",
@@ -187,8 +189,8 @@ export const galleryDetailImages: Record<string, GalleryDetailImage[]> = {
   ],
   "intake-headworks": [
     {
-      src: "/dam2.jpg",
-      alt: "Upper Phawa Khola — Unitech Hydropower project photography",
+      src: SITE_IMAGES.upperPhawaHeadworks,
+      alt: "Upper Phawa Khola — intake and headworks photography",
       category: "Landscape",
     },
     {

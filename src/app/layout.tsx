@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Inter, Syne } from "next/font/google";
+import { OrganizationJsonLd } from "@/components/seo/organization-json-ld";
 import { SiteChrome } from "@/components/site-chrome";
+import { SITE_DESCRIPTION, SITE_NAME, SITE_URL } from "@/lib/site-config";
 import "./globals.css";
 
 const inter = Inter({
@@ -15,26 +17,39 @@ const syne = Syne({
   display: "swap",
 });
 
-const siteDescription =
-  "Energy for a Developing Nation. Unitech Hydropower Company Limited — clean, renewable run-of-river hydropower supporting national development in Nepal.";
+const googleVerification = process.env.GOOGLE_SITE_VERIFICATION;
 
 export const metadata: Metadata = {
+  metadataBase: new URL(SITE_URL),
   title: {
-    default: "Unitech Hydropower Company Limited",
-    template: "%s · Unitech Hydropower",
+    default: SITE_NAME,
+    template: `%s · Unitech Hydropower`,
   },
-  description: siteDescription,
+  description: SITE_DESCRIPTION,
+  applicationName: SITE_NAME,
+  alternates: {
+    canonical: "/",
+  },
   openGraph: {
     type: "website",
-    siteName: "Unitech Hydropower Company Limited",
-    title: "Unitech Hydropower Company Limited",
-    description: siteDescription,
+    url: SITE_URL,
+    siteName: SITE_NAME,
+    title: SITE_NAME,
+    description: SITE_DESCRIPTION,
+    locale: "en_US",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Unitech Hydropower Company Limited",
-    description: siteDescription,
+    title: SITE_NAME,
+    description: SITE_DESCRIPTION,
   },
+  ...(googleVerification ?
+    {
+      verification: {
+        google: googleVerification,
+      },
+    }
+  : {}),
 };
 
 export default function RootLayout({
@@ -48,6 +63,7 @@ export default function RootLayout({
       className={`${inter.variable} ${syne.variable} h-full scroll-smooth scroll-pt-16`}
     >
       <body className="flex min-h-screen flex-col bg-glacier font-sans text-brand-slate antialiased">
+        <OrganizationJsonLd />
         <SiteChrome>{children}</SiteChrome>
       </body>
     </html>
