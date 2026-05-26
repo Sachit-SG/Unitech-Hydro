@@ -1,5 +1,7 @@
 # Google Search Console — verify & request recrawl
 
+> **When to run:** After `npm run deploy` — complete verification, sitemap submit, and URL indexing requests in one session.
+
 Use this after deploying the SEO updates (sitemap, structured data, renamed images).
 
 ## 1. Add the property
