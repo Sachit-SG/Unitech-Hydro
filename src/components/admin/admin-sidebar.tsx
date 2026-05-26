@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname, useSearchParams } from "next/navigation";
 import {
   Building2,
+  Bell,
   ImageIcon,
   LayoutDashboard,
   Newspaper,
@@ -16,6 +17,7 @@ const navItems = [
   { tab: "about", label: "About Us", icon: Building2 },
   { tab: "gallery", label: "Gallery", icon: ImageIcon },
   { tab: "news", label: "News & Notices", icon: Newspaper },
+  { tab: "popup", label: "Popup", icon: Bell },
 ] as const;
 
 export function AdminSidebar() {

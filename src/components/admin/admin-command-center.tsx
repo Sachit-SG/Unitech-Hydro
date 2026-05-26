@@ -6,11 +6,12 @@ import { Building2, ImageIcon, Newspaper } from "lucide-react";
 import { AboutUsTabContent } from "@/components/admin/about-us-tab-content";
 import { GalleryTabContent } from "@/components/admin/gallery-tab-content";
 import { NewsNoticesPanel } from "@/components/admin/news-notices-panel";
+import { PopupTabContent } from "@/components/admin/popup-tab-content";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { galleryBentoItems, galleryDetailImages } from "@/lib/gallery-data";
 
-const VALID_TABS = ["dashboard", "about", "gallery", "news"] as const;
+const VALID_TABS = ["dashboard", "about", "gallery", "news", "popup"] as const;
 type AdminTab = (typeof VALID_TABS)[number];
 
 const TAB_TRIGGER_CLASS =
@@ -97,6 +98,9 @@ export function AdminCommandCenter() {
           <TabsTrigger value="news" className={TAB_TRIGGER_CLASS}>
             News &amp; Notices
           </TabsTrigger>
+          <TabsTrigger value="popup" className={TAB_TRIGGER_CLASS}>
+            Popup
+          </TabsTrigger>
         </TabsList>
 
         <TabsContent value="dashboard" className="mt-6 outline-none">
@@ -165,6 +169,10 @@ export function AdminCommandCenter() {
             title="Manage Press & Notices"
             createLabel="Create Notice"
           />
+        </TabsContent>
+
+        <TabsContent value="popup" className="mt-6 outline-none">
+          <PopupTabContent onSave={handleSectionSave} />
         </TabsContent>
       </Tabs>
 
