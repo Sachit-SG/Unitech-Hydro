@@ -8,10 +8,12 @@ Use this after deploying the SEO updates (sitemap, structured data, renamed imag
 2. **Add property** → choose **URL prefix**: `https://unitechhydropower.com`
 3. Verify ownership using one of:
    - **HTML tag** — copy the `content="..."` value from Google and set in your deploy environment:
+     Add to Cloudflare Worker / local `.env` (not committed):
      ```bash
      GOOGLE_SITE_VERIFICATION=your_verification_code_here
+     NEXT_PUBLIC_SITE_URL=https://unitechhydropower.com
      ```
-     Redeploy. Google reads this from site metadata automatically.
+     Redeploy with `npm run deploy`. Google reads the verification tag from page metadata.
    - **DNS TXT** — add the record at your domain registrar (good if you prefer not to redeploy).
 
 ## 2. Submit the sitemap
