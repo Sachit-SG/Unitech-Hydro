@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { GalleryProjectView } from "@/components/gallery/gallery-project-view";
+import { GalleryProjectPageClient } from "@/components/gallery/gallery-project-page-client";
 import {
   galleryBentoItems,
   galleryDetailImages,
@@ -32,5 +32,11 @@ export default async function GalleryProjectPage({ params }: PageProps) {
 
   const title = getGalleryProjectTitle(id);
 
-  return <GalleryProjectView title={title} images={images} />;
+  return (
+    <GalleryProjectPageClient
+      projectId={id}
+      title={title}
+      defaultImages={images}
+    />
+  );
 }

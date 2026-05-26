@@ -2,14 +2,12 @@
 
 import { useCallback, useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { Building2, ImageIcon, Newspaper } from "lucide-react";
 import { AboutUsTabContent } from "@/components/admin/about-us-tab-content";
+import { AdminDashboardStats } from "@/components/admin/admin-dashboard-stats";
 import { GalleryTabContent } from "@/components/admin/gallery-tab-content";
 import { NewsNoticesPanel } from "@/components/admin/news-notices-panel";
 import { PopupTabContent } from "@/components/admin/popup-tab-content";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { galleryBentoItems, galleryDetailImages } from "@/lib/gallery-data";
 
 const VALID_TABS = ["dashboard", "about", "gallery", "news", "popup"] as const;
 type AdminTab = (typeof VALID_TABS)[number];
@@ -23,13 +21,6 @@ function parseTab(value: string | null): AdminTab {
   }
   return "dashboard";
 }
-
-const GALLERY_IMAGE_COUNT =
-  galleryBentoItems.length +
-  Object.values(galleryDetailImages).reduce((sum, arr) => sum + arr.length, 0);
-
-const PUBLISHED_NOTICES_COUNT = 2;
-const TOTAL_PROJECTS = 2;
 
 export function AdminCommandCenter() {
   const router = useRouter();
@@ -67,7 +58,8 @@ export function AdminCommandCenter() {
           Unitech Command Center
         </h1>
         <p className="mt-2 max-w-2xl text-sm text-brand-slate/70">
-          Manage your corporate content, gallery, and news.
+          Manage About, gallery albums (Construction · Landscape · Technical · Aerial ·
+          Other), news, and homepage popup.
         </p>
       </header>
 
@@ -104,56 +96,7 @@ export function AdminCommandCenter() {
         </TabsList>
 
         <TabsContent value="dashboard" className="mt-6 outline-none">
-          <div className="grid gap-6 md:grid-cols-3">
-            <Card>
-              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium text-brand-slate/70">
-                  Total Projects
-                </CardTitle>
-                <Building2 className="size-4 text-[#00EAFF]" aria-hidden />
-              </CardHeader>
-              <CardContent>
-                <p className="font-heading text-3xl font-bold text-[#0B2043]">
-                  {TOTAL_PROJECTS}
-                </p>
-                <p className="mt-1 text-xs text-brand-slate/60">
-                  Upper Phawa (5.8 MW) · Iwa (15 MW)
-                </p>
-              </CardContent>
-            </Card>
-            <Card>
-              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium text-brand-slate/70">
-                  Gallery Images
-                </CardTitle>
-                <ImageIcon className="size-4 text-[#00EAFF]" aria-hidden />
-              </CardHeader>
-              <CardContent>
-                <p className="font-heading text-3xl font-bold text-[#0B2043]">
-                  {GALLERY_IMAGE_COUNT}
-                </p>
-                <p className="mt-1 text-xs text-brand-slate/60">
-                  Bento + project album assets
-                </p>
-              </CardContent>
-            </Card>
-            <Card>
-              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium text-brand-slate/70">
-                  Published Notices
-                </CardTitle>
-                <Newspaper className="size-4 text-[#00EAFF]" aria-hidden />
-              </CardHeader>
-              <CardContent>
-                <p className="font-heading text-3xl font-bold text-[#0B2043]">
-                  {PUBLISHED_NOTICES_COUNT}
-                </p>
-                <p className="mt-1 text-xs text-brand-slate/60">
-                  Live on public News page
-                </p>
-              </CardContent>
-            </Card>
-          </div>
+          <AdminDashboardStats />
         </TabsContent>
 
         <TabsContent value="about" className="mt-6 outline-none">
@@ -161,7 +104,7 @@ export function AdminCommandCenter() {
         </TabsContent>
 
         <TabsContent value="gallery" className="mt-6 outline-none">
-          <GalleryTabContent />
+          <GalleryTabContent onSave={handleSectionSave} />
         </TabsContent>
 
         <TabsContent value="news" className="mt-6 outline-none">

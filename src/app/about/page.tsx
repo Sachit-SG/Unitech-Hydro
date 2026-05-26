@@ -301,7 +301,7 @@ export default function AboutPage() {
         className="-mx-8 border-t border-slate-200/60 bg-white px-8 py-24 md:-mx-20 md:px-20 md:py-28"
       >
         <SectionHeading kicker="Governance" title="Board of Directors (BOD)" />
-        <LeadershipGrid members={board} variant="board" className="mt-10" />
+        <LeadershipGrid members={board} className="mt-10" />
       </section>
 
       {/* Management team */}
@@ -310,7 +310,7 @@ export default function AboutPage() {
         className="-mx-8 border-t border-slate-200/60 bg-white px-8 py-24 md:-mx-20 md:px-20 md:py-28"
       >
         <SectionHeading kicker="Operations" title="Management team" />
-        <LeadershipGrid members={managementTeam} variant="board" className="mt-10" />
+        <LeadershipGrid members={managementTeam} className="mt-10" />
       </section>
 
     </PageShell>

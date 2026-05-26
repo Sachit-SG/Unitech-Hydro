@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import Image from "next/image";
-import { UserRound } from "lucide-react";
 import { GalleryBentoTile } from "@/components/gallery/gallery-bento-tile";
 import { PageShell } from "@/components/page-shell";
 import { galleryBentoItems } from "@/lib/gallery-data";
@@ -108,26 +107,6 @@ function ProfileCard({
   );
 }
 
-function TeamCard({ name, title }: { name: string; title: string }) {
-  return (
-    <div className="group rounded-[4px] border border-slate-200/80 bg-white p-6 shadow-sm transition-[border-color,box-shadow] hover:border-brand-cyan/60 hover:shadow-[0_0_0_1px_rgba(0,210,255,0.35)]">
-      <div className="flex items-center gap-4">
-        <div className="flex h-12 w-12 items-center justify-center rounded-[4px] border border-slate-200 bg-white text-brand-slate/60 transition-colors group-hover:border-brand-cyan/50 group-hover:text-brand-blue">
-          <UserRound className="h-6 w-6" aria-hidden />
-        </div>
-        <div className="min-w-0">
-          <p className="truncate font-heading text-base font-bold text-brand-blue">
-            {name}
-          </p>
-          <p className="mt-0.5 truncate font-sans text-sm text-brand-slate/70">
-            {title}
-          </p>
-        </div>
-      </div>
-    </div>
-  );
-}
-
 export default function GalleryPage() {
   return (
     <PageShell
@@ -148,9 +127,9 @@ export default function GalleryPage() {
             title="Management & team"
             description="Operations leadership and core office roles."
           />
-          <div className="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+          <div className="mt-10 grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
             {operationsTeam.map((p) => (
-              <TeamCard key={p.name} name={p.name} title={p.title} />
+              <ProfileCard key={p.name} name={p.name} title={p.title} />
             ))}
           </div>
         </div>

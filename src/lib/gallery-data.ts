@@ -70,19 +70,18 @@ export const galleryBentoItems: GalleryBentoItem[] = [
   },
 ];
 
-export type GalleryImageCategory =
-  | "Construction"
-  | "Landscape"
-  | "Technical"
-  | "Aerial";
-
-export const galleryFilterLabels = [
-  "All",
+/** Assignable tags for album photos (excludes the “All” filter). */
+export const galleryImageCategories = [
   "Construction",
   "Landscape",
   "Technical",
   "Aerial",
+  "Other",
 ] as const;
+
+export type GalleryImageCategory = (typeof galleryImageCategories)[number];
+
+export const galleryFilterLabels = ["All", ...galleryImageCategories] as const;
 
 export type GalleryFilterLabel = (typeof galleryFilterLabels)[number];
 
