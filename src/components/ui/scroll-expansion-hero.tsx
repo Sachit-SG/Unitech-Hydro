@@ -64,15 +64,16 @@ export function ScrollExpandMedia({
     offset: ["start start", "end end"],
   });
 
-  const CINEMATIC_HEIGHT_RATIO = 0.65;
+  /** Portrait frame — width −15%; height slightly above last trim */
+  const CINEMATIC_HEIGHT_RATIO = 0.5;
 
   const mediaWidthPx = useTransform(scrollYProgress, (p) => {
     if (reduceMotion) {
       if (typeof window !== "undefined") return window.innerWidth;
       return 1920;
     }
-    const baseWidth = isMobileState ? 380 : 720;
-    return baseWidth + p * (isMobileState ? 750 : 1600);
+    const baseWidth = isMobileState ? 357 : 816;
+    return baseWidth + p * (isMobileState ? 663 : 1428);
   });
 
   const mediaHeightPx = useTransform(

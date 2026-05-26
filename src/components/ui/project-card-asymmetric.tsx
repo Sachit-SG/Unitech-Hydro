@@ -1,5 +1,9 @@
-import Image from "next/image";
+import type { ReactNode } from "react";
 import { cn } from "@/lib/cn";
+import {
+  ProjectGalleryCarousel,
+  type GallerySlide,
+} from "@/components/ui/project-gallery-carousel";
 
 export type ProjectFactSheetItem = {
   label: string;
@@ -13,31 +17,31 @@ export type ProjectAchievement = {
 
 export type ProjectCardAsymmetricProps = {
   title: string;
-  /** Kicker above the title, e.g. "Operational project" or "In pipeline". */
+  /** Shown above the title, or below when `statusBelowTitle` is true. */
   statusLabel?: string;
-  mainImageSrc: string;
-  mainImageAlt: string;
-  sideImageSrc: string;
-  sideImageAlt: string;
-  /** Shown in the fact sheet card. */
+  /** When true, `statusLabel` renders under the title (e.g. feasibility kicker). */
+  statusBelowTitle?: boolean;
+  /** Project photos; one slide is static, multiple slides enable carousel (5s + hover arrows). */
+  gallerySlides: GallerySlide[];
   location: string;
   factSheetTitle?: string;
   factSheetItems: ProjectFactSheetItem[];
   achievements: ProjectAchievement[];
+  /** Optional narrative below the highlight cards (e.g. feasibility-stage project summary). */
+  afterAchievements?: ReactNode;
   className?: string;
 };
 
 export function ProjectCardAsymmetric({
   title,
   statusLabel = "Operational project",
-  mainImageSrc,
-  mainImageAlt,
-  sideImageSrc,
-  sideImageAlt,
+  statusBelowTitle = false,
+  gallerySlides,
   location,
   factSheetTitle = "FACT SHEET",
   factSheetItems,
   achievements,
+  afterAchievements,
   className,
 }: ProjectCardAsymmetricProps) {
   return (
@@ -47,44 +51,38 @@ export function ProjectCardAsymmetric({
         className,
       )}
     >
-      <div className="grid grid-cols-1 gap-8 lg:grid-cols-3 lg:gap-8">
-        <header className="mb-10 text-left lg:col-span-3">
-          <p className="text-xs font-semibold uppercase tracking-[0.22em] text-brand-cyan">
-            {statusLabel}
-          </p>
-          <h2 className="mt-3 font-heading text-3xl font-extrabold leading-[1.1] tracking-tight text-brand-blue md:text-4xl lg:text-5xl">
-            {title}
-          </h2>
+      <div className="grid grid-cols-1 gap-8 lg:grid-cols-3 lg:items-stretch lg:gap-8">
+        <header className="mb-2 text-left lg:col-span-3 lg:mb-0">
+          {statusBelowTitle ? (
+            <>
+              <h2 className="font-heading text-3xl font-extrabold leading-[1.1] tracking-tight text-brand-blue md:text-4xl lg:text-5xl">
+                {title}
+              </h2>
+              <p className="mt-3 text-xs font-semibold uppercase tracking-[0.22em] text-brand-cyan">
+                {statusLabel}
+              </p>
+            </>
+          ) : (
+            <>
+              <p className="text-xs font-semibold uppercase tracking-[0.22em] text-brand-cyan">
+                {statusLabel}
+              </p>
+              <h2 className="mt-3 font-heading text-3xl font-extrabold leading-[1.1] tracking-tight text-brand-blue md:text-4xl lg:text-5xl">
+                {title}
+              </h2>
+            </>
+          )}
         </header>
 
-        {/* Main image + right stack: one supporting image + fact sheet (row height = main aspect) */}
         <div className="contents">
-          <div className="relative aspect-[4/3] w-full overflow-hidden rounded-2xl shadow-lg shadow-brand-blue/10 lg:col-span-2">
-            <Image
-              src={mainImageSrc}
-              alt={mainImageAlt}
-              fill
-              className="object-cover object-center"
-              sizes="(min-width: 1024px) 64vw, 100vw"
-              priority
-            />
-            <div
-              className="pointer-events-none absolute inset-0 bg-gradient-to-tr from-black/25 via-transparent to-transparent"
-              aria-hidden
+          <div className="min-h-[280px] h-full lg:col-span-2 lg:min-h-0">
+            <ProjectGalleryCarousel
+              slides={gallerySlides}
+              className="h-full min-h-[280px]"
             />
           </div>
 
-          <div className="flex min-h-[280px] flex-col gap-4 lg:col-span-1 lg:h-full lg:min-h-0">
-            <div className="relative min-h-0 flex-1 overflow-hidden rounded-2xl border border-slate-200/60 shadow-md shadow-brand-blue/5">
-              <Image
-                src={sideImageSrc}
-                alt={sideImageAlt}
-                fill
-                className="object-cover object-center"
-                sizes="(min-width: 1024px) 32vw, 100vw"
-              />
-            </div>
-
+          <div className="flex min-h-0 flex-col lg:col-span-1">
             <div className="shrink-0 rounded-xl border border-white/10 bg-[#0B2043] p-6 text-white shadow-xl">
               <p className="text-[10px] font-bold uppercase tracking-[0.28em] text-white/70">
                 {factSheetTitle}
@@ -131,7 +129,13 @@ export function ProjectCardAsymmetric({
             </div>
           ))}
         </div>
+
+        {afterAchievements ? (
+          <div className="mt-10 w-full lg:col-span-3">{afterAchievements}</div>
+        ) : null}
       </div>
     </section>
   );
 }
+
+export type { GallerySlide };

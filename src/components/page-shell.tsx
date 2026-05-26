@@ -26,10 +26,8 @@ export function PageShell({
         overlayClassName={heroOverlayClassName}
         priority={heroPriority}
       />
-      <main className="mx-auto w-full max-w-[1440px] flex-1 px-8 pb-24 pt-12 md:px-20 md:pt-14">
-        <div className="text-base leading-relaxed text-brand-slate/90 md:text-[17px] md:leading-8 [&_strong]:font-semibold [&_strong]:text-brand-blue">
-          {children}
-        </div>
+      <main className="mx-auto w-full max-w-[1440px] flex-1 px-8 pb-24 pt-0 md:px-20">
+        {children}
       </main>
     </div>
   );

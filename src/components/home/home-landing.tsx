@@ -65,13 +65,14 @@ export function HomeLanding() {
                     Leadership
                   </p>
                   <h2 className="mt-3 font-heading text-3xl font-bold leading-tight tracking-tight text-brand-blue lg:text-5xl">
-                    Chairman&apos;s vision
+                    Chairman&apos;s message
                   </h2>
                 </div>
               </div>
               <p className="mt-3 max-w-2xl text-base leading-relaxed text-brand-slate/85 md:text-lg">
-                From company disclosures — integrity, accountability, and
-                innovation as we scale from private to public company.
+                From <strong className="font-semibold text-brand-blue">Anoj Khadka</strong>, Chairman
+                — welcome, our path from private to public company, and how we are meeting
+                Nepal&apos;s energy needs.
               </p>
             </motion.div>
 
@@ -105,21 +106,25 @@ export function HomeLanding() {
                     Hydropower Company Limited. Since our establishment, we have
                     remained committed to contributing to Nepal&apos;s growing
                     energy needs through the sustainable development of
-                    hydropower resources.&rdquo;
+                    hydropower resources. Our transition from a Private Limited
+                    Company to a Public Limited Company reflects our dedication to
+                    growth, transparency, and broader stakeholder participation.&rdquo;
                   </p>
                   <p>
-                    Our transition from a <strong>Private Limited</strong> to a{" "}
-                    <strong>Public Limited</strong> company reflects our
-                    dedication to <strong>growth, transparency</strong>, and{" "}
-                    <strong>broader stakeholder participation</strong>. We are
-                    guided by <strong>integrity, accountability, and innovation</strong>
-                    — building reliable projects that create sustainable value.
+                    During project development we faced significant challenges,
+                    including disruptions from the COVID-19 lockdowns and logistical
+                    constraints — contributing to roughly{" "}
+                    <strong>twenty months</strong> of schedule impact from initial civil
+                    mobilization. Our commitment to reliable, sustainable hydropower
+                    remains unwavering.
                   </p>
                 </blockquote>
-                <p className="mt-6 text-sm text-brand-slate/70">
-                  Paraphrased from the Chairman&apos;s message and themes recorded
-                  in <span className="font-medium text-brand-slate">company-context.md</span>.
-                </p>
+                <Link
+                  href="/about#chairman-message"
+                  className="mt-6 inline-flex text-sm font-semibold text-brand-blue underline-offset-4 hover:underline"
+                >
+                  Read the full Chairman&apos;s message
+                </Link>
               </div>
             </motion.div>
           </motion.div>
@@ -200,7 +205,7 @@ export function HomeLanding() {
                 <div className="relative aspect-[16/10] border-b border-slate-100">
                   <Image
                     src={PIPELINE_IMAGE}
-                    alt="Middle Iwa Khola development placeholder"
+                    alt="Iwa Khola (15 MW) — feasibility-stage project placeholder"
                     fill
                     className="object-cover object-center"
                     sizes="(min-width: 1024px) 40vw, 100vw"
@@ -213,11 +218,11 @@ export function HomeLanding() {
                 </div>
                 <div className="p-6">
                   <h3 className="font-heading text-xl font-bold text-brand-blue">
-                    Middle Iwa Khola
+                    Iwa Khola (15.0 MW)
                   </h3>
                   <p className="mt-2 text-sm text-brand-slate/80">
-                    15 MW · 51% · 400.10 m gross head · Vertical Pelton · ~22 km
-                    132 kV (feasibility)
+                    Feasibility-stage ROR · 51% via Unitech Iwa Hydro Energy Pvt.
+                    Ltd. · 4,382 m tunnel · NPR 51.15 Cr first-year revenue (est.)
                   </p>
                   <Link
                     href="/projects"

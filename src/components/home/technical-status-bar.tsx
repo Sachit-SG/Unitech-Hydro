@@ -166,7 +166,7 @@ export function TechnicalStatusBar({
               dockedVisual ? "text-white/60" : "text-brand-slate/60",
             )}
           >
-            Middle Iwa Khola — feasibility stage
+            Iwa Khola (15.0 MW) — feasibility stage
           </p>
         </div>
 

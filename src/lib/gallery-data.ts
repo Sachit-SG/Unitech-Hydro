@@ -32,8 +32,8 @@ export const galleryBentoItems: GalleryBentoItem[] = [
       "md:col-span-1 md:row-span-2 md:col-start-4 md:row-start-1 min-h-[260px] md:min-h-0",
     imageSrc:
       "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?auto=format&fit=crop&w=1600&q=85",
-    imageAlt: "Middle Iwa Khola — mountain hydrology context",
-    projectName: "Middle Iwa Khola",
+    imageAlt: "Iwa Khola (15.0 MW) — mountain hydrology context",
+    projectName: "Iwa Khola (15.0 MW)",
     location: "Taplejung & Panchthar",
   },
   {
@@ -64,7 +64,7 @@ export const galleryBentoItems: GalleryBentoItem[] = [
     gridClass:
       "md:col-span-2 md:row-span-1 md:col-start-2 md:row-start-2 min-h-[220px] md:min-h-0",
     imageSrc: "/dam2.jpg",
-    imageAlt: "Hydropower dam — project photography",
+    imageAlt: "Upper Phawa Khola — Unitech Hydropower project photography",
     projectName: "Intake & headworks",
     location: "Civil structures",
   },
@@ -128,22 +128,22 @@ export const galleryDetailImages: Record<string, GalleryDetailImage[]> = {
   "middle-iwa-khola": [
     {
       src: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?auto=format&fit=crop&w=2400&q=85",
-      alt: "Middle Iwa Khola — feasibility-stage landscape",
+      alt: "Iwa Khola — feasibility-stage landscape",
       category: "Landscape",
     },
     {
       src: "https://images.unsplash.com/photo-1559136555-9303baea8ebd?auto=format&fit=crop&w=2400&q=85",
-      alt: "Middle Iwa Khola — engineering planning context",
+      alt: "Iwa Khola — engineering planning context",
       category: "Technical",
     },
     {
       src: "https://images.unsplash.com/photo-1581092160607-ee22621dd758?auto=format&fit=crop&w=2400&q=85",
-      alt: "Middle Iwa Khola — construction reference",
+      alt: "Iwa Khola — construction reference",
       category: "Construction",
     },
     {
       src: "https://images.unsplash.com/photo-1501785888041-af3ef285b470?auto=format&fit=crop&w=2400&q=85",
-      alt: "Middle Iwa Khola — valley aerial",
+      alt: "Iwa Khola — valley aerial",
       category: "Aerial",
     },
   ],
@@ -189,7 +189,7 @@ export const galleryDetailImages: Record<string, GalleryDetailImage[]> = {
   "intake-headworks": [
     {
       src: "/dam2.jpg",
-      alt: "Hydropower dam — project photography",
+      alt: "Upper Phawa Khola — Unitech Hydropower project photography",
       category: "Landscape",
     },
     {

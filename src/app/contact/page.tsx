@@ -46,10 +46,8 @@ export default function ContactPage() {
               <p className="mt-4 max-w-sm text-sm leading-relaxed text-brand-slate/65">
                 Embed placeholder — replace with an iframe or Maps JavaScript API
                 pointing to{" "}
-                <strong className="text-brand-slate">
-                  Lalitpur-1, Kupondole
-                </strong>{" "}
-                (Plus code <span className="font-mono">M8P8+CH</span>).
+                <strong className="text-brand-slate">Lalitpur-01, Kupondole</strong>, Lalitpur
+                Metropolitan City.
               </p>
             </div>
             <div className="border-t border-slate-200/80 bg-white px-4 py-3 text-center text-xs text-brand-slate/55">
@@ -66,16 +64,14 @@ export default function ContactPage() {
               <address className="mt-4 not-italic text-sm leading-relaxed text-brand-slate/90 md:text-base">
                 <strong>Unitech Hydropower Company Limited</strong>
                 <br />
-                Lalitpur-1, Kupondole
+                Lalitpur-01, Kupondole
                 <br />
                 Lalitpur Metropolitan City
                 <br />
                 Lalitpur, Nepal
               </address>
               <p className="mt-4 text-xs leading-relaxed text-brand-slate/55">
-                Standardize postal formatting (sources also list Lalitpur-01,
-                Kupondole; AGM footer style &quot;Kupondole, Lalitpur -31,
-                Nepal&quot;).
+                Map embed can be added when approved.
               </p>
             </div>
 
@@ -95,12 +91,6 @@ export default function ContactPage() {
               >
                 unitechhydropower@gmail.com
               </a>
-            </ContactCard>
-
-            <ContactCard label="Plus Code">
-              <span className="font-mono font-heading text-2xl font-bold tracking-wide text-brand-slate md:text-3xl">
-                M8P8+CH
-              </span>
             </ContactCard>
           </div>
         </div>

@@ -1,29 +1,37 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
-import {
-  Activity,
-  CalendarDays,
-  Landmark,
-  MapPin,
-  UserRound,
-} from "lucide-react";
+import { CalendarDays, Landmark, MapPin, UserRound } from "lucide-react";
+import { AboutExecutiveSummary } from "@/components/about/about-executive-summary";
+import { CapitalStructureInfographic } from "@/components/about/capital-structure-infographic";
+import { CompanyTimelineShowcase } from "@/components/about/company-timeline-showcase";
+import { LeadershipGrid } from "@/components/about/leadership-profile-card";
 import { PageShell } from "@/components/page-shell";
 
 export const metadata: Metadata = {
   title: "About Us",
   description:
-    "Unitech Hydropower Company Limited — registration, mandate, and corporate profile.",
+    "Welcome to Unitech Hydropower Company Limited — corporate profile, Chairman’s message, board, capital structure, and mission.",
 };
 
-const HERO_LANDSCAPE =
-  "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?auto=format&fit=crop&w=2400&q=80";
+const HERO_IMAGE = "/dam2.jpg";
+const INTRO_IMAGE = "/images/nepal-glacier-river.jpg";
 
-const IMG_STORY =
-  "https://images.unsplash.com/photo-1581092160607-ee22621dd758?auto=format&fit=crop&w=1800&q=80";
+const shortDescription =
+  "The Company was established on 2071/06/20 under the Companies Act of Nepal. Initially, the company was registered as a Private Limited and then converted public limited on 2079/10/19 to facilitate business growth and attract public investment. The office is located at Lalitpur-01, Kupondole, Lalitpur Metropolitan City, Lalitpur district.";
 
-const IMG_VISION =
-  "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=1600&q=80";
+const chairmanMessageParagraphs = [
+  "It gives me great pleasure to welcome you to Unitech Hydropower Company Limited.",
+  "Since our establishment, we have remained committed to contributing to Nepal’s growing energy needs through the sustainable development of hydropower resources. Our transition from a Private Limited Company to a Public Limited Company reflects our dedication to growth, transparency, and broader stakeholder participation.",
+  "Nepal’s hydropower sector holds immense potential, and we believe that its responsible development is key to long-term national progress. At Unitech Hydropower, we are focused on delivering efficient, environmentally responsible, and economically viable energy projects that create sustainable value for all stakeholders.",
+  "During the project development phase, the Company faced several significant challenges that impacted construction progress and project cost. The COVID-19 pandemic resulted in major disruptions, including nearly one year of inactivity during the first lockdown. As the lockdown was lifted during the rainy season, immediate remobilization of works was not feasible, leading to further delays. The second lockdown also hindered critical activities such as headworks construction and pipeline excavation.",
+  "Operational and logistical constraints further affected progress, including the provision of support to local administrative offices during the pandemic and detention of electro-mechanical equipment at the border, resulting in additional charges. The project also experienced financial pressure due to delays in mobilization of committed equity, along with a sharp increase in fuel prices, which significantly impacted construction and transportation costs.",
+  "In addition, approval for army mobilization was delayed due to requirements for on-site barracks and bunkers, leading to additional costs beyond initial project estimates. After several rounds of coordination, approval was obtained to utilize the Taplejung Barrack for deployment, enabling further progress of the project. Overall, these combined factors resulted in a time lapse of approximately 20 months from the initial mobilization of the civil contractor, leading to both schedule delays and increased project costs.",
+  "Despite these challenges, our commitment to delivering reliable and sustainable hydropower solutions remains unwavering. We continue to strengthen our project management practices and coordination efforts to overcome obstacles and ensure successful project completion.",
+  "We are guided by strong principles of integrity, accountability, and innovation. With the continued support of our investors, partners, and dedicated team, we are confident in achieving our goals and contributing meaningfully to Nepal’s energy sector.",
+  "I would like to express my sincere gratitude to all our stakeholders for their trust and support. We look forward to achieving new milestones together.",
+  "Thank you.",
+] as const;
 
 const board = [
   { name: "Anoj Khadka", title: "Chairman" },
@@ -34,317 +42,277 @@ const board = [
   { name: "Pramod Kumar Shah", title: "Independent Director" },
 ] as const;
 
-const operationsTeam = [
-  { name: "Bhaskar Kafle", title: "Chief Executive Officer" },
+const managementTeam = [
+  { name: "Bhaskar Kafle", title: "CEO" },
   { name: "Rabindra Mahaseth", title: "Project Co-ordinator" },
   { name: "Shrina Ghimire", title: "Account / Admin Officer" },
 ] as const;
+
+/** Chronological (BS) — source: company-context.md */
+const companyTimelineEvents = [
+  {
+    date: "2071/06/10",
+    title: "Initial company registration (Private Limited)",
+  },
+  {
+    date: "2074/11/11",
+    title: "PPA (Power Purchase Agreement)",
+    description:
+      "Secured agreement for the sale of 33.05 GWh of annual energy, ensuring long-term revenue stability.",
+  },
+  {
+    date: "2075/01/05",
+    title: "Initial industry registration",
+    registrationNo: "5120",
+  },
+  {
+    date: "2075/05/19",
+    title: "Generation licence",
+  },
+  {
+    date: "2079/10/06",
+    title: "Converted to Public Limited",
+    description:
+      "Transitioned corporate structure to facilitate business growth, transparency, and attract broader public investment.",
+    milestone: true,
+  },
+  {
+    date: "2081/01/08",
+    title: "Commercial Operation Date (COD)",
+    description:
+      "Successfully commenced commercial power generation of 5.8 MW, overcoming significant global and logistical challenges.",
+    milestone: true,
+  },
+  {
+    date: "2082/03/29",
+    title: "Industry registration (Public Limited)",
+    registrationNo: "5120",
+  },
+] as const;
+
+const unitechFeatures = [
+  {
+    id: 1,
+    title: "Our Vision",
+    description:
+      "To become a leading hydropower company in Nepal by developing sustainable, reliable, and environmentally responsible energy solutions that contribute to national prosperity and a greener future.",
+    image:
+      "https://images.unsplash.com/photo-1470075801209-17f9ec0cada6?q=80&w=1000",
+  },
+  {
+    id: 2,
+    title: "Our Mission",
+    description:
+      "To harness Nepal’s water resources efficiently to generate clean and renewable energy using modern technology, while ensuring environmental protection.",
+    image:
+      "https://images.unsplash.com/photo-1548328928-34db1c5f3684?q=80&w=1000",
+  },
+  {
+    id: 3,
+    title: "Community Impact",
+    description:
+      "Creating positive socio-economic impact through employment opportunities and supporting local communities in project-affected areas, fostering regional development.",
+    image:
+      "https://images.unsplash.com/photo-1544735716-392fe2489ffa?q=80&w=1000",
+  },
+] as const;
+
+function SectionHeading({
+  kicker,
+  title,
+  id,
+}: {
+  kicker: string;
+  title: string;
+  id?: string;
+}) {
+  return (
+    <div className="flex items-start gap-4" id={id}>
+      <span className="mt-1 h-8 w-[2px] shrink-0 bg-brand-cyan" aria-hidden />
+      <div>
+        <p className="text-xs font-semibold uppercase tracking-[0.22em] text-brand-cyan">
+          {kicker}
+        </p>
+        <h2 className="mt-3 max-w-[28ch] text-balance font-heading text-3xl font-bold leading-[1.15] tracking-tight text-brand-blue md:text-4xl lg:text-5xl">
+          {title}
+        </h2>
+      </div>
+    </div>
+  );
+}
 
 export default function AboutPage() {
   return (
     <PageShell
       title="About Us"
-      heroImageSrc={HERO_LANDSCAPE}
+      heroImageSrc={HERO_IMAGE}
       heroOverlayClassName="bg-black/45"
       heroPriority
     >
-      {/* Section 1: Our story (white) */}
-      <section className="bg-slate-50 py-28 first:pt-10">
-        <div className="grid gap-12 lg:grid-cols-[1.1fr_0.9fr] lg:items-center lg:gap-20">
-          <div className="relative w-full overflow-hidden rounded-[4px] border border-slate-200/60 bg-white shadow-2xl shadow-brand-blue/5">
+      {/* Welcome + short description */}
+      <section className="-mx-8 bg-slate-50 px-8 pt-32 pb-24 md:-mx-20 md:px-20 md:pb-28">
+        <p className="mb-14 text-center font-heading text-2xl font-bold text-brand-blue md:mb-20 md:text-3xl">
+          Welcome to Unitech Hydropower Company Limited
+        </p>
+        <div className="grid gap-12 lg:grid-cols-[1.05fr_0.95fr] lg:items-stretch lg:gap-16">
+          <div className="relative aspect-[4/3] min-h-[260px] w-full overflow-hidden rounded-[4px] border border-slate-200/60 bg-white shadow-xl shadow-brand-blue/5 lg:aspect-auto lg:h-full lg:min-h-0">
             <Image
-              src={IMG_STORY}
-              alt="Hydropower site placeholder — engineering and construction"
+              src={INTRO_IMAGE}
+              alt="Unitech Hydropower — corporate and project context"
               fill
               className="object-cover object-center"
-              sizes="(min-width: 1024px) 40vw, 100vw"
-              priority={false}
+              sizes="(min-width: 1024px) 45vw, 100vw"
+              priority
             />
-            <div className="relative aspect-[4/5] w-full" aria-hidden />
             <div
-              className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/30 to-transparent"
+              className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/35 to-transparent"
               aria-hidden
             />
           </div>
-
           <div>
-            <div className="flex items-stretch gap-4">
-              <span className="w-[2px] shrink-0 bg-brand-cyan" aria-hidden />
-              <div className="w-full">
-                <p className="text-xs font-semibold uppercase tracking-[0.22em] text-brand-cyan">
-                  Our story
-                </p>
-                <h2 className="mt-3 max-w-none font-heading text-3xl font-bold leading-[1.2] tracking-tight text-brand-blue md:text-5xl lg:text-6xl">
-                  A Decade of{" "}
-                  <span className="whitespace-nowrap">Engineering Excellence</span>.
-                </h2>
-              </div>
-            </div>
-
-            <div className="mt-8 space-y-6 font-sans text-base leading-relaxed text-brand-slate/90 md:text-[17px] md:leading-8">
-              <p>
-                <strong>Unitech Hydropower Company Limited</strong> was first
-                registered as a <strong>Private Limited</strong> company under
-                the Companies Act of Nepal and later converted to a{" "}
-                <strong>Public Limited</strong> company to support growth,
-                transparency, and broader stakeholder participation.
-              </p>
-              <p>
-                The conversion registration is recorded as{" "}
-                <strong>BS 2079/10/06</strong> (no.{" "}
-                <strong>306353/079/080</strong>). The original private
-                registration is <strong>BS 2071/06/10</strong> (no.{" "}
-                <strong>127161/071/072</strong>).
-              </p>
-              <p>
-                We develop run-of-river hydropower with modern technology,
-                environmental responsibility, and transparent delivery—fueling
-                national development through sustainable energy.
-              </p>
-              <p>
-                <Link
-                  href="/projects"
-                  className="font-semibold text-brand-blue underline-offset-4 hover:underline"
-                >
-                  View projects
-                </Link>
-                <span className="text-brand-slate/50"> · </span>
-                <Link
-                  href="/contact"
-                  className="font-semibold text-brand-blue underline-offset-4 hover:underline"
-                >
-                  Contact
-                </Link>
-              </p>
-            </div>
-
-            <div className="mt-8 flex w-full flex-row flex-nowrap items-stretch gap-2">
-              <div className="w-[112px] flex-none rounded-[4px] border border-slate-200/80 bg-white px-3 py-2 shadow-sm">
-                <div className="flex items-start justify-between gap-2">
-                  <div className="min-w-0">
-                    <p className="text-[10px] font-bold uppercase tracking-[0.22em] text-brand-slate/55">
-                      Est.
-                    </p>
-                    <p className="mt-1.5 font-heading text-sm font-bold text-brand-blue">
-                      2014
-                    </p>
-                  </div>
-                  <CalendarDays className="mt-0.5 h-4 w-4 text-brand-cyan" aria-hidden />
-                </div>
-              </div>
-
-              <div className="w-[132px] flex-none rounded-[4px] border border-slate-200/80 bg-white px-3 py-2 shadow-sm">
-                <div className="flex items-start justify-between gap-2">
-                  <div className="min-w-0">
-                    <p className="text-[10px] font-bold uppercase tracking-[0.22em] text-brand-slate/55">
-                      Public Ltd
-                    </p>
-                    <p className="mt-1.5 font-heading text-sm font-bold text-brand-blue">
-                      2023
-                    </p>
-                  </div>
-                  <Landmark className="mt-0.5 h-4 w-4 text-brand-cyan" aria-hidden />
-                </div>
-              </div>
-
-              <div className="min-w-0 flex-1 rounded-[4px] border border-slate-200/80 bg-white px-3 py-2 shadow-sm">
-                <div className="flex items-start justify-between gap-2">
-                  <div className="min-w-0">
-                    <p className="text-[10px] font-bold uppercase tracking-[0.22em] text-brand-slate/55">
-                      Location
-                    </p>
-                    <p className="mt-1.5 font-heading text-sm font-bold leading-tight text-brand-blue">
-                      Taplejung &amp; Panchthar, Nepal
-                    </p>
-                  </div>
-                  <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-brand-cyan" aria-hidden />
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Section 2: The vision (glacier mist) */}
-      <section className="border-t border-slate-200/60 bg-slate-50 py-28">
-        <div className="grid gap-12 lg:grid-cols-12 lg:items-center lg:gap-20">
-          <div className="lg:col-span-7">
-            <div className="flex items-start gap-4">
-              <span className="mt-1 h-8 w-[2px] shrink-0 bg-brand-cyan" aria-hidden />
-              <div>
-                <p className="text-xs font-semibold uppercase tracking-[0.22em] text-brand-cyan">
-                  The vision
-                </p>
-                <h2 className="mt-3 max-w-[22ch] text-balance font-heading text-4xl font-bold leading-[1.2] tracking-tight text-brand-blue lg:text-5xl">
-                  Leadership for Nepal’s energy future.
-                </h2>
-              </div>
-            </div>
-
-            <p className="mt-8 font-heading text-2xl font-bold leading-snug tracking-tight text-brand-blue md:text-3xl">
-              &ldquo;It gives me great pleasure to welcome you to Unitech Hydropower
-              Company Limited.&rdquo;
+            <SectionHeading kicker="About us" title="Company at a glance" />
+            <p className="mt-8 text-base leading-relaxed text-brand-slate/90 md:text-[17px] md:leading-8">
+              {shortDescription}
             </p>
-            <div className="mt-8 max-w-2xl space-y-6 font-sans text-base leading-relaxed text-brand-slate/90 md:text-[17px] md:leading-8">
-              <p>
-                Since our establishment, we have remained committed to
-                contributing to Nepal&apos;s growing energy needs through the
-                sustainable development of hydropower resources.
-              </p>
-              <p>
-                Our transition from private to public limited status reflects a
-                commitment to <strong>growth, transparency</strong>, and broader
-                stakeholder participation — guided by <strong>integrity</strong>,
-                <strong> accountability</strong>, and <strong>innovation</strong>.
-              </p>
-            </div>
-          </div>
-
-          <div className="relative overflow-hidden rounded-[4px] border border-slate-200/60 bg-white shadow-2xl shadow-brand-blue/5 lg:col-span-5 lg:min-h-[560px]">
-            <Image
-              src={IMG_VISION}
-              alt="Professional portrait placeholder — Anoj Khadka"
-              fill
-              className="object-cover object-center"
-              sizes="(min-width: 1024px) 40vw, 100vw"
-              priority={false}
-            />
-            <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/25 to-transparent" aria-hidden />
-            <div className="absolute bottom-4 left-4 right-4">
-              <p className="font-heading text-sm font-bold uppercase tracking-widest text-white/95">
-                Anoj Khadka
-              </p>
-              <p className="mt-0.5 font-sans text-xs text-white/75">Chairman</p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Section 3: Capital structure (white) */}
-      <section
-        id="investment-profile"
-        className="relative left-1/2 w-screen max-w-[100vw] -translate-x-1/2 border-t border-slate-200/60 bg-[#0B2043] py-28 text-white"
-      >
-        <div className="mx-auto max-w-[1440px] px-8 md:px-20">
-          <div className="text-center">
-            <p className="text-xs font-semibold uppercase tracking-[0.22em] text-[#00EAFF]">
-              Capital structure
-            </p>
-            <h2 className="mx-auto mt-3 max-w-[18ch] text-balance font-heading text-4xl font-bold leading-[1.2] tracking-tight text-white lg:text-5xl">
-              Investment Profile.
-            </h2>
-            <p className="mx-auto mt-5 max-w-2xl font-sans text-sm leading-relaxed text-slate-100/85">
-              Clean, high-contrast metrics designed for widescreen readability and
-              investor-grade presentation.
-            </p>
-          </div>
-
-          <div className="mt-14 grid gap-6 lg:grid-cols-3 lg:gap-10">
-            {(
-              [
-                { label: "Authorized capital", value: "120 Cr" },
-                { label: "Issued capital", value: "98.5 Cr" },
-                { label: "Paid-up capital", value: "78.8 Cr" },
-              ] as const
-            ).map((stat) => (
-              <div
-                key={stat.label}
-                className="rounded-[4px] border border-white/10 bg-[#162D51] p-8 shadow-sm transition-[border-color,box-shadow,transform] hover:-translate-y-0.5 hover:border-[#00EAFF]/50 hover:shadow-[0_0_0_1px_rgba(0,234,255,0.22),0_18px_48px_-26px_rgba(0,0,0,0.55)]"
+            <p className="mt-6 text-sm text-brand-slate/70">
+              <Link
+                href="/projects"
+                className="font-semibold text-brand-blue underline-offset-4 hover:underline"
               >
-                <div className="flex items-center justify-between gap-6">
-                  <p className="text-xs font-semibold uppercase tracking-widest text-slate-100/75">
-                    {stat.label}
+                Projects
+              </Link>
+              <span className="text-brand-slate/40"> · </span>
+              <Link
+                href="/contact"
+                className="font-semibold text-brand-blue underline-offset-4 hover:underline"
+              >
+                Contact
+              </Link>
+            </p>
+            <div className="mt-8 grid grid-cols-2 gap-2 sm:gap-2.5">
+              <div className="rounded-[4px] border border-slate-200/80 bg-white px-3 py-3 shadow-sm">
+                <div className="flex items-center gap-2">
+                  <CalendarDays className="h-4 w-4 shrink-0 text-brand-cyan" aria-hidden />
+                  <p className="text-[10px] font-bold uppercase tracking-widest text-brand-slate/55">
+                    Established (BS)
                   </p>
-                  <Activity className="h-4 w-4 text-[#00EAFF]" aria-hidden />
                 </div>
-                <p className="mt-5 font-heading text-4xl font-bold tabular-nums tracking-tight text-[#00EAFF] md:text-5xl">
-                  {stat.value}
-                </p>
-                <p className="mt-3 font-sans text-sm text-slate-100/75">
-                  Stat sheet (NPR crores) — values aligned to company materials.
+                <p className="mt-1.5 font-heading text-sm font-bold text-brand-blue">2071/06/20</p>
+              </div>
+              <div className="rounded-[4px] border border-slate-200/80 bg-white px-3 py-3 shadow-sm">
+                <div className="flex items-center gap-2">
+                  <Landmark className="h-4 w-4 shrink-0 text-brand-cyan" aria-hidden />
+                  <p className="text-[10px] font-bold uppercase tracking-widest text-brand-slate/55">
+                    Public Ltd (BS)
+                  </p>
+                </div>
+                <p className="mt-1.5 font-heading text-sm font-bold text-brand-blue">2079/10/19</p>
+              </div>
+              <div className="col-span-2 rounded-[4px] border border-slate-200/80 bg-white px-3 py-3 shadow-sm">
+                <div className="flex items-center gap-2">
+                  <MapPin className="h-4 w-4 shrink-0 text-brand-cyan" aria-hidden />
+                  <p className="text-[10px] font-bold uppercase tracking-widest text-brand-slate/55">
+                    Office
+                  </p>
+                </div>
+                <div className="mt-2 pl-6">
+                  <p className="font-heading text-sm font-bold leading-snug text-brand-blue">
+                    Lalitpur-01, Kupondole
+                  </p>
+                  <p className="mt-0.5 text-xs text-brand-slate/75">
+                    Lalitpur Metropolitan City, Lalitpur
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <CompanyTimelineShowcase events={companyTimelineEvents} />
+
+      <AboutExecutiveSummary features={unitechFeatures} />
+
+      {/* Chairman's message */}
+      <section
+        id="chairman-message"
+        className="-mx-8 border-t border-slate-200/60 bg-slate-50 px-8 pt-16 pb-24 md:-mx-20 md:px-20 md:pt-20 md:pb-28"
+      >
+        <SectionHeading kicker="Leadership" title="Chairman’s message" />
+        <p className="mt-4 text-sm font-medium text-brand-slate/80 md:text-base">
+          A message from <strong className="text-brand-blue">Anoj Khadka</strong>, Chairman
+        </p>
+        <div className="mt-12 grid gap-10 lg:grid-cols-[minmax(0,440px)_1fr] lg:items-start lg:gap-14">
+          <aside className="mx-auto w-full max-w-[440px] lg:sticky lg:top-28 lg:self-start">
+            <div className="overflow-hidden rounded-[4px] border border-slate-200/80 bg-white text-center shadow-sm">
+              {/* Portrait frame — slightly wider than 3:4 so height is a bit shorter; use `Image` fill + object-cover */}
+              <div className="relative aspect-[4/5] w-full bg-gradient-to-b from-slate-100 to-slate-200/80">
+                <div className="absolute inset-0 flex items-center justify-center text-brand-slate/30">
+                  <UserRound className="h-20 w-20 md:h-24 md:w-24" strokeWidth={1} aria-hidden />
+                </div>
+                <span className="sr-only">Portrait placeholder for Chairman</span>
+              </div>
+              <div className="px-5 py-5">
+                <p className="font-heading text-lg font-bold text-brand-blue">Anoj Khadka</p>
+                <p className="mt-1 text-sm text-brand-slate/70">Chairman</p>
+                <p className="mt-3 text-xs leading-relaxed text-brand-slate/55">
+                  Official photograph to be supplied (AGM / corporate profile).
                 </p>
               </div>
+            </div>
+          </aside>
+          <div className="min-w-0 space-y-6 text-base leading-relaxed text-brand-slate/90 md:text-[17px] md:leading-8">
+            {chairmanMessageParagraphs.map((p, i) => (
+              <p key={i}>{p}</p>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Section 4: Governance (glacier mist) */}
-      <section className="border-t border-slate-200/60 bg-slate-50 py-28">
-        <div className="flex items-start gap-4">
-          <span className="mt-1 h-8 w-[2px] shrink-0 bg-brand-cyan" aria-hidden />
-          <div>
-            <p className="text-xs font-semibold uppercase tracking-[0.22em] text-brand-cyan">
-              Governance
+      {/* Capital structure */}
+      <section
+        id="investment-profile"
+        className="relative left-1/2 w-screen max-w-[100vw] -translate-x-1/2 overflow-hidden border-t border-slate-200/60 bg-[#0B2043] py-10 text-white md:py-12"
+      >
+        <div
+          className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_center,_#112a57_0%,_#0B2043_65%)]"
+          aria-hidden
+        />
+        <div className="relative mx-auto max-w-[1440px] px-8 md:px-20">
+          <div className="text-center">
+            <p className="text-xs font-semibold uppercase tracking-[0.22em] text-[#00EAFF]">
+              Capital structure
             </p>
-            <h2 className="mt-3 max-w-[22ch] text-balance font-heading text-4xl font-bold leading-[1.2] tracking-tight text-brand-blue lg:text-5xl">
-              Board and office operations.
+            <h2 className="mx-auto mt-3 max-w-[20ch] text-balance font-heading text-3xl font-bold leading-[1.2] tracking-tight text-white md:text-4xl">
+              Investment profile
             </h2>
-          </div>
-        </div>
-
-        <div className="mt-14 grid gap-12">
-          <div>
-            <p className="text-[10px] font-bold uppercase tracking-[0.22em] text-brand-slate/55">
-              Board of directors
+            <p className="mx-auto mt-3 max-w-2xl text-sm leading-relaxed text-slate-300">
+              Amounts in NPR crore unless stated.
             </p>
-            <div className="mt-6 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-              {board.map((m) => (
-                <div
-                  key={m.name}
-                  className="group overflow-hidden rounded-[4px] border border-slate-200/80 bg-white shadow-sm transition-[border-color,box-shadow] hover:border-brand-cyan/60 hover:shadow-[0_0_0_1px_rgba(0,210,255,0.22)]"
-                >
-                  <div className="relative aspect-[4/3] overflow-hidden bg-slate-100">
-                    <Image
-                      src={IMG_VISION}
-                      alt=""
-                      role="presentation"
-                      fill
-                      className="object-cover object-center transition-transform duration-300 group-hover:scale-[1.03]"
-                      sizes="(min-width: 1024px) 22vw, 100vw"
-                    />
-                    <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/25 to-transparent" aria-hidden />
-                  </div>
-                  <div className="p-6">
-                    <p className="font-heading text-lg font-bold text-brand-blue">
-                      {m.name}
-                    </p>
-                    <p className="mt-1 font-sans text-sm text-brand-slate/70">
-                      {m.title}
-                    </p>
-                  </div>
-                </div>
-              ))}
-            </div>
           </div>
 
-          <div>
-            <p className="text-[10px] font-bold uppercase tracking-[0.22em] text-brand-slate/55">
-              Office operation team
-            </p>
-            <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-              {operationsTeam.map((m) => (
-                <div
-                  key={m.name}
-                  className="group flex items-center gap-4 rounded-[4px] border border-slate-200/80 bg-white p-5 shadow-sm transition-[border-color,box-shadow] hover:border-brand-cyan/60 hover:shadow-[0_0_0_1px_rgba(0,210,255,0.22)]"
-                >
-                  <div className="flex h-12 w-12 items-center justify-center overflow-hidden rounded-[4px] border border-slate-200 bg-slate-50 text-brand-slate/60">
-                    <UserRound className="h-6 w-6" aria-hidden />
-                  </div>
-                  <div className="min-w-0">
-                    <p className="truncate font-heading text-base font-bold text-brand-blue">
-                      {m.name}
-                    </p>
-                    <p className="mt-0.5 truncate font-sans text-sm text-brand-slate/70">
-                      {m.title}
-                    </p>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
+          <CapitalStructureInfographic />
         </div>
       </section>
+
+      {/* Board of directors */}
+      <section
+        id="board"
+        className="-mx-8 border-t border-slate-200/60 bg-white px-8 py-24 md:-mx-20 md:px-20 md:py-28"
+      >
+        <SectionHeading kicker="Governance" title="Board of Directors (BOD)" />
+        <LeadershipGrid members={board} variant="board" className="mt-10" />
+      </section>
+
+      {/* Management team */}
+      <section
+        id="management-team"
+        className="-mx-8 border-t border-slate-200/60 bg-white px-8 py-24 md:-mx-20 md:px-20 md:py-28"
+      >
+        <SectionHeading kicker="Operations" title="Management team" />
+        <LeadershipGrid members={managementTeam} variant="board" className="mt-10" />
+      </section>
+
     </PageShell>
   );
 }

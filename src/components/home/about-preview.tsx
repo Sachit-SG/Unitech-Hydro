@@ -4,8 +4,10 @@ import Image from "next/image";
 import Link from "next/link";
 import { CalendarDays, Landmark, MapPin } from "lucide-react";
 
-const ABOUT_IMAGE =
-  "https://images.unsplash.com/photo-1466611653911-95081537e5b7?auto=format&fit=crop&w=2000&q=80";
+const ABOUT_IMAGE = "/dam2.jpg";
+
+const shortDescription =
+  "The Company was established on 2071/06/20 under the Companies Act of Nepal. Initially, the company was registered as a Private Limited and then converted public limited on 2079/10/19 to facilitate business growth and attract public investment. The office is located at Lalitpur-01, Kupondole, Lalitpur Metropolitan City, Lalitpur district.";
 
 export function AboutPreview() {
   return (
@@ -20,29 +22,19 @@ export function AboutPreview() {
                   About us
                 </p>
                 <h2 className="mt-3 max-w-none font-heading text-3xl font-bold leading-tight tracking-tight text-brand-blue lg:text-5xl">
-                  A Decade of{" "}
-                  <span className="whitespace-nowrap">Engineering Excellence</span>.
+                  Welcome to Unitech Hydropower Company Limited
                 </h2>
               </div>
             </div>
 
             <div className="mt-7 space-y-5 font-sans text-base leading-relaxed text-brand-slate/85 md:text-lg md:leading-8">
-              <p>
-                Unitech Hydropower Company Limited develops run-of-river
-                hydropower with modern technology, environmental responsibility,
-                and transparent delivery.
-              </p>
-              <p>
-                The company transitioned from private to public limited status
-                to support growth, transparency, and broader stakeholder
-                participation.
-              </p>
+              <p>{shortDescription}</p>
               <p>
                 <Link
                   href="/about"
                   className="font-semibold text-brand-blue underline-offset-4 hover:underline"
                 >
-                  Learn more
+                  Read company background, Chairman’s message, and governance
                 </Link>
               </p>
             </div>
@@ -52,23 +44,19 @@ export function AboutPreview() {
                 <div className="flex items-center gap-2">
                   <CalendarDays className="h-4 w-4 shrink-0 text-brand-cyan" aria-hidden />
                   <p className="text-xs font-semibold uppercase tracking-widest text-brand-slate/55">
-                    Est.
+                    Established (BS)
                   </p>
                 </div>
-                <p className="mt-1.5 font-heading text-sm font-bold text-brand-blue">
-                  2014
-                </p>
+                <p className="mt-1.5 font-heading text-sm font-bold text-brand-blue">2071/06/20</p>
               </div>
               <div className="rounded-[4px] border border-slate-200/80 bg-white px-3 py-3 shadow-sm">
                 <div className="flex items-center gap-2">
                   <Landmark className="h-4 w-4 shrink-0 text-brand-cyan" aria-hidden />
                   <p className="text-xs font-semibold uppercase tracking-widest text-brand-slate/55">
-                    Public Ltd
+                    Public Ltd (BS)
                   </p>
                 </div>
-                <p className="mt-1.5 font-heading text-sm font-bold text-brand-blue">
-                  2023
-                </p>
+                <p className="mt-1.5 font-heading text-sm font-bold text-brand-blue">2079/10/19</p>
               </div>
               <div className="col-span-2 rounded-[4px] border border-slate-200/80 bg-white px-3 py-3 shadow-sm">
                 <div className="flex items-start gap-2">
@@ -79,13 +67,13 @@ export function AboutPreview() {
                     </p>
                     <address className="mt-1.5 not-italic">
                       <p className="font-heading text-sm font-bold leading-snug text-brand-blue">
-                        Lalitpur-1, Kupondole
+                        Lalitpur-01, Kupondole
                       </p>
                       <p className="mt-0.5 text-xs leading-snug text-brand-slate/80 md:text-sm">
                         Lalitpur Metropolitan City, Lalitpur, Nepal
                       </p>
                       <p className="mt-1.5 text-[11px] leading-snug text-brand-slate/60 md:text-xs">
-                        Portfolio districts:{" "}
+                        Project area:{" "}
                         <span className="font-medium text-brand-slate/75">
                           Taplejung &amp; Panchthar
                         </span>
@@ -101,7 +89,7 @@ export function AboutPreview() {
             <div className="relative h-full min-h-[400px] w-full lg:min-h-[580px]">
               <Image
                 src={ABOUT_IMAGE}
-                alt="Hydropower site placeholder — project environment"
+                alt="Unitech Hydropower — project photography"
                 fill
                 className="object-cover object-center"
                 sizes="(min-width: 1024px) 40vw, 100vw"
@@ -118,4 +106,3 @@ export function AboutPreview() {
     </section>
   );
 }
-

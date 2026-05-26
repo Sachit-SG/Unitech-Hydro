@@ -11,9 +11,11 @@ const SOCIAL_INSTAGRAM = "https://www.instagram.com/";
 
 const sitemapLinks = [
   { href: "/about", label: "About Us" },
+  { href: "/about#chairman-message", label: "Chairman’s message" },
+  { href: "/about#board", label: "Board of Directors" },
   { href: "/projects", label: "Projects" },
-  { href: "/about#investment-profile", label: "Investment Profile" },
-  { href: "/news", label: "News" },
+  { href: "/about#investment-profile", label: "Capital structure" },
+  { href: "/news", label: "News & Notice" },
   { href: "/gallery", label: "Gallery" },
 ] as const;
 
@@ -69,7 +71,7 @@ export function SiteFooter() {
               <div>
                 <p className="font-semibold text-white">Nepal headquarters</p>
                 <p className="mt-1 text-slate-300">
-                  Lalitpur-1, Kupondole
+                  Lalitpur-01, Kupondole
                   <br />
                   Lalitpur Metropolitan City, Lalitpur, Nepal
                 </p>

@@ -47,7 +47,7 @@ export default function ImpactPage() {
         </div>
         <div className="rounded-[4px] border border-slate-200/80 bg-white p-8 shadow-sm md:p-10">
           <p>
-            The <strong>Middle Iwa / Iwa Khola</strong> project remains in
+            The <strong>Iwa Khola (15.0 MW)</strong> project remains in
             feasibility and licensing stages; avoid implying delivered community
             outcomes until backed by published ESIA or community development
             agreements.

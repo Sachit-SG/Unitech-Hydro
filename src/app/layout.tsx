@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { Inter, Syne } from "next/font/google";
-import { SiteFooter } from "@/components/site-footer";
-import { SiteHeader } from "@/components/site-header";
+import { SiteChrome } from "@/components/site-chrome";
 import "./globals.css";
 
 const inter = Inter({
@@ -49,10 +48,7 @@ export default function RootLayout({
       className={`${inter.variable} ${syne.variable} h-full scroll-smooth scroll-pt-16`}
     >
       <body className="flex min-h-screen flex-col bg-glacier font-sans text-brand-slate antialiased">
-        <SiteHeader />
-        {/* Offset for fixed header (h-16) so main content never stacks under the nav hit-area */}
-        <div className="flex flex-1 flex-col pt-16">{children}</div>
-        <SiteFooter />
+        <SiteChrome>{children}</SiteChrome>
       </body>
     </html>
   );
