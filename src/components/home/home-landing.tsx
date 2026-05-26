@@ -6,6 +6,7 @@ import { motion, type Variants } from "framer-motion";
 import { ArrowUpRight, UserRound } from "lucide-react";
 import { AboutPreview } from "@/components/home/about-preview";
 import { NewsSection } from "@/components/home/news-section";
+import { PartnersMarquee } from "@/components/home/partners-marquee";
 
 const easeOutExpo: [number, number, number, number] = [0.16, 1, 0.3, 1];
 
@@ -30,14 +31,6 @@ const OPERATIONAL_IMAGE =
 
 const PIPELINE_IMAGE =
   "https://images.unsplash.com/photo-1473341304170-971dccb5ac1e?auto=format&fit=crop&w=1600&q=80";
-
-const partners = [
-  { name: "Nepal Electricity Authority", label: "NEA" },
-  { name: "Electricity Regulatory Commission", label: "ERC" },
-  { name: "Machhapuchhre Bank", label: "MACHHAPUCHHRE" },
-  { name: "Laxmi Sunrise Bank", label: "LAXMI SUNRISE" },
-  { name: "Guheshwori Merchant Banking", label: "GUHESHWORI" },
-] as const;
 
 export function HomeLanding() {
   return (
@@ -258,38 +251,8 @@ export function HomeLanding() {
               </h2>
             </motion.div>
 
-            <motion.div
-              variants={fadeUp}
-              className="relative mt-10 min-h-[120px] overflow-hidden py-8"
-              style={{
-                WebkitMaskImage:
-                  "linear-gradient(to right, transparent, black 10%, black 90%, transparent)",
-                maskImage:
-                  "linear-gradient(to right, transparent, black 10%, black 90%, transparent)",
-              }}
-            >
-              <motion.div
-                className="flex w-max items-stretch gap-5"
-                animate={{ x: ["0%", "-50%"] }}
-                transition={{
-                  duration: 32,
-                  ease: "linear",
-                  repeat: Infinity,
-                }}
-              >
-                {[...partners, ...partners].map((p, idx) => (
-                  <div
-                    // eslint-disable-next-line react/no-array-index-key
-                    key={`${p.label}-${idx}`}
-                    className="flex h-20 w-40 select-none items-center justify-center rounded-[4px] border border-slate-200 bg-slate-100 px-6 text-center font-bold text-slate-400 shadow-sm grayscale transition-[border-color,box-shadow,filter] hover:border-brand-cyan/60 hover:shadow-[0_0_0_1px_rgba(0,210,255,0.22)] hover:grayscale-0"
-                    title={p.name}
-                  >
-                    <span className="font-heading text-xs font-bold uppercase tracking-[0.18em] text-slate-400">
-                      {p.label}
-                    </span>
-                  </div>
-                ))}
-              </motion.div>
+            <motion.div variants={fadeUp}>
+              <PartnersMarquee />
             </motion.div>
           </motion.div>
         </div>
