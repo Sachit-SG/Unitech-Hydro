@@ -26,6 +26,7 @@ import {
 import { Textarea } from "@/components/ui/textarea";
 import { cn } from "@/lib/utils";
 import { SITE_IMAGES } from "@/lib/site-config";
+import { TEAM_PORTRAITS } from "@/lib/team-members";
 
 export const CAPITAL_AMOUNT_PATTERN = /^\d+(\.\d{1,2})?\s*(cr|crore|crores)\.?$/i;
 
@@ -41,12 +42,12 @@ const INITIAL_CHAIRMAN_MESSAGE = `It gives me great pleasure to welcome you to U
 Since our establishment, we have remained committed to contributing to Nepal's growing energy needs through the sustainable development of hydropower resources. Our transition from a Private Limited Company to a Public Limited Company reflects our dedication to growth, transparency, and broader stakeholder participation.`;
 
 const INITIAL_BOARD: BoardMember[] = [
-  { id: "1", name: "Anoj Khadka", role: "Chairman", imageUrl: SITE_IMAGES.upperPhawaHeadworks },
-  { id: "2", name: "Dinesh Lal Shrestha", role: "Director", imageUrl: SITE_IMAGES.upperPhawaHeadworks },
-  { id: "3", name: "Anand Kumar Basnet", role: "Director", imageUrl: SITE_IMAGES.upperPhawaHeadworks },
-  { id: "4", name: "Shobha Basnet", role: "Director", imageUrl: SITE_IMAGES.upperPhawaHeadworks },
-  { id: "5", name: "Vishwa Prakash Amatya", role: "Director", imageUrl: SITE_IMAGES.upperPhawaHeadworks },
-  { id: "6", name: "Pramod Kumar Shah", role: "Independent Director", imageUrl: SITE_IMAGES.upperPhawaHeadworks },
+  { id: "1", name: "Anoj Khadka", role: "Chairman", imageUrl: TEAM_PORTRAITS["Anoj Khadka"] ?? SITE_IMAGES.chairmanPortrait },
+  { id: "2", name: "Dinesh Lal Shrestha", role: "Director", imageUrl: TEAM_PORTRAITS["Dinesh Lal Shrestha"] ?? SITE_IMAGES.upperPhawaHeadworks },
+  { id: "3", name: "Anand Kumar Basnet", role: "Director", imageUrl: TEAM_PORTRAITS["Anand Kumar Basnet"] ?? SITE_IMAGES.upperPhawaHeadworks },
+  { id: "4", name: "Shobha Basnet", role: "Director", imageUrl: TEAM_PORTRAITS["Shobha Basnet"] ?? SITE_IMAGES.upperPhawaHeadworks },
+  { id: "5", name: "Vishwa Prakash Amatya", role: "Director", imageUrl: TEAM_PORTRAITS["Vishwa Prakash Amatya"] ?? SITE_IMAGES.upperPhawaHeadworks },
+  { id: "6", name: "Pramod Kumar Shah", role: "Independent Director", imageUrl: TEAM_PORTRAITS["Pramod Kumar Shah"] ?? SITE_IMAGES.upperPhawaHeadworks },
 ];
 
 const CAPITAL_FIELDS = [

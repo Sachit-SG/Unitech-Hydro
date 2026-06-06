@@ -15,13 +15,13 @@ export type LeadershipMember = {
 export function LeadershipProfileCard({ member }: { member: LeadershipMember }) {
   return (
     <article className="group overflow-hidden rounded-[4px] border border-slate-200/80 bg-white shadow-sm transition-[border-color,box-shadow] hover:border-brand-cyan/60 hover:shadow-[0_0_0_1px_rgba(0,210,255,0.35)]">
-      <div className="relative aspect-[4/3] overflow-hidden bg-slate-100">
+      <div className="relative aspect-[4/5] overflow-hidden bg-slate-100">
         <Image
           src={member.photoSrc ?? PORTRAIT_PLACEHOLDER}
           alt={member.photoSrc ? `${member.name}, ${member.title}` : ""}
           role={member.photoSrc ? undefined : "presentation"}
           fill
-          className="object-cover object-center transition-transform duration-300 group-hover:scale-[1.03]"
+          className="object-cover object-[center_20%] transition-transform duration-300 group-hover:scale-[1.03]"
           sizes="(min-width: 1024px) 20vw, 50vw"
         />
         <div

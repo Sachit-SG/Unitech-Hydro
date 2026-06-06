@@ -16,7 +16,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: SITE_NAME,
     description: homeDescription,
-    images: [{ url: SITE_IMAGES.upperPhawaHeadworks, alt: "Upper Phawa Khola headworks" }],
+    images: [{ url: SITE_IMAGES.heroHome, alt: "Unitech Hydropower — hydropower infrastructure" }],
   },
 };
 
@@ -25,13 +25,13 @@ export default function Home() {
     <>
       <ScrollExpandMedia
         mediaType="image"
-        mediaSrc={SITE_IMAGES.upperPhawaHeadworks}
-        bgImageSrc={SITE_IMAGES.upperPhawaHeadworks}
+        mediaSrc={SITE_IMAGES.heroHome}
+        bgImageSrc={SITE_IMAGES.heroHome}
         title="Energy for a Developing Nation"
         scrollToExpand="SCROLL TO EXPAND"
         textBlend={true}
-        mediaAlt="Upper Phawa Khola — Unitech Hydropower Company Limited"
-        bgAlt="Run-of-river hydropower — Unitech Hydropower Company Limited"
+        mediaAlt="Unitech Hydropower — hydropower infrastructure"
+        bgAlt="Unitech Hydropower Company Limited — run-of-river energy"
       />
       <TechnicalStatusBar postHero />
       <HomeLanding />

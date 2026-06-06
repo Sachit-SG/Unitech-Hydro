@@ -5,6 +5,7 @@ import {
   galleryBentoItems,
   galleryDetailImages,
   getGalleryProjectTitle,
+  getProjectGalleryImages,
 } from "@/lib/gallery-data";
 
 type PageProps = {
@@ -17,7 +18,7 @@ export function generateStaticParams() {
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { id } = await params;
-  const images = galleryDetailImages[id];
+  const images = getProjectGalleryImages(id) ?? galleryDetailImages[id];
   if (!images) return { title: "Gallery" };
   return {
     title: `${getGalleryProjectTitle(id)} · Gallery`,
@@ -27,7 +28,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
 export default async function GalleryProjectPage({ params }: PageProps) {
   const { id } = await params;
-  const images = galleryDetailImages[id];
+  const images = getProjectGalleryImages(id) ?? galleryDetailImages[id];
   if (!images) notFound();
 
   const title = getGalleryProjectTitle(id);

@@ -91,9 +91,9 @@ export function AboutPreview() {
             <div className="relative h-full min-h-[400px] w-full lg:min-h-[580px]">
               <Image
                 src={ABOUT_IMAGE}
-                alt="Upper Phawa Khola — intake forebay and headworks, Unitech Hydropower"
+                alt="Upper Phawa Khola — penstock and tunnel works, Unitech Hydropower"
                 fill
-                className="object-cover object-bottom"
+                className="object-cover object-center"
                 sizes="(min-width: 1024px) 40vw, 100vw"
                 priority={false}
               />

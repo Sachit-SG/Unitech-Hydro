@@ -1,13 +1,14 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
-import { CalendarDays, Landmark, MapPin, UserRound } from "lucide-react";
+import { CalendarDays, Landmark, MapPin } from "lucide-react";
 import { AboutExecutiveSummary } from "@/components/about/about-executive-summary";
 import { CapitalStructureInfographic } from "@/components/about/capital-structure-infographic";
 import { CompanyTimelineShowcase } from "@/components/about/company-timeline-showcase";
 import { LeadershipGrid } from "@/components/about/leadership-profile-card";
 import { PageShell } from "@/components/page-shell";
 import { SITE_IMAGES } from "@/lib/site-config";
+import { boardMembers, managementTeamMembers } from "@/lib/team-members";
 
 export const metadata: Metadata = {
   title: "About Us",
@@ -15,8 +16,7 @@ export const metadata: Metadata = {
     "Welcome to Unitech Hydropower Company Limited — corporate profile, Chairman’s message, board, capital structure, and mission.",
 };
 
-const HERO_IMAGE = SITE_IMAGES.upperPhawaHeadworks;
-const INTRO_IMAGE = SITE_IMAGES.nepalGlacierRiver;
+const INTRO_IMAGE = SITE_IMAGES.aboutGlance;
 
 const shortDescription =
   "The Company was established on 2071/06/20 under the Companies Act of Nepal. Initially, the company was registered as a Private Limited and then converted public limited on 2079/10/19 to facilitate business growth and attract public investment. The office is located at Lalitpur-01, Kupondole, Lalitpur Metropolitan City, Lalitpur district.";
@@ -32,21 +32,6 @@ const chairmanMessageParagraphs = [
   "We are guided by strong principles of integrity, accountability, and innovation. With the continued support of our investors, partners, and dedicated team, we are confident in achieving our goals and contributing meaningfully to Nepal’s energy sector.",
   "I would like to express my sincere gratitude to all our stakeholders for their trust and support. We look forward to achieving new milestones together.",
   "Thank you.",
-] as const;
-
-const board = [
-  { name: "Anoj Khadka", title: "Chairman" },
-  { name: "Dinesh Lal Shrestha", title: "Director" },
-  { name: "Anand Kumar Basnet", title: "Director" },
-  { name: "Shobha Basnet", title: "Director" },
-  { name: "Vishwa Prakash Amatya", title: "Director" },
-  { name: "Pramod Kumar Shah", title: "Independent Director" },
-] as const;
-
-const managementTeam = [
-  { name: "Bhaskar Kafle", title: "CEO" },
-  { name: "Rabindra Mahaseth", title: "Project Co-ordinator" },
-  { name: "Shrina Ghimire", title: "Account / Admin Officer" },
 ] as const;
 
 /** Chronological (BS) — source: company-context.md */
@@ -97,24 +82,21 @@ const unitechFeatures = [
     title: "Our Vision",
     description:
       "To become a leading hydropower company in Nepal by developing sustainable, reliable, and environmentally responsible energy solutions that contribute to national prosperity and a greener future.",
-    image:
-      "https://images.unsplash.com/photo-1470075801209-17f9ec0cada6?q=80&w=1000",
+    image: SITE_IMAGES.aboutVision,
   },
   {
     id: 2,
     title: "Our Mission",
     description:
       "To harness Nepal’s water resources efficiently to generate clean and renewable energy using modern technology, while ensuring environmental protection.",
-    image:
-      "https://images.unsplash.com/photo-1548328928-34db1c5f3684?q=80&w=1000",
+    image: SITE_IMAGES.aboutMission,
   },
   {
     id: 3,
     title: "Community Impact",
     description:
       "Creating positive socio-economic impact through employment opportunities and supporting local communities in project-affected areas, fostering regional development.",
-    image:
-      "https://images.unsplash.com/photo-1544735716-392fe2489ffa?q=80&w=1000",
+    image: SITE_IMAGES.aboutCommunity,
   },
 ] as const;
 
@@ -144,12 +126,7 @@ function SectionHeading({
 
 export default function AboutPage() {
   return (
-    <PageShell
-      title="About Us"
-      heroImageSrc={HERO_IMAGE}
-      heroOverlayClassName="bg-black/45"
-      heroPriority
-    >
+    <PageShell title="About Us" heroPriority>
       {/* Welcome + short description */}
       <section className="-mx-8 bg-slate-50 px-8 pt-32 pb-24 md:-mx-20 md:px-20 md:pb-28">
         <p className="mb-14 text-center font-heading text-2xl font-bold text-brand-blue md:mb-20 md:text-3xl">
@@ -247,18 +224,19 @@ export default function AboutPage() {
           <aside className="mx-auto w-full max-w-[440px] lg:sticky lg:top-28 lg:self-start">
             <div className="overflow-hidden rounded-[4px] border border-slate-200/80 bg-white text-center shadow-sm">
               {/* Portrait frame — slightly wider than 3:4 so height is a bit shorter; use `Image` fill + object-cover */}
-              <div className="relative aspect-[4/5] w-full bg-gradient-to-b from-slate-100 to-slate-200/80">
-                <div className="absolute inset-0 flex items-center justify-center text-brand-slate/30">
-                  <UserRound className="h-20 w-20 md:h-24 md:w-24" strokeWidth={1} aria-hidden />
-                </div>
-                <span className="sr-only">Portrait placeholder for Chairman</span>
+              <div className="relative aspect-[4/5] w-full bg-slate-100">
+                <Image
+                  src={SITE_IMAGES.chairmanPortrait}
+                  alt="Anoj Khadka, Chairman"
+                  fill
+                  className="object-cover object-[center_20%]"
+                  sizes="(min-width: 1024px) 440px, 100vw"
+                  priority
+                />
               </div>
               <div className="px-5 py-5">
                 <p className="font-heading text-lg font-bold text-brand-blue">Anoj Khadka</p>
                 <p className="mt-1 text-sm text-brand-slate/70">Chairman</p>
-                <p className="mt-3 text-xs leading-relaxed text-brand-slate/55">
-                  Official photograph to be supplied (AGM / corporate profile).
-                </p>
               </div>
             </div>
           </aside>
@@ -302,7 +280,7 @@ export default function AboutPage() {
         className="-mx-8 border-t border-slate-200/60 bg-white px-8 py-24 md:-mx-20 md:px-20 md:py-28"
       >
         <SectionHeading kicker="Governance" title="Board of Directors (BOD)" />
-        <LeadershipGrid members={board} className="mt-10" />
+        <LeadershipGrid members={boardMembers} className="mt-10" />
       </section>
 
       {/* Management team */}
@@ -311,7 +289,7 @@ export default function AboutPage() {
         className="-mx-8 border-t border-slate-200/60 bg-white px-8 py-24 md:-mx-20 md:px-20 md:py-28"
       >
         <SectionHeading kicker="Operations" title="Management team" />
-        <LeadershipGrid members={managementTeam} className="mt-10" />
+        <LeadershipGrid members={managementTeamMembers} className="mt-10" />
       </section>
 
     </PageShell>

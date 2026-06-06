@@ -10,9 +10,6 @@ export const metadata: Metadata = {
     "News and notices — Unitech Hydropower Company Limited.",
 };
 
-const HERO_NEWS =
-  "https://images.unsplash.com/photo-1504711434969-e33886168f5c?auto=format&fit=crop&w=2400&q=80";
-
 const filters = ["All", "Corporate", "Projects", "Reports"] as const;
 
 const articles = [
@@ -56,11 +53,7 @@ const articles = [
 
 export default function NewsPage() {
   return (
-    <PageShell
-      title="News"
-      heroImageSrc={HERO_NEWS}
-      heroOverlayClassName="bg-black/45"
-    >
+    <PageShell title="News">
       <section className="py-28 first:pt-10">
         <div className="flex flex-wrap items-center gap-2 rounded-[4px] border border-slate-200/80 bg-white p-3 shadow-sm">
           {filters.map((f) => (

@@ -1,12 +1,10 @@
 import Image from "next/image";
 import { cn } from "@/lib/cn";
-
-const DEFAULT_BANNER =
-  "https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=2400&q=80";
+import { SITE_IMAGES } from "@/lib/site-config";
 
 export type PageHeroProps = {
   title: string;
-  /** Optional banner image (remote URL must be allowed in `next.config.ts`). */
+  /** Optional override — defaults to alpine `pageHero` landscape. */
   imageSrc?: string;
   /** Overlay tint (default `bg-black/40`). Use e.g. `bg-black/55` for a heavier cinematic look. */
   overlayClassName?: string;
@@ -19,7 +17,7 @@ export type PageHeroProps = {
  */
 export function PageHero({
   title,
-  imageSrc = DEFAULT_BANNER,
+  imageSrc = SITE_IMAGES.pageHero,
   overlayClassName,
   priority = false,
 }: PageHeroProps) {

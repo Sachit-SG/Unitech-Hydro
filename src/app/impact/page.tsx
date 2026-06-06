@@ -7,16 +7,9 @@ export const metadata: Metadata = {
     "Sustainability, environment, and local development — Unitech Hydropower Company Limited.",
 };
 
-const HERO_IMPACT =
-  "https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?auto=format&fit=crop&w=2400&q=80";
-
 export default function ImpactPage() {
   return (
-    <PageShell
-      title="Sustainability & local impact"
-      heroImageSrc={HERO_IMPACT}
-      heroOverlayClassName="bg-black/40"
-    >
+    <PageShell title="Sustainability & local impact">
       <section className="space-y-20 py-20 first:pt-8">
         <div className="rounded-[4px] border border-slate-200/80 bg-white p-8 shadow-sm md:p-10">
           <p>

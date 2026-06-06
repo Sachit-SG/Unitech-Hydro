@@ -3,10 +3,11 @@
 import Image from "next/image";
 import Link from "next/link";
 import { motion, type Variants } from "framer-motion";
-import { ArrowUpRight, UserRound } from "lucide-react";
+import { ArrowUpRight } from "lucide-react";
 import { AboutPreview } from "@/components/home/about-preview";
 import { NewsSection } from "@/components/home/news-section";
 import { PartnersMarquee } from "@/components/home/partners-marquee";
+import { SITE_IMAGES } from "@/lib/site-config";
 
 const easeOutExpo: [number, number, number, number] = [0.16, 1, 0.3, 1];
 
@@ -26,11 +27,9 @@ const staggerContainer: Variants = {
   },
 };
 
-const OPERATIONAL_IMAGE =
-  "https://images.unsplash.com/photo-1621905251189-08b45d6a269e?auto=format&fit=crop&w=1600&q=80";
+const OPERATIONAL_IMAGE = SITE_IMAGES.siteIntakeGates;
 
-const PIPELINE_IMAGE =
-  "https://images.unsplash.com/photo-1473341304170-971dccb5ac1e?auto=format&fit=crop&w=1600&q=80";
+const PIPELINE_IMAGE = SITE_IMAGES.nepalGlacierRiver;
 
 export function HomeLanding() {
   return (
@@ -53,7 +52,7 @@ export function HomeLanding() {
                   className="mt-1 h-8 w-[2px] shrink-0 bg-brand-cyan"
                   aria-hidden
                 />
-                <div>
+                <div className="w-max max-w-[min(100vw-6rem,36rem)] lg:w-[34rem] lg:max-w-none">
                   <p className="text-xs font-semibold uppercase tracking-[0.22em] text-brand-cyan">
                     Leadership
                   </p>
@@ -71,50 +70,67 @@ export function HomeLanding() {
 
             <motion.div
               variants={fadeUp}
-              className="mt-14 grid gap-12 md:grid-cols-2 md:items-stretch md:gap-16"
+              className="mt-14 grid items-stretch gap-8 md:grid-cols-[max-content_minmax(0,1fr)] md:gap-10 lg:gap-12"
             >
-              <figure className="flex flex-col overflow-hidden rounded-[4px] border border-slate-200/80 bg-white/80 shadow-sm backdrop-blur-sm">
-                <div className="flex min-h-[280px] flex-1 flex-col items-center justify-center gap-4 bg-gradient-to-br from-brand-slate/10 to-brand-blue/[0.06] p-10">
-                  <div className="flex h-24 w-24 items-center justify-center rounded-full border-2 border-dashed border-brand-slate/20 text-brand-slate/35">
-                    <UserRound className="h-12 w-12" strokeWidth={1.2} />
+              <div className="flex h-full min-h-0 items-stretch gap-4">
+                <span
+                  className="mt-1 h-8 w-[2px] shrink-0 opacity-0"
+                  aria-hidden
+                />
+                <figure className="flex h-full w-max max-w-[min(100vw-6rem,36rem)] flex-col overflow-hidden rounded-[4px] border border-slate-200/80 bg-white shadow-sm lg:w-[34rem] lg:max-w-none">
+                  <div className="relative aspect-[5/6] w-full shrink-0 overflow-hidden bg-slate-100">
+                    <Image
+                      src={SITE_IMAGES.chairmanPortrait}
+                      alt="Anoj Khadka, Chairman"
+                      fill
+                      className="object-cover object-[50%_32%]"
+                      sizes="(min-width: 1024px) 576px, (min-width: 768px) 480px, 100vw"
+                    />
                   </div>
-                  <p className="text-center text-xs text-brand-slate/55">
-                    Professional portrait placeholder — Anoj Khadka
-                  </p>
-                </div>
-                <figcaption className="border-t border-brand-slate/10 bg-white/80 px-6 py-4 text-center">
-                  <span className="font-heading text-sm font-bold uppercase tracking-widest text-brand-blue">
-                    Anoj Khadka
-                  </span>
-                  <span className="mt-0.5 block text-xs font-medium text-brand-slate/70">
-                    Chairman
-                  </span>
-                </figcaption>
-              </figure>
+                  <figcaption className="px-6 py-4 text-center">
+                    <span className="font-heading text-sm font-bold uppercase tracking-widest text-brand-blue">
+                      Anoj Khadka
+                    </span>
+                    <span className="mt-0.5 block text-xs font-medium text-brand-slate/70">
+                      Chairman
+                    </span>
+                  </figcaption>
+                </figure>
+              </div>
 
-              <div className="flex flex-col justify-center border-l-0 border-brand-cyan/70 py-2 md:border-l-4 md:pl-10">
-                <blockquote className="space-y-5 text-base leading-relaxed text-brand-slate/90 md:text-lg md:leading-8">
+              <div className="flex min-h-0 flex-col border-l-0 border-brand-cyan/70 py-2 md:border-l-4 md:pl-8 lg:pl-10">
+                <blockquote className="flex-1 space-y-4 text-base leading-relaxed text-brand-slate/90 md:space-y-5 md:text-lg md:leading-8">
                   <p className="font-heading text-lg font-medium italic leading-relaxed text-brand-blue md:text-xl">
                     &ldquo;It gives me great pleasure to welcome you to Unitech
                     Hydropower Company Limited. Since our establishment, we have
                     remained committed to contributing to Nepal&apos;s growing
                     energy needs through the sustainable development of
-                    hydropower resources. Our transition from a Private Limited
-                    Company to a Public Limited Company reflects our dedication to
-                    growth, transparency, and broader stakeholder participation.&rdquo;
+                    hydropower resources.&rdquo;
                   </p>
                   <p>
-                    During project development we faced significant challenges,
-                    including disruptions from the COVID-19 lockdowns and logistical
-                    constraints — contributing to roughly{" "}
-                    <strong>twenty months</strong> of schedule impact from initial civil
-                    mobilization. Our commitment to reliable, sustainable hydropower
-                    remains unwavering.
+                    Our transition from a Private Limited Company to a Public Limited
+                    Company reflects our dedication to growth, transparency, and broader
+                    stakeholder participation. Nepal&apos;s hydropower sector holds immense
+                    potential, and we are focused on delivering efficient, environmentally
+                    responsible projects that create sustainable value.
+                  </p>
+                  <p>
+                    During project development we faced significant challenges, including
+                    COVID-19 lockdowns and logistical constraints — contributing to roughly{" "}
+                    <strong>twenty months</strong> of schedule impact. Operational delays,
+                    border detention of electro-mechanical equipment, and equity mobilisation
+                    pressures added further complexity to delivery.
+                  </p>
+                  <p>
+                    Despite these setbacks, our commitment to reliable, sustainable
+                    hydropower remains unwavering. We are guided by integrity,
+                    accountability, and innovation — and grateful for the trust placed in us
+                    by investors, partners, and communities across eastern Nepal.
                   </p>
                 </blockquote>
                 <Link
                   href="/about#chairman-message"
-                  className="mt-6 inline-flex text-sm font-semibold text-brand-blue underline-offset-4 hover:underline"
+                  className="mt-auto shrink-0 pt-6 text-sm font-semibold text-brand-blue underline-offset-4 hover:underline"
                 >
                   Read the full Chairman&apos;s message
                 </Link>

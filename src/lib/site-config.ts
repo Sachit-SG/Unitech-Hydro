@@ -15,8 +15,27 @@ export const SITE_IMAGES = {
   heroBackground: "/hero-bg.jpg",
   nepalGlacierRiver: "/images/nepal-glacier-river.jpg",
   iwaKholaOperational: "/images/iwa-khola-operational.jpg",
-  /** Homepage About preview — project forebay / intake (slide 2). */
-  aboutPreview: "/slide2.jpg",
+  /** Homepage scroll-expand hero. */
+  heroHome: "/new2.jpeg",
+  /** Internal page title banners (About, Gallery, News, etc.) — not homepage. */
+  pageHero: "/images/nepal-glacier-river.jpg",
+  /** Homepage About preview — penstock / tunnel works. */
+  aboutPreview: "/new7.jpeg",
+  /** About page — Company at a glance section. */
+  aboutGlance: "/new3.jpeg",
+  /** About page — Our Mission interactive panel. */
+  aboutMission: "/new4.jpeg",
+  /** About page — Our Vision interactive panel. */
+  aboutVision: "/new5.jpeg",
+  /** About page — Community Impact interactive panel. */
+  aboutCommunity: "/new6.jpeg",
+  /** Chairman Anoj Khadka — official portrait. */
+  chairmanPortrait: "/images/anoj-khadka-chairman.jpeg",
+  /** Upper Phawa Khola — site photography. */
+  siteIntakeGates: "/Hydro2.jpg",
+  siteForebayCanal: "/new1.jpeg",
+  sitePenstockTunnel: "/slide1.jpg",
+  siteAditTunnel: "/new7.jpeg",
 } as const;
 
 const LEGACY_IMAGE_MAP: Record<string, string> = {

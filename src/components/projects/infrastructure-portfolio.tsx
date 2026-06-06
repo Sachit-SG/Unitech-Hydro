@@ -1,40 +1,42 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import { motion } from "framer-motion";
 import {
   Activity,
   ArrowDown,
+  ArrowUpRight,
   CircleDollarSign,
   type LucideIcon,
   Zap,
 } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { cn } from "@/lib/cn";
+import type { GalleryDetailImage } from "@/lib/gallery-data";
+import {
+  getProjectGalleryHref,
+  getProjectGalleryImages,
+} from "@/lib/gallery-data";
 import type { SpecRow } from "@/lib/project-technical-data";
 import { iwaSalientRows } from "@/lib/project-technical-data";
 import { SITE_IMAGES } from "@/lib/site-config";
 
 const ease = [0.22, 1, 0.36, 1] as const;
 
-const HERO_IMAGE = "/hero-bg.jpg";
-
 const UPPER_GALLERY = [
-  { src: SITE_IMAGES.upperPhawaHeadworks, alt: "Upper Phawa Khola — intake and headworks" },
-  { src: SITE_IMAGES.iwaKholaOperational, alt: "Upper Phawa Khola — operational corridor" },
-  { src: SITE_IMAGES.upperPhawaCivilWorks, alt: "Upper Phawa Khola — civil works on Phawa Khola" },
+  { src: SITE_IMAGES.siteIntakeGates, alt: "Upper Phawa Khola — intake gates and forebay" },
+  { src: SITE_IMAGES.siteForebayCanal, alt: "Upper Phawa Khola — forebay canal and civil works" },
+  { src: SITE_IMAGES.sitePenstockTunnel, alt: "Upper Phawa Khola — penstock at tunnel portal" },
 ] as const;
 
 const IWA_GALLERY = [
   {
-    src: "https://images.unsplash.com/photo-1559136555-9303baea8ebd?auto=format&fit=crop&w=1600&q=85",
-    alt: "Iwa Khola — feasibility-stage river corridor",
+    src: SITE_IMAGES.nepalGlacierRiver,
+    alt: "Iwa Khola — eastern Nepal river and mountain corridor",
   },
-  { src: SITE_IMAGES.upperPhawaHeadworks, alt: "Iwa Khola — reference civil layout" },
-  {
-    src: "https://images.unsplash.com/photo-1466611653911-95081537e5b7?auto=format&fit=crop&w=1600&q=85",
-    alt: "Iwa Khola — infrastructure and transmission context",
-  },
+  { src: SITE_IMAGES.iwaKholaOperational, alt: "Iwa Khola — operational reference corridor" },
+  { src: SITE_IMAGES.upperPhawaHeadworks, alt: "Iwa Khola — civil layout reference" },
 ] as const;
 
 const upperPhawaCivilRows: SpecRow[] = [
@@ -184,41 +186,109 @@ function BentoGrid({ stats }: { stats: BentoStat[] }) {
 
 function AsymmetricGallery({
   images,
+  galleryHref,
 }: {
   images: readonly { src: string; alt: string }[];
+  galleryHref: string;
 }) {
   const [main, ...stacked] = images;
+
+  const linkClassName =
+    "group relative block overflow-hidden rounded-2xl ring-1 ring-[#0B2043]/10 transition-[box-shadow,ring-color] hover:ring-[#00EAFF]/40 hover:shadow-lg hover:shadow-[#0B2043]/10";
 
   return (
     <Reveal className="mt-12">
       <div className="grid h-auto grid-cols-1 gap-4 md:h-[400px] md:grid-cols-3">
-        <div className="relative min-h-[240px] overflow-hidden rounded-2xl md:col-span-2 md:min-h-0 md:h-full">
+        <Link
+          href={galleryHref}
+          className={cn(linkClassName, "min-h-[240px] md:col-span-2 md:min-h-0 md:h-full")}
+          aria-label="Open project photo gallery"
+        >
           <Image
             src={main.src}
             alt={main.alt}
             fill
-            className="object-cover"
+            className="object-cover transition-transform duration-500 group-hover:scale-[1.02]"
             sizes="(min-width: 768px) 66vw, 100vw"
           />
-        </div>
+          <div
+            className="pointer-events-none absolute inset-0 bg-black/0 transition-colors duration-300 group-hover:bg-black/25"
+            aria-hidden
+          />
+          <span className="pointer-events-none absolute bottom-4 right-4 inline-flex items-center gap-1.5 rounded-full bg-white/90 px-3 py-1.5 text-xs font-semibold text-[#0B2043] opacity-0 shadow-sm transition-opacity duration-300 group-hover:opacity-100">
+            View gallery
+            <ArrowUpRight className="h-3.5 w-3.5" aria-hidden />
+          </span>
+        </Link>
         <div className="flex h-auto flex-col gap-4 md:h-full">
           {stacked.map((img) => (
-            <div
+            <Link
               key={img.src}
-              className="relative min-h-[180px] flex-1 overflow-hidden rounded-2xl md:min-h-0"
+              href={galleryHref}
+              className={cn(linkClassName, "min-h-[180px] flex-1 md:min-h-0")}
+              aria-label="Open project photo gallery"
             >
               <Image
                 src={img.src}
                 alt={img.alt}
                 fill
-                className="object-cover"
+                className="object-cover transition-transform duration-500 group-hover:scale-[1.02]"
                 sizes="(min-width: 768px) 33vw, 50vw"
               />
-            </div>
+              <div
+                className="pointer-events-none absolute inset-0 bg-black/0 transition-colors duration-300 group-hover:bg-black/25"
+                aria-hidden
+              />
+            </Link>
           ))}
         </div>
       </div>
     </Reveal>
+  );
+}
+
+function ProjectGalleryPanel({
+  images,
+  galleryHref,
+}: {
+  images: GalleryDetailImage[];
+  galleryHref: string;
+}) {
+  return (
+    <div className="space-y-6">
+      <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
+        {images.map((img) => (
+          <Link
+            key={img.src}
+            href={galleryHref}
+            className="group relative aspect-[4/3] overflow-hidden rounded-xl ring-1 ring-[#0B2043]/10 transition-[box-shadow,ring-color] hover:ring-[#00EAFF]/40 hover:shadow-md"
+          >
+            <Image
+              src={img.src}
+              alt={img.alt}
+              fill
+              className="object-cover transition-transform duration-500 group-hover:scale-[1.03]"
+              sizes="(min-width: 1024px) 20vw, 33vw"
+            />
+            <div
+              className="pointer-events-none absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/60 to-transparent p-3 opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+              aria-hidden
+            >
+              <p className="text-[10px] font-semibold uppercase tracking-wider text-[#00EAFF]">
+                {img.category}
+              </p>
+            </div>
+          </Link>
+        ))}
+      </div>
+      <Link
+        href={galleryHref}
+        className="inline-flex items-center gap-2 text-sm font-semibold text-[#0B2043] underline-offset-4 hover:text-[#0099AA] hover:underline"
+      >
+        Open full project gallery
+        <ArrowUpRight className="h-4 w-4" aria-hidden />
+      </Link>
+    </div>
   );
 }
 
@@ -241,10 +311,15 @@ function SpecRows({ rows }: { rows: SpecRow[] }) {
 function ProjectTabs({
   defaultValue,
   tabs,
+  galleryId,
 }: {
   defaultValue: string;
   tabs: { value: string; label: string; rows: SpecRow[] }[];
+  galleryId?: string;
 }) {
+  const galleryImages = galleryId ? getProjectGalleryImages(galleryId) : undefined;
+  const galleryHref = galleryId ? getProjectGalleryHref(galleryId) : "";
+
   return (
     <Reveal className="mt-8">
       <Tabs defaultValue={defaultValue} className="w-full">
@@ -254,12 +329,22 @@ function ProjectTabs({
               {tab.label}
             </TabsTrigger>
           ))}
+          {galleryImages ? (
+            <TabsTrigger value="gallery" className="flex-1 sm:flex-none">
+              Gallery
+            </TabsTrigger>
+          ) : null}
         </TabsList>
         {tabs.map((tab) => (
           <TabsContent key={tab.value} value={tab.value}>
             <SpecRows rows={tab.rows} />
           </TabsContent>
         ))}
+        {galleryImages ? (
+          <TabsContent value="gallery">
+            <ProjectGalleryPanel images={galleryImages} galleryHref={galleryHref} />
+          </TabsContent>
+        ) : null}
       </Tabs>
     </Reveal>
   );
@@ -274,6 +359,7 @@ function ProjectBlock({
   narrative,
   tabs,
   tabsDefault,
+  galleryId,
 }: {
   title: string;
   badge: React.ReactNode;
@@ -283,6 +369,7 @@ function ProjectBlock({
   narrative: string;
   tabs: { value: string; label: string; rows: SpecRow[] }[];
   tabsDefault: string;
+  galleryId: string;
 }) {
   return (
     <section className="mx-auto max-w-[1440px] px-6 py-16 md:px-12 md:py-20">
@@ -302,13 +389,16 @@ function ProjectBlock({
         </Reveal>
 
         <BentoGrid stats={stats} />
-        <AsymmetricGallery images={gallery} />
+        <AsymmetricGallery
+          images={gallery}
+          galleryHref={getProjectGalleryHref(galleryId)}
+        />
 
         <Reveal className="mt-12 w-full">
           <p className="mb-8 w-full text-lg leading-relaxed text-slate-700">{narrative}</p>
         </Reveal>
 
-        <ProjectTabs defaultValue={tabsDefault} tabs={tabs} />
+        <ProjectTabs defaultValue={tabsDefault} tabs={tabs} galleryId={galleryId} />
       </div>
     </section>
   );
@@ -319,7 +409,7 @@ export function InfrastructurePortfolio() {
     <div className="bg-gradient-to-b from-[#e8eef5] via-[#f4f8fb] to-[#eef4f8]">
       <section className="relative overflow-hidden py-24 text-center md:py-32">
         <Image
-          src={HERO_IMAGE}
+          src={SITE_IMAGES.pageHero}
           alt=""
           role="presentation"
           fill
@@ -328,11 +418,7 @@ export function InfrastructurePortfolio() {
           priority
         />
         <div
-          className="pointer-events-none absolute inset-0 bg-gradient-to-b from-[#0B2043]/88 via-[#0B2043]/72 to-[#0B2043]/92"
-          aria-hidden
-        />
-        <div
-          className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_center,_transparent_0%,_#0B2043/50_100%)]"
+          className="pointer-events-none absolute inset-0 bg-black/40"
           aria-hidden
         />
         <div className="relative z-10 mx-auto max-w-[1440px] px-6 md:px-12">
@@ -361,6 +447,7 @@ export function InfrastructurePortfolio() {
         badgeClassName="border-[#00EAFF]/20 bg-[#00EAFF]/10 text-[#0099AA]"
         stats={upperPhawaStats}
         gallery={UPPER_GALLERY}
+        galleryId="upper-phawa-khola"
         narrative="The Upper Phawa Khola Hydroelectric Project is a run-of-river scheme on Phawa Khola in Pathivara Yangbarak, Dumrise Shrijangha, and Sikaicha, Taplejung. The asset reached commercial operation on BS 2081/01/08 following a PPA dated BS 2074/11/11. Design discharge is 2.6 m³/s with a gross head of 270 m (net 260.1 m), delivering 33.05 GWh annual energy under the contracted dry and wet season split. Civil works span the left bank of Phawa Khola from intake near Ose Dobhan to a surface powerhouse at Dumrise, with export to Amarpur substation on an 8 km, 33 kV link."
         tabsDefault="civil"
         tabs={[
@@ -381,6 +468,7 @@ export function InfrastructurePortfolio() {
         badgeClassName="border-amber-500/20 bg-amber-500/10 text-amber-700"
         stats={iwaStats}
         gallery={IWA_GALLERY}
+        galleryId="middle-iwa-khola"
         narrative="The Iwa Khola Hydropower Project is a feasibility-stage run-of-river development in Taplejung and Panchthar districts, planned for execution through Unitech Iwa Hydro Energy Pvt. Ltd., with Unitech Hydropower Company Limited holding a 51% ownership stake. The scheme is designed with a gross head of 400.10 m and design discharge of 4.36 m³/s, combining a 4,382 m headrace tunnel, headrace pipe, adit tunnel, and penstock with a vertical Pelton turbine and a 132 kV transmission line spanning 22 km. Feasibility materials indicate NPR 336.7 crore total project cost, NPR 51.15 crore first-year revenue, IRR 13.22%, and a benefit–cost ratio of 1.56."
         tabsDefault="engineering"
         tabs={[

@@ -21,9 +21,8 @@ export const galleryBentoItems: GalleryBentoItem[] = [
     placement: "large",
     gridClass:
       "md:col-span-2 md:row-span-1 md:col-start-1 md:row-start-1 min-h-[220px] md:min-h-0",
-    imageSrc:
-      "https://images.unsplash.com/photo-1466611653911-95081537e5b7?auto=format&fit=crop&w=2400&q=85",
-    imageAlt: "Upper Phawa Khola — headworks and river corridor",
+    imageSrc: SITE_IMAGES.siteIntakeGates,
+    imageAlt: "Upper Phawa Khola — intake gates and forebay",
     projectName: "Upper Phawa Khola",
     location: "Taplejung, Nepal",
   },
@@ -32,9 +31,8 @@ export const galleryBentoItems: GalleryBentoItem[] = [
     placement: "tall",
     gridClass:
       "md:col-span-1 md:row-span-2 md:col-start-4 md:row-start-1 min-h-[260px] md:min-h-0",
-    imageSrc:
-      "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?auto=format&fit=crop&w=1600&q=85",
-    imageAlt: "Iwa Khola (15.0 MW) — mountain hydrology context",
+    imageSrc: SITE_IMAGES.nepalGlacierRiver,
+    imageAlt: "Iwa Khola (15.0 MW) — eastern Nepal hydrology context",
     projectName: "Iwa Khola (15.0 MW)",
     location: "Taplejung & Panchthar",
   },
@@ -43,9 +41,8 @@ export const galleryBentoItems: GalleryBentoItem[] = [
     placement: "small",
     gridClass:
       "md:col-span-1 md:row-span-1 md:col-start-3 md:row-start-1 min-h-[200px] md:min-h-0",
-    imageSrc:
-      "https://images.unsplash.com/photo-1621905251189-08b45d6a269e?auto=format&fit=crop&w=1600&q=85",
-    imageAlt: "Powerhouse — electromechanical assembly",
+    imageSrc: SITE_IMAGES.sitePenstockTunnel,
+    imageAlt: "Upper Phawa Khola — penstock at tunnel portal",
     projectName: "Powerhouse",
     location: "Upper Phawa site",
   },
@@ -54,9 +51,8 @@ export const galleryBentoItems: GalleryBentoItem[] = [
     placement: "small",
     gridClass:
       "md:col-span-1 md:row-span-1 md:col-start-1 md:row-start-2 min-h-[200px] md:min-h-0",
-    imageSrc:
-      "https://images.unsplash.com/photo-1509395176047-4a66953fd231?auto=format&fit=crop&w=1600&q=85",
-    imageAlt: "Transmission — corridor and infrastructure",
+    imageSrc: SITE_IMAGES.siteAditTunnel,
+    imageAlt: "Upper Phawa Khola — adit tunnel portal",
     projectName: "Transmission",
     location: "Grid interface",
   },
@@ -65,8 +61,8 @@ export const galleryBentoItems: GalleryBentoItem[] = [
     placement: "large",
     gridClass:
       "md:col-span-2 md:row-span-1 md:col-start-2 md:row-start-2 min-h-[220px] md:min-h-0",
-    imageSrc: SITE_IMAGES.upperPhawaHeadworks,
-    imageAlt: "Upper Phawa Khola — Unitech Hydropower project photography",
+    imageSrc: SITE_IMAGES.siteForebayCanal,
+    imageAlt: "Upper Phawa Khola — forebay canal and site mobilization",
     projectName: "Intake & headworks",
     location: "Civil structures",
   },
@@ -96,120 +92,152 @@ export type GalleryDetailImage = {
 export const galleryDetailImages: Record<string, GalleryDetailImage[]> = {
   "upper-phawa-khola": [
     {
-      src: "https://images.unsplash.com/photo-1466611653911-95081537e5b7?auto=format&fit=crop&w=2400&q=85",
-      alt: "Upper Phawa Khola — wide operational context",
+      src: SITE_IMAGES.siteIntakeGates,
+      alt: "Upper Phawa Khola — intake gates and forebay",
       category: "Landscape",
     },
     {
-      src: "https://images.unsplash.com/photo-1509395176047-4a66953fd231?auto=format&fit=crop&w=2400&q=85",
-      alt: "Upper Phawa Khola — conveyance and civil works",
+      src: SITE_IMAGES.siteForebayCanal,
+      alt: "Upper Phawa Khola — forebay canal and civil works",
       category: "Construction",
     },
     {
-      src: "https://images.unsplash.com/photo-1621905251189-08b45d6a269e?auto=format&fit=crop&w=2400&q=85",
-      alt: "Upper Phawa Khola — powerhouse detail",
+      src: SITE_IMAGES.sitePenstockTunnel,
+      alt: "Upper Phawa Khola — penstock at tunnel portal",
       category: "Technical",
     },
     {
-      src: "https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=2400&q=85",
-      alt: "Upper Phawa Khola — aerial overview",
+      src: SITE_IMAGES.upperPhawaHeadworks,
+      alt: "Upper Phawa Khola — headworks photography",
       category: "Aerial",
     },
     {
-      src: "https://images.unsplash.com/photo-1581092160607-ee22621dd758?auto=format&fit=crop&w=2400&q=85",
-      alt: "Upper Phawa Khola — construction progress",
+      src: SITE_IMAGES.upperPhawaCivilWorks,
+      alt: "Upper Phawa Khola — civil works on Phawa Khola",
       category: "Construction",
     },
     {
-      src: "https://images.unsplash.com/photo-1559136555-9303baea8ebd?auto=format&fit=crop&w=2400&q=85",
-      alt: "Upper Phawa Khola — engineering schematic review",
+      src: SITE_IMAGES.iwaKholaOperational,
+      alt: "Upper Phawa Khola — operational corridor",
       category: "Technical",
     },
   ],
   "middle-iwa-khola": [
     {
-      src: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?auto=format&fit=crop&w=2400&q=85",
-      alt: "Iwa Khola — feasibility-stage landscape",
+      src: SITE_IMAGES.nepalGlacierRiver,
+      alt: "Iwa Khola — eastern Nepal river corridor",
       category: "Landscape",
     },
     {
-      src: "https://images.unsplash.com/photo-1559136555-9303baea8ebd?auto=format&fit=crop&w=2400&q=85",
-      alt: "Iwa Khola — engineering planning context",
+      src: SITE_IMAGES.iwaKholaOperational,
+      alt: "Iwa Khola — operational reference corridor",
       category: "Technical",
     },
     {
-      src: "https://images.unsplash.com/photo-1581092160607-ee22621dd758?auto=format&fit=crop&w=2400&q=85",
-      alt: "Iwa Khola — construction reference",
+      src: SITE_IMAGES.upperPhawaHeadworks,
+      alt: "Iwa Khola — civil layout reference",
       category: "Construction",
     },
     {
-      src: "https://images.unsplash.com/photo-1501785888041-af3ef285b470?auto=format&fit=crop&w=2400&q=85",
-      alt: "Iwa Khola — valley aerial",
-      category: "Aerial",
+      src: SITE_IMAGES.siteAditTunnel,
+      alt: "Iwa Khola — tunnel portal reference",
+      category: "Technical",
     },
   ],
   "powerhouse-mechanical": [
     {
-      src: "https://images.unsplash.com/photo-1621905251189-08b45d6a269e?auto=format&fit=crop&w=2400&q=85",
-      alt: "Pelton runners and powerhouse flooring",
+      src: SITE_IMAGES.sitePenstockTunnel,
+      alt: "Upper Phawa Khola — penstock at tunnel portal",
       category: "Technical",
     },
     {
-      src: "https://images.unsplash.com/photo-1581092160607-ee22621dd758?auto=format&fit=crop&w=2400&q=85",
-      alt: "Mechanical assembly — turbine hall",
+      src: SITE_IMAGES.siteIntakeGates,
+      alt: "Upper Phawa Khola — intake and powerhouse context",
       category: "Construction",
     },
     {
-      src: "https://images.unsplash.com/photo-1466611653911-95081537e5b7?auto=format&fit=crop&w=2400&q=85",
-      alt: "Powerhouse exterior context",
+      src: SITE_IMAGES.upperPhawaCivilWorks,
+      alt: "Upper Phawa Khola — civil works corridor",
       category: "Landscape",
     },
   ],
   "transmission-corridor": [
     {
-      src: "https://images.unsplash.com/photo-1509395176047-4a66953fd231?auto=format&fit=crop&w=2400&q=85",
-      alt: "Transmission structures along the corridor",
+      src: SITE_IMAGES.siteAditTunnel,
+      alt: "Upper Phawa Khola — adit tunnel portal",
       category: "Construction",
     },
     {
-      src: "https://images.unsplash.com/photo-1466611653911-95081537e5b7?auto=format&fit=crop&w=2400&q=85",
-      alt: "Line route — elevation and clearance",
+      src: SITE_IMAGES.siteForebayCanal,
+      alt: "Upper Phawa Khola — forebay and access corridor",
       category: "Landscape",
     },
     {
-      src: "https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=2400&q=85",
-      alt: "Corridor — aerial span",
+      src: SITE_IMAGES.iwaKholaOperational,
+      alt: "Upper Phawa Khola — line route reference",
       category: "Aerial",
     },
     {
-      src: "https://images.unsplash.com/photo-1621905251189-08b45d6a269e?auto=format&fit=crop&w=2400&q=85",
-      alt: "Substation equipment detail",
+      src: SITE_IMAGES.siteIntakeGates,
+      alt: "Upper Phawa Khola — substation interface context",
       category: "Technical",
     },
   ],
   "intake-headworks": [
     {
+      src: SITE_IMAGES.siteForebayCanal,
+      alt: "Upper Phawa Khola — forebay canal and site mobilization",
+      category: "Landscape",
+    },
+    {
       src: SITE_IMAGES.upperPhawaHeadworks,
-      alt: "Upper Phawa Khola — intake and headworks photography",
+      alt: "Upper Phawa Khola — intake and headworks",
       category: "Landscape",
     },
     {
-      src: "https://images.unsplash.com/photo-1545558014-89940b105a4d?auto=format&fit=crop&w=2400&q=85",
-      alt: "River diversion and civil works",
-      category: "Landscape",
+      src: SITE_IMAGES.upperPhawaCivilWorks,
+      alt: "Upper Phawa Khola — river diversion and civil works",
+      category: "Construction",
     },
     {
-      src: "https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=2400&q=85",
-      alt: "Headworks — aerial context",
-      category: "Aerial",
-    },
-    {
-      src: "https://images.unsplash.com/photo-1581092160607-ee22621dd758?auto=format&fit=crop&w=2400&q=85",
-      alt: "Gate and intake structure detail",
+      src: SITE_IMAGES.siteIntakeGates,
+      alt: "Upper Phawa Khola — gate and intake structure",
       category: "Technical",
     },
   ],
 };
+
+/** Merges related albums when opening a project gallery from /projects. */
+const PROJECT_GALLERY_ALBUMS: Record<string, readonly string[]> = {
+  "upper-phawa-khola": [
+    "upper-phawa-khola",
+    "intake-headworks",
+    "powerhouse-mechanical",
+    "transmission-corridor",
+  ],
+  "middle-iwa-khola": ["middle-iwa-khola"],
+};
+
+export function getProjectGalleryImages(primaryId: string): GalleryDetailImage[] | undefined {
+  const albumIds = PROJECT_GALLERY_ALBUMS[primaryId];
+  const ids = albumIds ?? (galleryDetailImages[primaryId] ? [primaryId] : undefined);
+  if (!ids) return undefined;
+
+  const seen = new Set<string>();
+  const merged: GalleryDetailImage[] = [];
+  for (const id of ids) {
+    for (const img of galleryDetailImages[id] ?? []) {
+      if (seen.has(img.src)) continue;
+      seen.add(img.src);
+      merged.push(img);
+    }
+  }
+  return merged.length ? merged : undefined;
+}
+
+export function getProjectGalleryHref(primaryId: string): string {
+  return `/gallery/${primaryId}`;
+}
 
 export function getGalleryProjectTitle(id: string): string {
   const hit = galleryBentoItems.find((b) => b.id === id);
