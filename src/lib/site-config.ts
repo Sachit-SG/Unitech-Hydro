@@ -15,6 +15,8 @@ export const SITE_IMAGES = {
   heroBackground: "/hero-bg.jpg",
   nepalGlacierRiver: "/images/nepal-glacier-river.jpg",
   iwaKholaOperational: "/images/iwa-khola-operational.jpg",
+  /** Homepage About preview — project forebay / intake (slide 2). */
+  aboutPreview: "/slide2.jpg",
 } as const;
 
 const LEGACY_IMAGE_MAP: Record<string, string> = {

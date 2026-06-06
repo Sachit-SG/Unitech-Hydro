@@ -6,7 +6,7 @@ import { CalendarDays, Landmark, MapPin } from "lucide-react";
 
 import { SITE_IMAGES } from "@/lib/site-config";
 
-const ABOUT_IMAGE = SITE_IMAGES.upperPhawaHeadworks;
+const ABOUT_IMAGE = SITE_IMAGES.aboutPreview;
 
 const shortDescription =
   "The Company was established on 2071/06/20 under the Companies Act of Nepal. Initially, the company was registered as a Private Limited and then converted public limited on 2079/10/19 to facilitate business growth and attract public investment. The office is located at Lalitpur-01, Kupondole, Lalitpur Metropolitan City, Lalitpur district.";
@@ -91,9 +91,9 @@ export function AboutPreview() {
             <div className="relative h-full min-h-[400px] w-full lg:min-h-[580px]">
               <Image
                 src={ABOUT_IMAGE}
-                alt="Unitech Hydropower — project photography"
+                alt="Upper Phawa Khola — intake forebay and headworks, Unitech Hydropower"
                 fill
-                className="object-cover object-center"
+                className="object-cover object-bottom"
                 sizes="(min-width: 1024px) 40vw, 100vw"
                 priority={false}
               />
