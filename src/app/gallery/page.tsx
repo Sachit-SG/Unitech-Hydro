@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
-import Image from "next/image";
 import { GalleryBentoTile } from "@/components/gallery/gallery-bento-tile";
 import { PageShell } from "@/components/page-shell";
+import { TeamPortraitMedia } from "@/components/team/team-portrait-media";
 import { galleryBentoItems } from "@/lib/gallery-data";
 import { boardMembers, galleryOperationsTeam } from "@/lib/team-members";
 
@@ -10,9 +10,6 @@ export const metadata: Metadata = {
   description:
     "Board of Directors and operations team — Unitech Hydropower Company Limited.",
 };
-
-const PORTRAIT_PLACEHOLDER =
-  "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=1200&q=80";
 
 function SectionHeader({
   kicker,
@@ -61,26 +58,28 @@ function ProfileCard({
   name,
   title,
   photoSrc,
+  noStockPlaceholder,
 }: {
   name: string;
   title: string;
   photoSrc?: string;
+  noStockPlaceholder?: boolean;
 }) {
   return (
     <div className="group overflow-hidden rounded-[4px] border border-slate-200/80 bg-white shadow-sm transition-[border-color,box-shadow] hover:border-brand-cyan/60 hover:shadow-[0_0_0_1px_rgba(0,210,255,0.35)]">
       <div className="relative aspect-[4/5] overflow-hidden bg-slate-100">
-        <Image
-          src={photoSrc ?? PORTRAIT_PLACEHOLDER}
-          alt={photoSrc ? `${name}, ${title}` : ""}
-          role={photoSrc ? undefined : "presentation"}
-          fill
-          className="object-cover object-[center_20%] transition-transform duration-300 group-hover:scale-[1.03]"
-          sizes="(min-width: 1024px) 20vw, 50vw"
+        <TeamPortraitMedia
+          name={name}
+          title={title}
+          photoSrc={photoSrc}
+          noStockPlaceholder={noStockPlaceholder}
         />
-        <div
-          className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/25 to-transparent"
-          aria-hidden
-        />
+        {photoSrc ? (
+          <div
+            className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/25 to-transparent"
+            aria-hidden
+          />
+        ) : null}
       </div>
       <div className="p-6">
         <p className="font-heading text-lg font-bold text-brand-blue">{name}</p>
@@ -99,7 +98,13 @@ export default function GalleryPage() {
         <SectionHeader kicker="Leadership" title="Board of Directors" />
         <div className="mt-10 grid gap-8 lg:grid-cols-3">
           {boardMembers.map((p) => (
-            <ProfileCard key={p.name} name={p.name} title={p.title} photoSrc={p.photoSrc} />
+            <ProfileCard
+              key={p.name}
+              name={p.name}
+              title={p.title}
+              photoSrc={p.photoSrc}
+              noStockPlaceholder={p.noStockPlaceholder}
+            />
           ))}
         </div>
 
@@ -110,7 +115,13 @@ export default function GalleryPage() {
           />
           <div className="mt-10 grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
             {galleryOperationsTeam.map((p) => (
-              <ProfileCard key={p.name} name={p.name} title={p.title} photoSrc={p.photoSrc} />
+              <ProfileCard
+              key={p.name}
+              name={p.name}
+              title={p.title}
+              photoSrc={p.photoSrc}
+              noStockPlaceholder={p.noStockPlaceholder}
+            />
             ))}
           </div>
         </div>

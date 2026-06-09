@@ -44,10 +44,10 @@ Since our establishment, we have remained committed to contributing to Nepal's g
 const INITIAL_BOARD: BoardMember[] = [
   { id: "1", name: "Anoj Khadka", role: "Chairman", imageUrl: TEAM_PORTRAITS["Anoj Khadka"] ?? SITE_IMAGES.chairmanPortrait },
   { id: "2", name: "Dinesh Lal Shrestha", role: "Director", imageUrl: TEAM_PORTRAITS["Dinesh Lal Shrestha"] ?? SITE_IMAGES.upperPhawaHeadworks },
-  { id: "3", name: "Anand Kumar Basnet", role: "Director", imageUrl: TEAM_PORTRAITS["Anand Kumar Basnet"] ?? SITE_IMAGES.upperPhawaHeadworks },
+  { id: "3", name: "Anand Kumar Basnet", role: "Director", imageUrl: TEAM_PORTRAITS["Anand Kumar Basnet"] ?? "" },
   { id: "4", name: "Shobha Basnet", role: "Director", imageUrl: TEAM_PORTRAITS["Shobha Basnet"] ?? SITE_IMAGES.upperPhawaHeadworks },
   { id: "5", name: "Vishwa Prakash Amatya", role: "Director", imageUrl: TEAM_PORTRAITS["Vishwa Prakash Amatya"] ?? SITE_IMAGES.upperPhawaHeadworks },
-  { id: "6", name: "Pramod Kumar Shah", role: "Independent Director", imageUrl: TEAM_PORTRAITS["Pramod Kumar Shah"] ?? SITE_IMAGES.upperPhawaHeadworks },
+  { id: "6", name: "Pramod Kumar Shah", role: "Independent Director", imageUrl: TEAM_PORTRAITS["Pramod Kumar Shah"] ?? "" },
 ];
 
 const CAPITAL_FIELDS = [
@@ -184,14 +184,20 @@ export function AboutUsTabContent({ onSave }: AboutUsTabContentProps) {
                   <TableCell className="font-medium">{member.name}</TableCell>
                   <TableCell>{member.role}</TableCell>
                   <TableCell>
-                    <div className="relative size-12 overflow-hidden rounded-[4px] border border-slate-200">
-                      <Image
-                        src={member.imageUrl}
-                        alt=""
-                        fill
-                        className="object-cover"
-                        sizes="48px"
-                      />
+                    <div className="relative size-12 overflow-hidden rounded-[4px] border border-slate-200 bg-slate-100">
+                      {member.imageUrl ? (
+                        <Image
+                          src={member.imageUrl}
+                          alt=""
+                          fill
+                          className="object-cover"
+                          sizes="48px"
+                        />
+                      ) : (
+                        <span className="flex size-full items-center justify-center text-[10px] font-medium text-slate-400">
+                          —
+                        </span>
+                      )}
                     </div>
                   </TableCell>
                   <TableCell className="text-right">

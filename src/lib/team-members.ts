@@ -12,9 +12,19 @@ export const TEAM_PORTRAITS: Partial<Record<string, string>> = {
   "Shrina Ghimire": "/images/team/shrina-ghimire.jpeg",
 };
 
+/** Directors without official photos — no stock placeholder on public site */
+export const TEAM_NO_STOCK_PLACEHOLDER = new Set([
+  "Anand Kumar Basnet",
+  "Pramod Kumar Shah",
+]);
+
 function withPortrait(member: { name: string; title: string }): LeadershipMember {
   const photoSrc = TEAM_PORTRAITS[member.name];
-  return photoSrc ? { ...member, photoSrc } : member;
+  if (photoSrc) return { ...member, photoSrc };
+  if (TEAM_NO_STOCK_PLACEHOLDER.has(member.name)) {
+    return { ...member, noStockPlaceholder: true };
+  }
+  return member;
 }
 
 export const boardMembers: LeadershipMember[] = [
