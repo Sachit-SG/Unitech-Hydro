@@ -10,12 +10,12 @@ export const TEAM_PORTRAITS: Partial<Record<string, string>> = {
   "Bhaskar Kafle": "/images/team/bhaskar-kafle.jpeg",
   "Rabindra Mahaseth": "/images/team/rabindra-mahaseth.jpeg",
   "Shrina Ghimire": "/images/team/shrina-ghimire.jpeg",
+  "Pramod Kumar Shah": "/images/team/pramod-kumar-shah.jpeg",
 };
 
 /** Directors without official photos — no stock placeholder on public site */
 export const TEAM_NO_STOCK_PLACEHOLDER = new Set([
   "Anand Kumar Basnet",
-  "Pramod Kumar Shah",
 ]);
 
 function withPortrait(member: { name: string; title: string }): LeadershipMember {

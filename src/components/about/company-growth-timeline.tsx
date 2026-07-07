@@ -48,8 +48,8 @@ function TimelineText({
         className={cn(
           "mb-1 block font-mono text-[11px] tracking-[0.2em] md:text-xs",
           isDark
-            ? "text-[#00EAFF] drop-shadow-[0_0_14px_rgba(0,234,255,0.45)]"
-            : "text-[#00EAFF]"
+            ? "text-[#22D3EE] drop-shadow-[0_0_14px_rgba(34,211,238,0.45)]"
+            : "text-[#22D3EE]"
         )}
       >
         {event.date} BS
@@ -59,7 +59,7 @@ function TimelineText({
           "text-lg font-bold leading-snug md:text-xl",
           isDark
             ? "text-white drop-shadow-[0_2px_18px_rgba(0,0,0,0.9)]"
-            : "text-[#0B2043]"
+            : "text-[#0A3A63]"
         )}
       >
         {event.title}
@@ -121,13 +121,13 @@ function TimelineDot({
     <span
       className={cn(
         "relative z-20 rounded-full",
-        isDark ? "ring-4 ring-[#0B2043]" : "bg-[#0B2043] ring-4 ring-white",
+        isDark ? "ring-4 ring-[#0A3A63]" : "bg-[#0A3A63] ring-4 ring-white",
         milestone
           ? cn(
-              "h-4 w-4 bg-[#00EAFF]",
-              isDark && "shadow-[0_0_22px_rgba(0,234,255,0.75)]"
+              "h-4 w-4 bg-[#22D3EE]",
+              isDark && "shadow-[0_0_22px_rgba(34,211,238,0.75)]"
             )
-          : cn("h-3 w-3", !isDark && "bg-[#0B2043]", isDark && "bg-white/90")
+          : cn("h-3 w-3", !isDark && "bg-[#0A3A63]", isDark && "bg-white/90")
       )}
       aria-hidden
     />
@@ -158,7 +158,7 @@ function TimelineTracingBeam({
       />
       <motion.div
         className={cn(
-          "absolute top-0 z-20 origin-top bg-[#00EAFF] shadow-[0_0_15px_#00EAFF]",
+          "absolute top-0 z-20 origin-top bg-[#22D3EE] shadow-[0_0_15px_#22D3EE]",
           isDesktop
             ? "left-1/2 hidden h-full w-[2px] -translate-x-1/2 md:block"
             : "left-[23px] h-full w-[2px] -translate-x-1/2 md:hidden"

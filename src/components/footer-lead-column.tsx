@@ -36,6 +36,13 @@ export function FooterLeadColumn({
 }: FooterLeadColumnProps) {
   function handleSubscribe(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
+    const data = new FormData(e.currentTarget);
+    const address = String(data.get("email") ?? "").trim();
+    const subject = "Newsletter subscription — Unitech Hydropower";
+    const body = address
+      ? `Please add ${address} to project updates.`
+      : "Please add me to project updates.";
+    window.location.href = `mailto:${email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
   }
 
   return (
@@ -55,18 +62,18 @@ export function FooterLeadColumn({
           inputMode="email"
           autoComplete="email"
           placeholder="Enter your email"
-          className="w-full min-w-0 border-0 border-b border-white/20 bg-transparent pb-2 text-sm text-white outline-none transition-colors placeholder:text-slate-500 focus:border-[#00EAFF] focus:outline-none focus-visible:ring-0"
+          className="w-full min-w-0 border-0 border-b border-white/20 bg-transparent pb-2 text-sm text-white outline-none transition-colors placeholder:text-slate-500 focus:border-[#22D3EE] focus:outline-none focus-visible:ring-0"
         />
         <div className="mt-4 flex flex-row flex-nowrap gap-3">
           <Link
             href="/contact"
-            className="inline-flex shrink-0 items-center justify-center whitespace-nowrap rounded-sm bg-[#00EAFF] px-4 py-2 text-xs font-semibold text-[#0B2043] transition-colors hover:bg-[#00EAFF]/90"
+            className="inline-flex shrink-0 items-center justify-center whitespace-nowrap rounded-sm bg-[#22D3EE] px-4 py-2 text-xs font-semibold text-[#0A3A63] transition-colors hover:bg-[#22D3EE]/90"
           >
             Contact Us
           </Link>
           <button
             type="submit"
-            className="inline-flex shrink-0 items-center justify-center whitespace-nowrap rounded-sm border border-[#00EAFF] bg-transparent px-4 py-2 text-xs font-semibold text-[#00EAFF] transition-colors hover:bg-[#00EAFF]/10"
+            className="inline-flex shrink-0 items-center justify-center whitespace-nowrap rounded-sm border border-[#22D3EE] bg-transparent px-4 py-2 text-xs font-semibold text-[#22D3EE] transition-colors hover:bg-[#22D3EE]/10"
           >
             Subscribe
           </button>
@@ -76,13 +83,13 @@ export function FooterLeadColumn({
       <div className="mt-6 space-y-2">
         <a
           href={`mailto:${email}`}
-          className="block break-all font-mono text-xs text-slate-300 transition-colors hover:text-[#00EAFF]"
+          className="block break-all font-mono text-xs text-slate-300 transition-colors hover:text-[#22D3EE]"
         >
           {email}
         </a>
         <a
           href={phoneHref}
-          className="block font-mono text-xs text-slate-300 transition-colors hover:text-[#00EAFF]"
+          className="block font-mono text-xs text-slate-300 transition-colors hover:text-[#22D3EE]"
         >
           {phoneDisplay}
         </a>
@@ -97,7 +104,7 @@ export function FooterLeadColumn({
             href={socialLinkedIn}
             target="_blank"
             rel="noopener noreferrer"
-            className="rounded-sm text-slate-300 transition-colors hover:text-[#00EAFF]"
+            className="rounded-sm text-slate-300 transition-colors hover:text-[#22D3EE]"
             aria-label="Unitech Hydropower on LinkedIn"
           >
             <IconLinkedIn className="h-6 w-6" aria-hidden />
@@ -106,7 +113,7 @@ export function FooterLeadColumn({
             href={socialInstagram}
             target="_blank"
             rel="noopener noreferrer"
-            className="rounded-sm text-slate-300 transition-colors hover:text-[#00EAFF]"
+            className="rounded-sm text-slate-300 transition-colors hover:text-[#22D3EE]"
             aria-label="Unitech Hydropower on Instagram"
           >
             <IconInstagram className="h-6 w-6" aria-hidden />

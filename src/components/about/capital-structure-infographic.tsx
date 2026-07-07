@@ -9,11 +9,13 @@ import {
   type LucideIcon,
 } from "lucide-react";
 import { cn } from "@/lib/cn";
+import { CountUp } from "@/components/ui/count-up";
 
 type CapitalCard = {
   id: number;
   title: string;
-  value: string;
+  value: number;
+  decimals: number;
   desc: string;
   isCyan: boolean;
   icon: LucideIcon;
@@ -25,7 +27,8 @@ const capitalCards: CapitalCard[] = [
   {
     id: 1,
     title: "Authorized Capital",
-    value: "120 cr.",
+    value: 120,
+    decimals: 0,
     desc: "Total capital authorized for issuance.",
     isCyan: false,
     icon: Landmark,
@@ -35,7 +38,8 @@ const capitalCards: CapitalCard[] = [
   {
     id: 2,
     title: "Issued Capital",
-    value: "98.50 cr.",
+    value: 98.5,
+    decimals: 2,
     desc: "Capital currently issued to shareholders.",
     isCyan: false,
     icon: Layers,
@@ -45,17 +49,19 @@ const capitalCards: CapitalCard[] = [
   {
     id: 3,
     title: "Paid Up",
-    value: "78.80 cr.",
+    value: 78.8,
+    decimals: 2,
     desc: "66% of authorized capital deployed.",
     isCyan: true,
     icon: CircleDollarSign,
-    iconBox: "border-[#00EAFF]/35 bg-[#00EAFF]/12",
-    iconColor: "text-[#00EAFF]",
+    iconBox: "border-[#22D3EE]/35 bg-[#22D3EE]/12",
+    iconColor: "text-[#22D3EE]",
   },
   {
     id: 4,
     title: "IPO",
-    value: "19.7 cr.",
+    value: 19.7,
+    decimals: 1,
     desc: "Rating: ICRA Nepal | Manager: LS Capital",
     isCyan: true,
     icon: TrendingUp,
@@ -65,8 +71,8 @@ const capitalCards: CapitalCard[] = [
 ];
 
 const cardVariants = {
-  rest: { backgroundColor: "#0B2043" },
-  hover: { backgroundColor: "rgba(0, 234, 255, 0.12)" },
+  rest: { backgroundColor: "#0A3A63" },
+  hover: { backgroundColor: "rgba(34,211,238, 0.12)" },
 } as const;
 
 const descVariants = {
@@ -88,9 +94,9 @@ export function CapitalStructureInfographic() {
             animate="rest"
             variants={cardVariants}
             className={cn(
-              "group relative flex cursor-pointer flex-col justify-center overflow-hidden rounded-2xl border bg-[#0B2043] p-5 shadow-md shadow-[#0B2043]/15 transition-colors duration-300 md:px-6 md:py-5",
+              "group relative flex cursor-pointer flex-col justify-center overflow-hidden rounded-2xl border bg-[#0A3A63] p-5 shadow-md shadow-[#0A3A63]/15 transition-colors duration-300 md:px-6 md:py-5",
               item.isCyan
-                ? "border-[#00EAFF]/50 shadow-[0_0_15px_rgba(0,234,255,0.12)]"
+                ? "border-[#22D3EE]/50 shadow-[0_0_15px_rgba(34,211,238,0.12)]"
                 : "border-white/10"
             )}
           >
@@ -103,11 +109,15 @@ export function CapitalStructureInfographic() {
                   className={cn(
                     "text-2xl font-bold tabular-nums transition-colors md:text-3xl lg:text-4xl",
                     item.isCyan
-                      ? "text-[#00EAFF] group-hover:text-white"
+                      ? "text-[#22D3EE] group-hover:text-white"
                       : "text-white"
                   )}
                 >
-                  {item.value}
+                  <CountUp
+                    value={item.value}
+                    decimals={item.decimals}
+                    suffix=" cr."
+                  />
                 </p>
               </div>
 

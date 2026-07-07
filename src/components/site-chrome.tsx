@@ -6,6 +6,8 @@ import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
 import { SiteNoticePopup } from "@/components/site-notice-popup";
+import { SmoothScroll } from "@/components/smooth-scroll";
+import { ScrollProgress } from "@/components/ui/scroll-progress";
 
 export function SiteChrome({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
@@ -30,6 +32,8 @@ export function SiteChrome({ children }: { children: React.ReactNode }) {
 
   return (
     <>
+      <SmoothScroll />
+      <ScrollProgress />
       <SiteHeader />
       <SiteNoticePopup />
       <div className="flex flex-1 flex-col pt-16">

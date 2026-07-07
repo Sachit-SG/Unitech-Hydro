@@ -3,10 +3,9 @@ import {
   CompanyGrowthTimeline,
   type CompanyTimelineEvent,
 } from "@/components/about/company-growth-timeline";
+import { getProjectCardImage } from "@/lib/gallery-data";
 
-/** Himalayan river — placeholder until brand photography is supplied */
-const TIMELINE_BG =
-  "https://images.unsplash.com/photo-1544735716-392fe2489ffa?q=80&w=2000";
+const TIMELINE_BG = getProjectCardImage("upper-phawa-khola");
 
 type CompanyTimelineShowcaseProps = {
   events: readonly CompanyTimelineEvent[];
@@ -34,14 +33,14 @@ export function CompanyTimelineShowcase({ events }: CompanyTimelineShowcaseProps
 
       {/* Layer 10 — brand-graded navy overlay */}
       <div
-        className="absolute inset-0 z-10 bg-gradient-to-b from-[#0B2043] via-[#0B2043]/85 to-[#0B2043] mix-blend-multiply"
+        className="absolute inset-0 z-10 bg-gradient-to-b from-[#0A3A63] via-[#0A3A63]/85 to-[#0A3A63] mix-blend-multiply"
         aria-hidden
       />
 
       {/* Layer 20 — timeline content, beam, dots */}
       <div className="relative z-20 mx-auto max-w-[1440px] px-8 md:px-20">
         <header className="mx-auto max-w-2xl text-center">
-          <p className="text-xs font-semibold uppercase tracking-[0.22em] text-[#00EAFF] drop-shadow-[0_0_18px_rgba(0,234,255,0.35)]">
+          <p className="text-xs font-semibold uppercase tracking-[0.22em] text-[#22D3EE] drop-shadow-[0_0_18px_rgba(34,211,238,0.35)]">
             Corporate history
           </p>
           <h3

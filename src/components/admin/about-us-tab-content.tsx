@@ -139,7 +139,7 @@ export function AboutUsTabContent({ onSave }: AboutUsTabContentProps) {
       <Card>
         <CardHeader className="flex flex-row flex-wrap items-start justify-between gap-4 space-y-0">
           <div className="space-y-3">
-            <Badge className="bg-[#00EAFF] text-[#0B2043] hover:bg-[#00EAFF]">
+            <Badge className="bg-[#22D3EE] text-[#0A3A63] hover:bg-[#22D3EE]">
               Dynamic List
             </Badge>
             <div>
@@ -151,7 +151,7 @@ export function AboutUsTabContent({ onSave }: AboutUsTabContentProps) {
           </div>
           <Button
             type="button"
-            className="shrink-0 bg-[#00EAFF] text-[#0B2043] hover:bg-[#00EAFF]/90"
+            className="shrink-0 bg-[#22D3EE] text-[#0A3A63] hover:bg-[#22D3EE]/90"
             onClick={() =>
               setBoardMembers((prev) => [
                 ...prev,

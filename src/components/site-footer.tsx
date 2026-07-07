@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { FooterLeadColumn } from "@/components/footer-lead-column";
+import { SiteLogo } from "@/components/site-logo";
 
 const PHONE_DISPLAY = "01-4106123";
 const PHONE_HREF = "tel:+97714106123";
@@ -21,19 +22,16 @@ const sitemapLinks = [
 
 export function SiteFooter() {
   return (
-    <footer className="bg-[#0B2043] text-white">
-      <div className="mx-auto max-w-[1440px] px-8 py-20 md:px-20">
+    <footer className="relative overflow-hidden bg-[#0A3A63] text-white">
+      <div
+        className="tex-contour-dark pointer-events-none absolute inset-0"
+        aria-hidden
+      />
+      <div className="relative mx-auto max-w-[1440px] px-8 py-20 md:px-20">
         <div className="grid grid-cols-1 gap-12 md:grid-cols-2 lg:grid-cols-4 lg:gap-10">
           {/* Column 1 — Identity */}
           <div className="max-w-sm">
-            <Link href="/" className="group inline-flex flex-col leading-none">
-              <span className="font-heading text-xl font-bold tracking-tighter text-white md:text-2xl">
-                UNITECH
-              </span>
-              <span className="mt-1 text-[10px] font-medium uppercase tracking-[0.28em] text-white/60 md:text-[11px]">
-                Hydropower
-              </span>
-            </Link>
+            <SiteLogo />
             <p className="mt-4 text-sm font-semibold uppercase tracking-wider text-white">
               Energy for a Developing Nation
             </p>
@@ -53,7 +51,7 @@ export function SiteFooter() {
                 <li key={href}>
                   <Link
                     href={href}
-                    className="text-sm text-slate-300 transition-colors hover:text-[#00EAFF]"
+                    className="text-sm text-slate-300 transition-colors hover:text-[#22D3EE]"
                   >
                     {label}
                   </Link>
@@ -105,13 +103,13 @@ export function SiteFooter() {
           <div className="flex flex-wrap gap-x-6 gap-y-2">
             <Link
               href="/privacy"
-              className="transition-colors hover:text-[#00EAFF]"
+              className="transition-colors hover:text-[#22D3EE]"
             >
               Privacy Policy
             </Link>
             <Link
               href="/terms"
-              className="transition-colors hover:text-[#00EAFF]"
+              className="transition-colors hover:text-[#22D3EE]"
             >
               Terms of Service
             </Link>

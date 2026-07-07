@@ -1,29 +1,53 @@
 @import "tailwindcss";
 @import "react-day-picker/style.css";
+/* Lenis smooth-scroll required styles (resets html height:100% so scrolling works) */
+@import "lenis/dist/lenis.css";
 
 @theme {
-  /* Brand Colors */
-  --color-brand-blue: #003366;
-  --color-brand-blue-deep: #001a33;
-  --color-brand-cyan: #00d2ff;
-  --color-brand-slate: #334155;
-  --color-glacier: #f8fafc;
-  --color-glacier-mist: #f1f5f9;
-  --color-env-teal: #0d9488;
+  /* ── Glacial Current palette ──────────────────────────────
+     Cool "current" family (analogous, dominant) + one warm complement (amber, ~3%).
+     Existing token names kept so brand-blue / brand-cyan / glacier classes
+     across the app inherit the new values automatically. */
+
+  /* Core — cool current family */
+  --color-brand-blue: #0a3a63;        /* Deep Glacier Blue — primary anchor (was #003366) */
+  --color-brand-blue-deep: #0a1f33;   /* Abyss Ink — deepest surfaces/text (was #001a33) */
+  --color-brand-cyan: #22d3ee;        /* Electric Cyan — accent/links/focus (was #00d2ff) */
+  --color-current-blue: #1466a0;      /* Current Blue — mid/link-hover */
+  --color-brand-teal: #12808e;        /* Water Teal — secondary structural color */
+  --color-env-teal: #12808e;          /* alias kept for existing usages */
+
+  /* Warm complement — spend sparingly (CTAs, live/energy stats) */
+  --color-brand-amber: #f2a93b;       /* Generation Amber */
+  --color-brand-copper: #c6741f;      /* Copper — amber hover/pressed */
+
+  /* Neutrals — cool-tinted */
+  --color-glacier: #f5f8fb;           /* page background */
+  --color-glacier-mist: #e9eff4;      /* section background */
+  --color-cloud: #d6e0e8;             /* borders / hairlines */
+  --color-steel: #5c7386;             /* muted / secondary text */
+  --color-brand-slate: #33465a;       /* body text */
+  --color-ink: #0a1f33;               /* headings on light */
+
+  /* Semantic */
+  --color-status-operational: #17a67b;
+  --color-status-dev: #f2a93b;
+  --color-status-fault: #e0574f;
 
   /* Alias tokens (requested naming) */
   --brand-blue-deep: var(--color-brand-blue-deep);
-  --glacier-mist: #f8fafc;
+  --glacier-mist: #f5f8fb;
 
-  /* Global radius — engineering precision (4px corners) */
+  /* Radius — deliberate 2-tier: sharp structure (buttons, chips, inputs, tags),
+     softly-rounded cards/panels/modals. Pills use rounded-full separately. */
   --radius: 4px;
   --radius-sm: 4px;
-  --radius-md: 4px;
-  --radius-lg: 4px;
-  --radius-xl: 4px;
-  --radius-2xl: 4px;
-  --radius-3xl: 4px;
-  --radius-4xl: 4px;
+  --radius-md: 6px;
+  --radius-lg: 10px;
+  --radius-xl: 12px;
+  --radius-2xl: 14px;
+  --radius-3xl: 16px;
+  --radius-4xl: 16px;
 
   /* Typography */
   --font-sans: var(--font-inter);
@@ -93,4 +117,86 @@
   .partners-marquee-animate {
     animation: none;
   }
+}
+
+/* ── Glacial Current textures ─────────────────────────────
+   Quiet, on-theme surface treatments. Layer over a bg color; keep opacity low. */
+
+/* Topographic contour lines — Nepal terrain / hydrology maps. Section backgrounds. */
+.tex-contour {
+  background-image:
+    repeating-linear-gradient(115deg, transparent 0 13px, rgba(10, 58, 99, 0.06) 13px 14px),
+    repeating-linear-gradient(65deg, transparent 0 19px, rgba(18, 128, 142, 0.05) 19px 20px);
+}
+
+/* Engineering dot-grid — technical / spec / admin sections. */
+.tex-grid {
+  background-image: radial-gradient(rgba(92, 115, 134, 0.22) 0.8px, transparent 0.8px);
+  background-size: 11px 11px;
+}
+
+/* Dark-surface depth — for deep-blue (#0A3A63) sections.
+   Quiet same-hue light pooling (no repeating motif); reads as dimension, not pattern. */
+.tex-contour-dark {
+  background-image:
+    radial-gradient(100% 85% at 50% -15%, rgba(120, 220, 255, 0.045), transparent 55%),
+    radial-gradient(85% 95% at 100% 115%, rgba(18, 128, 142, 0.05), transparent 55%);
+}
+.tex-grid-dark {
+  background-image:
+    radial-gradient(90% 130% at 100% 50%, rgba(120, 220, 255, 0.04), transparent 62%);
+}
+
+/* Hero caustic — deep blue→teal base with smooth drifting light (no speckle). */
+.hero-caustic {
+  position: relative;
+  isolation: isolate;
+  background:
+    radial-gradient(140% 120% at 12% -10%, #1a5a86 0%, transparent 46%),
+    radial-gradient(120% 120% at 100% 115%, #12808e 0%, transparent 52%),
+    linear-gradient(150deg, #0a3a63 0%, #072a49 55%, #06233f 100%);
+}
+.hero-caustic::before {
+  /* drifting focal light pools */
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  mix-blend-mode: screen;
+  pointer-events: none;
+  background:
+    radial-gradient(42% 52% at 24% 22%, rgba(110, 238, 255, 0.42), rgba(110, 238, 255, 0) 62%),
+    radial-gradient(34% 44% at 82% 80%, rgba(45, 220, 205, 0.34), rgba(45, 220, 205, 0) 64%);
+  animation: caustic-pools 24s ease-in-out infinite alternate;
+}
+.hero-caustic > .caustic-web {
+  /* large, heavily blurred turbulence = soft flowing light, not dots */
+  position: absolute;
+  inset: -40%;
+  z-index: 2;
+  pointer-events: none;
+  mix-blend-mode: screen;
+  opacity: 0.55;
+  filter: blur(14px);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 600 450'%3E%3Cfilter id='c'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.006 0.009' numOctaves='2' seed='7' result='n'/%3E%3CfeColorMatrix in='n' type='matrix' values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  1.6 1.6 1.6 0 -1.35'/%3E%3C/filter%3E%3Crect width='600' height='450' filter='url(%23c)' fill='%235fe6ff'/%3E%3C/svg%3E");
+  background-size: 160% 160%;
+  animation: caustic-drift 30s ease-in-out infinite alternate;
+  will-change: transform, background-position;
+}
+.hero-caustic > .caustic-content {
+  position: relative;
+  z-index: 4;
+}
+
+@keyframes caustic-drift {
+  from { transform: translate3d(-2%, -1%, 0) scale(1.04); background-position: 0% 20%; }
+  to   { transform: translate3d(3%, 2%, 0) scale(1.1);    background-position: 100% 80%; }
+}
+@keyframes caustic-pools {
+  from { transform: translate3d(-1.5%, -1%, 0); }
+  to   { transform: translate3d(2%, 1.5%, 0); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .hero-caustic::before,
+  .hero-caustic > .caustic-web { animation: none; }
 }

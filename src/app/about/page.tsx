@@ -1,12 +1,13 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
-import { CalendarDays, Landmark, MapPin } from "lucide-react";
+import { CalendarDays, FileDigit, Hash, Landmark, MapPin } from "lucide-react";
 import { AboutExecutiveSummary } from "@/components/about/about-executive-summary";
 import { CapitalStructureInfographic } from "@/components/about/capital-structure-infographic";
 import { CompanyTimelineShowcase } from "@/components/about/company-timeline-showcase";
 import { LeadershipGrid } from "@/components/about/leadership-profile-card";
 import { PageShell } from "@/components/page-shell";
+import { Reveal } from "@/components/ui/reveal";
 import { SITE_IMAGES } from "@/lib/site-config";
 import { boardMembers, managementTeamMembers } from "@/lib/team-members";
 
@@ -18,8 +19,12 @@ export const metadata: Metadata = {
 
 const INTRO_IMAGE = SITE_IMAGES.aboutGlance;
 
-const shortDescription =
-  "The Company was established on 2071/06/20 under the Companies Act of Nepal. Initially, the company was registered as a Private Limited and then converted public limited on 2079/10/19 to facilitate business growth and attract public investment. The office is located at Lalitpur-01, Kupondole, Lalitpur Metropolitan City, Lalitpur district.";
+const companyBackground = [
+  "Unitech Hydropower Company Limited is a Nepal-based energy development company established with the motto of producing clean and renewable hydroelectricity by efficiently utilising the country’s water resources — committed to sustainable energy development through environmentally responsible hydropower projects that contribute to Nepal’s long-term energy security.",
+  "With a strong focus on environmental protection and modern technology, the company generates reliable, efficient power while minimising ecological impact, aligning with global standards of sustainable infrastructure and responsible resource utilisation.",
+  "Beyond energy production, Unitech also drives socio-economic development — creating employment and supporting local communities in project-affected areas, improving livelihoods and fostering regional development.",
+  "The Company was established on 2071/06/20 under the Companies Act of Nepal, initially as a Private Limited company and converted to Public Limited on 2079/10/19 to facilitate growth and attract public investment. The head office is located at Lalitpur-01, Kupondole, Lalitpur Metropolitan City.",
+] as const;
 
 const chairmanMessageParagraphs = [
   "It gives me great pleasure to welcome you to Unitech Hydropower Company Limited.",
@@ -128,7 +133,7 @@ export default function AboutPage() {
   return (
     <PageShell title="About Us" heroPriority>
       {/* Welcome + short description */}
-      <section className="-mx-8 bg-slate-50 px-8 pt-32 pb-24 md:-mx-20 md:px-20 md:pb-28">
+      <section id="introduction" className="-mx-8 scroll-mt-20 bg-slate-50 px-8 pt-32 pb-24 md:-mx-20 md:px-20 md:pb-28">
         <p className="mb-14 text-center font-heading text-2xl font-bold text-brand-blue md:mb-20 md:text-3xl">
           Welcome to Unitech Hydropower Company Limited
         </p>
@@ -149,9 +154,11 @@ export default function AboutPage() {
           </div>
           <div>
             <SectionHeading kicker="About us" title="Company at a glance" />
-            <p className="mt-8 text-base leading-relaxed text-brand-slate/90 md:text-[17px] md:leading-8">
-              {shortDescription}
-            </p>
+            <div className="mt-8 space-y-4 text-base leading-relaxed text-brand-slate/90 md:text-[17px] md:leading-8">
+              {companyBackground.map((p, i) => (
+                <p key={i}>{p}</p>
+              ))}
+            </div>
             <p className="mt-6 text-sm text-brand-slate/70">
               <Link
                 href="/projects"
@@ -202,6 +209,24 @@ export default function AboutPage() {
                   </p>
                 </div>
               </div>
+              <div className="rounded-[4px] border border-slate-200/80 bg-white px-3 py-3 shadow-sm">
+                <div className="flex items-center gap-2">
+                  <Hash className="h-4 w-4 shrink-0 text-brand-cyan" aria-hidden />
+                  <p className="text-[10px] font-bold uppercase tracking-widest text-brand-slate/55">
+                    Reg. No.
+                  </p>
+                </div>
+                <p className="mt-1.5 font-heading text-sm font-bold text-brand-blue">127161/071/072</p>
+              </div>
+              <div className="rounded-[4px] border border-slate-200/80 bg-white px-3 py-3 shadow-sm">
+                <div className="flex items-center gap-2">
+                  <FileDigit className="h-4 w-4 shrink-0 text-brand-cyan" aria-hidden />
+                  <p className="text-[10px] font-bold uppercase tracking-widest text-brand-slate/55">
+                    PAN
+                  </p>
+                </div>
+                <p className="mt-1.5 font-heading text-sm font-bold text-brand-blue">602422574</p>
+              </div>
             </div>
           </div>
         </div>
@@ -251,15 +276,16 @@ export default function AboutPage() {
       {/* Capital structure */}
       <section
         id="investment-profile"
-        className="relative left-1/2 w-screen max-w-[100vw] -translate-x-1/2 overflow-hidden border-t border-slate-200/60 bg-[#0B2043] py-10 text-white md:py-12"
+        className="relative left-1/2 w-screen max-w-[100vw] -translate-x-1/2 overflow-hidden border-t border-slate-200/60 bg-[#0A3A63] py-10 text-white md:py-12"
       >
         <div
-          className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_center,_#112a57_0%,_#0B2043_65%)]"
+          className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_center,_#112a57_0%,_#0A3A63_65%)]"
           aria-hidden
         />
+        <div className="tex-contour-dark pointer-events-none absolute inset-0" aria-hidden />
         <div className="relative mx-auto max-w-[1440px] px-8 md:px-20">
           <div className="text-center">
-            <p className="text-xs font-semibold uppercase tracking-[0.22em] text-[#00EAFF]">
+            <p className="text-xs font-semibold uppercase tracking-[0.22em] text-[#22D3EE]">
               Capital structure
             </p>
             <h2 className="mx-auto mt-3 max-w-[20ch] text-balance font-heading text-3xl font-bold leading-[1.2] tracking-tight text-white md:text-4xl">
@@ -270,7 +296,9 @@ export default function AboutPage() {
             </p>
           </div>
 
-          <CapitalStructureInfographic />
+          <Reveal>
+            <CapitalStructureInfographic />
+          </Reveal>
         </div>
       </section>
 
@@ -280,7 +308,9 @@ export default function AboutPage() {
         className="-mx-8 border-t border-slate-200/60 bg-white px-8 py-24 md:-mx-20 md:px-20 md:py-28"
       >
         <SectionHeading kicker="Governance" title="Board of Directors (BOD)" />
-        <LeadershipGrid members={boardMembers} className="mt-10" />
+        <Reveal className="mt-10">
+          <LeadershipGrid members={boardMembers} />
+        </Reveal>
       </section>
 
       {/* Management team */}
@@ -289,7 +319,9 @@ export default function AboutPage() {
         className="-mx-8 border-t border-slate-200/60 bg-white px-8 py-24 md:-mx-20 md:px-20 md:py-28"
       >
         <SectionHeading kicker="Operations" title="Management team" />
-        <LeadershipGrid members={managementTeamMembers} className="mt-10" />
+        <Reveal className="mt-10">
+          <LeadershipGrid members={managementTeamMembers} />
+        </Reveal>
       </section>
 
     </PageShell>

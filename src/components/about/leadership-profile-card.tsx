@@ -12,7 +12,7 @@ export type LeadershipMember = {
 
 export function LeadershipProfileCard({ member }: { member: LeadershipMember }) {
   return (
-    <article className="group overflow-hidden rounded-[4px] border border-slate-200/80 bg-white shadow-sm transition-[border-color,box-shadow] hover:border-brand-cyan/60 hover:shadow-[0_0_0_1px_rgba(0,210,255,0.35)]">
+    <article className="group overflow-hidden rounded-[4px] border border-slate-200/80 bg-white shadow-sm transition-[border-color,box-shadow] hover:border-brand-cyan/60 hover:shadow-[0_0_0_1px_rgba(34,211,238,0.35)]">
       <div className="relative aspect-[4/5] overflow-hidden bg-slate-100">
         <TeamPortraitMedia
           name={member.name}

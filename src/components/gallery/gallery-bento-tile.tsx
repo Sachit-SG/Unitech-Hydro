@@ -25,10 +25,10 @@ export function GalleryBentoTile({ item }: { item: GalleryBentoItem }) {
       />
       <div className="pointer-events-none absolute inset-x-0 bottom-0 p-4 md:p-5">
         <div className="translate-y-1 opacity-0 transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100">
-          <p className="font-mono text-[10px] font-medium uppercase tracking-widest text-[#00EAFF]">
+          <p className="font-mono text-[10px] font-medium uppercase tracking-widest text-[#22D3EE]">
             {item.projectName}
           </p>
-          <p className="mt-1.5 font-mono text-[10px] font-medium uppercase tracking-widest text-[#00EAFF]/90">
+          <p className="mt-1.5 font-mono text-[10px] font-medium uppercase tracking-widest text-[#22D3EE]/90">
             {item.location}
           </p>
         </div>

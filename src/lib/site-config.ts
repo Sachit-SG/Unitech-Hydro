@@ -10,15 +10,17 @@ export const SITE_DESCRIPTION =
 
 /** Public image paths (SEO-friendly filenames — avoid generic “dam” in URLs). */
 export const SITE_IMAGES = {
+  /** Company logo — header, footer, favicon source. */
+  logo: "/Hydro_logo.png",
   upperPhawaHeadworks: "/images/upper-phawa-headworks.jpg",
   upperPhawaCivilWorks: "/images/upper-phawa-civil-works.jpg",
   heroBackground: "/hero-bg.jpg",
   nepalGlacierRiver: "/images/nepal-glacier-river.jpg",
-  iwaKholaOperational: "/images/iwa-khola-operational.jpg",
+  iwaKholaOperational: "/gallery/iwa-1.jpeg",
   /** Homepage scroll-expand hero. */
   heroHome: "/new2.jpeg",
-  /** Internal page title banners (About, Gallery, News, etc.) — not homepage. */
-  pageHero: "/images/nepal-glacier-river.jpg",
+  /** Internal page title banners — gallery landscape stills. */
+  pageHero: "/gallery/overview-7.jpeg",
   /** Homepage About preview — penstock / tunnel works. */
   aboutPreview: "/new7.jpeg",
   /** About page — Company at a glance section. */

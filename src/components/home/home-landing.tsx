@@ -7,6 +7,8 @@ import { ArrowUpRight } from "lucide-react";
 import { AboutPreview } from "@/components/home/about-preview";
 import { NewsSection } from "@/components/home/news-section";
 import { PartnersMarquee } from "@/components/home/partners-marquee";
+import { getProjectCardImage } from "@/lib/gallery-data";
+import type { PublicBlogArticle } from "@/lib/blog-public";
 import { SITE_IMAGES } from "@/lib/site-config";
 
 const easeOutExpo: [number, number, number, number] = [0.16, 1, 0.3, 1];
@@ -27,11 +29,11 @@ const staggerContainer: Variants = {
   },
 };
 
-const OPERATIONAL_IMAGE = SITE_IMAGES.siteIntakeGates;
+const OPERATIONAL_IMAGE = getProjectCardImage("upper-phawa-khola");
 
-const PIPELINE_IMAGE = SITE_IMAGES.nepalGlacierRiver;
+const PIPELINE_IMAGE = getProjectCardImage("middle-iwa-khola");
 
-export function HomeLanding() {
+export function HomeLanding({ blogArticles }: { blogArticles: PublicBlogArticle[] }) {
   return (
     <div className="bg-glacier text-brand-slate">
       {/* —— About —— */}
@@ -178,7 +180,7 @@ export function HomeLanding() {
                 <div className="relative aspect-[16/10] border-b border-slate-100">
                   <Image
                     src={OPERATIONAL_IMAGE}
-                    alt="Upper Phawa Khola placeholder"
+                    alt="Upper Phawa Khola — intake and headworks"
                     fill
                     className="object-cover object-center"
                     sizes="(min-width: 1024px) 40vw, 100vw"
@@ -214,7 +216,7 @@ export function HomeLanding() {
                 <div className="relative aspect-[16/10] border-b border-slate-100">
                   <Image
                     src={PIPELINE_IMAGE}
-                    alt="Iwa Khola (15 MW) — feasibility-stage project placeholder"
+                    alt="Iwa Khola — river valley, Taplejung and Panchthar"
                     fill
                     className="object-cover object-center"
                     sizes="(min-width: 1024px) 40vw, 100vw"
@@ -274,7 +276,7 @@ export function HomeLanding() {
         </div>
       </section>
 
-      <NewsSection />
+      <NewsSection articles={blogArticles} />
     </div>
   );
 }

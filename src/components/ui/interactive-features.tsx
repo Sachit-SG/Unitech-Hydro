@@ -22,7 +22,7 @@ export type InteractiveFeature = {
 
 type InteractiveFeaturesProps = {
   features: InteractiveFeature[];
-  /** Tailwind background class for the active progress fill (e.g. `bg-[#00EAFF]`) */
+  /** Tailwind background class for the active progress fill (e.g. `bg-[#22D3EE]`) */
   progressGradientLight?: string;
   /** Ms each feature stays active before auto-advancing */
   duration?: number;
@@ -33,7 +33,7 @@ const AUTO_ADVANCE_MS = 6000;
 
 export function InteractiveFeatures({
   features,
-  progressGradientLight = "bg-[#00EAFF]",
+  progressGradientLight = "bg-[#22D3EE]",
   duration = AUTO_ADVANCE_MS,
   className,
 }: InteractiveFeaturesProps) {
@@ -44,6 +44,23 @@ export function InteractiveFeatures({
     setActiveIndex(index);
     setProgress(0);
   }, []);
+
+  // Deep-link: /about#vision or #mission opens the matching tab.
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const applyHash = () => {
+      const hash = window.location.hash.replace("#", "").toLowerCase();
+      if (!hash) return;
+      const idx = features.findIndex((f) => f.title.toLowerCase().includes(hash));
+      if (idx >= 0) {
+        setActiveIndex(idx);
+        setProgress(0);
+      }
+    };
+    applyHash();
+    window.addEventListener("hashchange", applyHash);
+    return () => window.removeEventListener("hashchange", applyHash);
+  }, [features]);
 
   useEffect(() => {
     if (features.length <= 1) return;
@@ -73,8 +90,8 @@ export function InteractiveFeatures({
   return (
     <div className={cn("w-full", className)}>
       <div className="mb-10 md:mb-14">
-        <p className="font-mono text-sm uppercase tracking-[0.2em] text-[#00EAFF]">About Us</p>
-        <h2 className="mt-4 font-heading text-[1.65rem] font-bold leading-tight tracking-tight text-[#0B2043] sm:text-3xl md:text-4xl lg:text-5xl lg:whitespace-nowrap">
+        <p className="font-mono text-sm uppercase tracking-[0.2em] text-[#22D3EE]">About Us</p>
+        <h2 className="mt-4 font-heading text-[1.65rem] font-bold leading-tight tracking-tight text-[#0A3A63] sm:text-3xl md:text-4xl lg:text-5xl lg:whitespace-nowrap">
           Clean Energy for Nepal&apos;s&nbsp;Future.
         </h2>
       </div>
@@ -97,7 +114,7 @@ export function InteractiveFeatures({
                   className={cn(
                     "w-full rounded-xl border p-5 text-left transition-all duration-300",
                     isActive
-                      ? "border-[#0B2043] bg-[#0B2043] text-white shadow-lg shadow-[#0B2043]/20"
+                      ? "border-[#0A3A63] bg-[#0A3A63] text-white shadow-lg shadow-[#0A3A63]/20"
                       : "border-slate-200/80 bg-white text-slate-500 shadow-sm hover:border-slate-300 hover:shadow-md"
                   )}
                 >
@@ -140,7 +157,7 @@ export function InteractiveFeatures({
                       <span
                         className={cn(
                           "block font-heading text-lg font-bold",
-                          isActive ? "text-white" : "text-[#0B2043]"
+                          isActive ? "text-white" : "text-[#0A3A63]"
                         )}
                       >
                         {feature.title}
@@ -185,7 +202,7 @@ export function InteractiveFeatures({
                 priority={activeIndex === 0}
               />
               <div
-                className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[#0B2043]/50 via-transparent to-transparent"
+                className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[#0A3A63]/50 via-transparent to-transparent"
                 aria-hidden
               />
             </motion.div>

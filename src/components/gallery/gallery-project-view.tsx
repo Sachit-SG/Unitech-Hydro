@@ -44,20 +44,11 @@ export function GalleryProjectView({ title, images }: GalleryProjectViewProps) {
     setLightboxOpen(true);
   }, []);
 
-  const tileWidthClass = useMemo(() => {
-    const n = filtered.length;
-    if (n <= 1) return "w-full max-w-xl";
-    if (n === 2) return "w-full sm:w-[calc(50%-0.625rem)] sm:max-w-[560px]";
-    if (n === 3) return "w-full md:w-[calc(33.333%-0.85rem)]";
-    if (n === 4) return "w-full sm:w-[calc(50%-0.625rem)] lg:w-[calc(50%-0.625rem)] lg:max-w-[640px]";
-    return "w-full sm:w-[calc(50%-0.625rem)] lg:w-[calc(33.333%-0.85rem)] lg:max-w-[440px]";
-  }, [filtered.length]);
-
   return (
-    <div className="min-h-screen bg-gradient-to-b from-[#05080f] via-black to-[#0B2043]/35 text-white">
+    <div className="min-h-screen bg-gradient-to-b from-[#05080f] via-black to-[#0A3A63]/35 text-white">
       <Link
         href="/gallery"
-        className="fixed left-4 top-20 z-[210] inline-flex items-center gap-2 rounded-full border border-white/15 bg-black/45 px-4 py-2.5 font-mono text-[10px] font-semibold uppercase tracking-[0.22em] text-[#00EAFF] shadow-lg shadow-black/30 backdrop-blur-md transition-colors hover:border-[#00EAFF]/40 hover:bg-black/60 hover:text-white md:left-6 md:top-24"
+        className="fixed left-4 top-20 z-[210] inline-flex items-center gap-2 rounded-full border border-white/15 bg-black/45 px-4 py-2.5 font-mono text-[10px] font-semibold uppercase tracking-[0.22em] text-[#22D3EE] shadow-lg shadow-black/30 backdrop-blur-md transition-colors hover:border-[#22D3EE]/40 hover:bg-black/60 hover:text-white md:left-6 md:top-24"
       >
         <ArrowLeft className="h-3.5 w-3.5" aria-hidden />
         Back to gallery
@@ -87,7 +78,7 @@ export function GalleryProjectView({ title, images }: GalleryProjectViewProps) {
                 className={cn(
                   "rounded-full border px-4 py-2 font-mono text-[10px] font-semibold uppercase tracking-[0.18em] transition-all",
                   active
-                    ? "border-[#00EAFF] bg-[#00EAFF]/15 text-[#00EAFF]"
+                    ? "border-[#22D3EE] bg-[#22D3EE]/15 text-[#22D3EE]"
                     : "border-white/20 bg-white/5 text-white/70 hover:border-white/35 hover:text-white",
                 )}
               >
@@ -109,35 +100,39 @@ export function GalleryProjectView({ title, images }: GalleryProjectViewProps) {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.22 }}
-            className="flex w-full list-none flex-wrap justify-center gap-4 p-0 md:gap-5"
+            className="w-full list-none gap-4 space-y-4 p-0 [column-gap:1rem] sm:columns-2 md:gap-5 lg:columns-3"
           >
             {filtered.map((img, i) => (
               <motion.li
                 key={`${img.src}-${img.category}-${i}`}
                 role="listitem"
-                initial={{ opacity: 0, y: 8 }}
+                initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.28, delay: Math.min(i * 0.03, 0.24) }}
-                className={cn("min-w-0 shrink-0", tileWidthClass)}
+                transition={{ duration: 0.32, delay: Math.min(i * 0.03, 0.24) }}
+                className="mb-4 break-inside-avoid"
               >
                 <button
                   type="button"
                   onClick={() => openAt(i)}
-                  className="group relative w-full cursor-zoom-in overflow-hidden rounded-xl border border-white/10 bg-[#0B2043]/80 text-left shadow-md shadow-black/40 outline-none transition-opacity hover:opacity-80 focus-visible:ring-2 focus-visible:ring-[#00EAFF]"
+                  className="group relative block w-full cursor-zoom-in overflow-hidden rounded-xl border border-white/10 bg-[#0A3A63]/80 text-left shadow-md shadow-black/40 outline-none focus-visible:ring-2 focus-visible:ring-[#22D3EE]"
                 >
-                  <div className="relative aspect-[4/3] w-full">
-                    <Image
-                      src={img.src}
-                      alt={img.alt}
-                      fill
-                      loading="lazy"
-                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 33vw, 25vw"
-                      className="object-cover object-center transition-transform duration-500 group-hover:scale-[1.02]"
-                    />
-                  </div>
-                  <figcaption className="pointer-events-none absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/75 to-transparent px-3 pb-3 pt-8">
-                    <span className="font-mono text-[9px] uppercase tracking-widest text-[#00EAFF]/90">
-                      {img.category}
+                  <Image
+                    src={img.src}
+                    alt={img.alt}
+                    width={img.w ?? 1600}
+                    height={img.h ?? 1200}
+                    loading="lazy"
+                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                    className="h-auto w-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
+                  />
+                  {/* Always-on category chip */}
+                  <span className="absolute left-3 top-3 rounded-full bg-black/45 px-2.5 py-1 font-mono text-[9px] font-semibold uppercase tracking-widest text-[#22D3EE] backdrop-blur-sm">
+                    {img.category}
+                  </span>
+                  {/* Caption reveals on hover */}
+                  <figcaption className="pointer-events-none absolute inset-x-0 bottom-0 translate-y-2 bg-gradient-to-t from-black/85 via-black/40 to-transparent px-4 pb-3 pt-10 opacity-0 transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100">
+                    <span className="font-sans text-xs leading-snug text-white/90">
+                      {img.alt}
                     </span>
                   </figcaption>
                 </button>

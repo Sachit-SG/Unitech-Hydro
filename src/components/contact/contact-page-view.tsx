@@ -5,16 +5,17 @@ import { motion } from "framer-motion";
 import { ArrowRight, Mail, MapPin, Phone } from "lucide-react";
 
 const ease = [0.22, 1, 0.36, 1] as const;
+const CONTACT_EMAIL = "unitechhydropower@gmail.com";
 
 const inputClassName =
-  "w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-700 placeholder-slate-400 transition-all focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#00EAFF]";
+  "w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-700 placeholder-slate-400 transition-all focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#22D3EE]";
 
 const contactItems = [
   {
     icon: Mail,
     title: "Email Us",
-    value: "unitechhydropower@gmail.com",
-    href: "mailto:unitechhydropower@gmail.com",
+    value: CONTACT_EMAIL,
+    href: `mailto:${CONTACT_EMAIL}`,
   },
   {
     icon: Phone,
@@ -35,6 +36,25 @@ export function ContactPageView() {
 
   function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
+    const form = event.currentTarget;
+    const data = new FormData(form);
+    const name = String(data.get("name") ?? "").trim();
+    const email = String(data.get("email") ?? "").trim();
+    const subject = String(data.get("subject") ?? "").trim();
+    const message = String(data.get("message") ?? "").trim();
+
+    const mailSubject = subject || `Website enquiry from ${name || "visitor"}`;
+    const mailBody = [
+      name ? `Name: ${name}` : null,
+      email ? `Email: ${email}` : null,
+      "",
+      message,
+    ]
+      .filter((line) => line !== null)
+      .join("\n");
+
+    const mailto = `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent(mailSubject)}&body=${encodeURIComponent(mailBody)}`;
+    window.location.href = mailto;
     setSubmitted(true);
   }
 
@@ -45,7 +65,7 @@ export function ContactPageView() {
           initial={{ opacity: 0, x: -20 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.55, ease }}
-          className="flex w-full flex-col justify-between bg-[#0B2043] p-10 md:p-16 lg:w-5/12"
+          className="flex w-full flex-col justify-between bg-[#0A3A63] p-10 md:p-16 lg:w-5/12"
         >
           <div>
             <h1 className="mb-6 text-4xl font-bold text-white md:text-5xl">
@@ -60,7 +80,7 @@ export function ContactPageView() {
           <div className="mt-12 flex flex-col gap-8 lg:mt-16">
             {contactItems.map(({ icon: Icon, title, value, href }) => (
               <div key={title} className="flex items-start gap-4">
-                <div className="shrink-0 rounded-lg bg-[#00EAFF]/10 p-3 text-[#00EAFF]">
+                <div className="shrink-0 rounded-lg bg-[#22D3EE]/10 p-3 text-[#22D3EE]">
                   <Icon className="h-5 w-5" strokeWidth={1.75} aria-hidden />
                 </div>
                 <div>
@@ -68,7 +88,7 @@ export function ContactPageView() {
                   {href ? (
                     <a
                       href={href}
-                      className="text-sm text-slate-400 transition-colors hover:text-[#00EAFF]"
+                      className="text-sm text-slate-400 transition-colors hover:text-[#22D3EE]"
                     >
                       {value}
                     </a>
@@ -87,19 +107,27 @@ export function ContactPageView() {
           transition={{ duration: 0.55, delay: 0.08, ease }}
           className="w-full bg-white p-10 md:p-16 lg:w-7/12"
         >
-          <h2 className="mb-2 font-heading text-2xl font-bold text-[#0B2043] md:text-3xl">
+          <h2 className="mb-2 font-heading text-2xl font-bold text-[#0A3A63] md:text-3xl">
             Send us a message
           </h2>
           <p className="mb-8 text-sm text-slate-500 md:text-base">
-            We typically respond within two business days.
+            Submitting opens your email app with your message addressed to our team.
           </p>
 
           {submitted ? (
             <p
-              className="rounded-xl border border-[#00EAFF]/30 bg-[#00EAFF]/5 px-4 py-6 text-center text-sm text-[#0B2043] md:text-base"
+              className="rounded-xl border border-[#22D3EE]/30 bg-[#22D3EE]/5 px-4 py-6 text-center text-sm text-[#0A3A63] md:text-base"
               role="status"
             >
-              Thank you — your message has been recorded. Our team will be in touch shortly.
+              Your email app should open with the message ready to send. If it did not,
+              email us directly at{" "}
+              <a
+                href={`mailto:${CONTACT_EMAIL}`}
+                className="font-semibold text-[#0A3A63] underline underline-offset-2"
+              >
+                {CONTACT_EMAIL}
+              </a>
+              .
             </p>
           ) : (
             <form
@@ -163,7 +191,7 @@ export function ContactPageView() {
               </div>
               <button
                 type="submit"
-                className="group mt-4 flex w-full items-center justify-center gap-2 rounded-xl bg-[#0B2043] px-8 py-4 font-semibold text-white transition-all hover:bg-[#0B2043]/90 md:col-span-2"
+                className="group mt-4 flex w-full items-center justify-center gap-2 rounded-xl bg-[#0A3A63] px-8 py-4 font-semibold text-white transition-all hover:bg-[#0A3A63]/90 md:col-span-2"
               >
                 Send Message
                 <ArrowRight

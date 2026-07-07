@@ -3,7 +3,6 @@
 import { useEffect, useState } from "react";
 import { GalleryProjectView } from "@/components/gallery/gallery-project-view";
 import type { GalleryDetailImage } from "@/lib/gallery-data";
-import { getPublicAlbumImages } from "@/lib/gallery-admin-storage";
 
 type GalleryProjectPageClientProps = {
   projectId: string;
@@ -19,7 +18,21 @@ export function GalleryProjectPageClient({
   const [images, setImages] = useState(defaultImages);
 
   useEffect(() => {
-    setImages(getPublicAlbumImages(projectId));
+    let cancelled = false;
+    (async () => {
+      try {
+        const res = await fetch(`/api/gallery/${projectId}`, { cache: "no-store" });
+        const data = (await res.json()) as { images?: GalleryDetailImage[] };
+        if (!cancelled && Array.isArray(data.images) && data.images.length > 0) {
+          setImages(data.images);
+        }
+      } catch {
+        // keep SSR defaults
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
   }, [projectId, defaultImages]);
 
   return <GalleryProjectView title={title} images={images} />;

@@ -76,7 +76,7 @@ export function TechnicalStatusBar({
       ref={ref}
       className={cn(
         postHero
-          ? "relative z-10 mt-0 w-full border-t border-white/10 bg-[#0B2043] py-6 md:py-5"
+          ? "relative z-10 mt-0 w-full border-t border-white/10 bg-[#0A3A63] py-6 md:py-5"
           : dockedToHero
             ? "absolute bottom-0 left-0 right-0 z-30 border-t border-white/15 backdrop-blur-lg"
             : heroRibbon
@@ -91,6 +91,12 @@ export function TechnicalStatusBar({
       <h2 id="technical-status-heading" className="sr-only">
         Technical status
       </h2>
+      {dockedVisual ? (
+        <div
+          className="tex-grid-dark pointer-events-none absolute inset-0"
+          aria-hidden
+        />
+      ) : null}
       <div
         className={cn(
           "mx-auto relative grid h-full max-w-[1440px] grid-cols-2 items-center px-8 md:px-20",
@@ -105,7 +111,7 @@ export function TechnicalStatusBar({
               )}
             >
               {operationalMw}
-              <span className="ml-1 text-2xl font-bold leading-none text-[#00EAFF]">
+              <span className="ml-1 text-2xl font-bold leading-none text-[#22D3EE]">
                 MW
               </span>
             </p>
@@ -138,7 +144,7 @@ export function TechnicalStatusBar({
               )}
             >
               {pipelineMw}
-              <span className="ml-1 text-2xl font-bold leading-none text-[#00EAFF]">
+              <span className="ml-1 text-2xl font-bold leading-none text-[#22D3EE]">
                 MW
               </span>
             </p>

@@ -12,79 +12,188 @@ import { cn } from "@/lib/cn";
 import {
   galleryBentoItems,
   galleryImageCategories,
+  type GalleryImageCategory,
 } from "@/lib/gallery-data";
-import {
-  type AdminGalleryImage,
-  defaultAlbumImages,
-  fileToDataUrl,
-  loadStoredAlbums,
-  saveStoredAlbums,
-} from "@/lib/gallery-admin-storage";
+import { compressImageFile } from "@/lib/compress-image";
+import type { GalleryRow } from "@/lib/repos";
 
 type GalleryTabContentProps = {
   onSave?: (section: string) => void;
 };
 
+type AlbumImage = {
+  id: string;
+  src: string;
+  alt: string;
+  category: GalleryImageCategory;
+};
+
+function toAlbumImage(row: GalleryRow): AlbumImage {
+  return {
+    id: row.id,
+    src: row.src,
+    alt: row.alt,
+    category: row.category,
+  };
+}
+
 export function GalleryTabContent({ onSave }: GalleryTabContentProps) {
   const [activeProjectId, setActiveProjectId] = useState(galleryBentoItems[0]?.id ?? "");
-  const [albums, setAlbums] = useState<Record<string, AdminGalleryImage[]>>({});
-  const [hydrated, setHydrated] = useState(false);
+  const [albums, setAlbums] = useState<Record<string, AlbumImage[]>>({});
+  const [counts, setCounts] = useState<Record<string, number>>({});
+  const [loading, setLoading] = useState(true);
+  const [projectLoading, setProjectLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [uploading, setUploading] = useState(false);
+
+  const loadCounts = useCallback(async () => {
+    const res = await fetch("/api/admin/gallery?countsOnly=true", { cache: "no-store" });
+    const data = (await res.json()) as { counts?: Record<string, number>; error?: string };
+    if (!res.ok) throw new Error(data.error ?? "Failed to load gallery counts");
+    setCounts(data.counts ?? {});
+  }, []);
+
+  const loadProject = useCallback(async (projectId: string) => {
+    if (!projectId) return;
+    setProjectLoading(true);
+    setError(null);
+    try {
+      const res = await fetch(`/api/admin/gallery?projectId=${encodeURIComponent(projectId)}`, {
+        cache: "no-store",
+      });
+      const data = (await res.json()) as { images?: GalleryRow[]; error?: string };
+      if (!res.ok) throw new Error(data.error ?? "Failed to load album");
+      const images = (data.images ?? []).map(toAlbumImage);
+      setAlbums((prev) => ({ ...prev, [projectId]: images }));
+      setCounts((prev) => ({ ...prev, [projectId]: images.length }));
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Failed to load album");
+    } finally {
+      setProjectLoading(false);
+    }
+  }, []);
+
+  const refreshAll = useCallback(async () => {
+    setLoading(true);
+    setError(null);
+    try {
+      await loadCounts();
+      await loadProject(activeProjectId);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Failed to load gallery");
+    } finally {
+      setLoading(false);
+    }
+  }, [activeProjectId, loadCounts, loadProject]);
 
   useEffect(() => {
-    const stored = loadStoredAlbums();
-    const initial: Record<string, AdminGalleryImage[]> = {};
-    for (const item of galleryBentoItems) {
-      initial[item.id] =
-        stored && Object.prototype.hasOwnProperty.call(stored, item.id) ?
-          stored[item.id]
-        : defaultAlbumImages(item.id);
-    }
-    setAlbums(initial);
-    setHydrated(true);
-  }, []);
+    void refreshAll();
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps -- initial load only
+
+  useEffect(() => {
+    if (!activeProjectId || albums[activeProjectId]) return;
+    void loadProject(activeProjectId);
+  }, [activeProjectId, albums, loadProject]);
 
   const activeAlbum = albums[activeProjectId] ?? [];
   const activeProject = galleryBentoItems.find((b) => b.id === activeProjectId);
 
+  const patchImage = async (id: string, patch: { alt?: string; category?: GalleryImageCategory }) => {
+    const res = await fetch(`/api/admin/gallery/${id}`, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(patch),
+    });
+    const data = (await res.json()) as { image?: GalleryRow; error?: string };
+    if (!res.ok || !data.image) throw new Error(data.error ?? "Update failed");
+    return toAlbumImage(data.image);
+  };
+
   const updateActiveAlbum = useCallback(
-    (updater: (prev: AdminGalleryImage[]) => AdminGalleryImage[]) => {
+    (updater: (prev: AlbumImage[]) => AlbumImage[]) => {
       setAlbums((prev) => ({
         ...prev,
         [activeProjectId]: updater(prev[activeProjectId] ?? []),
       }));
     },
-    [activeProjectId]
+    [activeProjectId],
   );
 
   const handleFiles = async (files: FileList | null) => {
-    if (!files?.length) return;
-    const uploads = await Promise.all(Array.from(files).map(fileToDataUrl));
-    updateActiveAlbum((prev) => [
-      ...prev,
-      ...uploads.map((src) => ({
-        id: crypto.randomUUID(),
-        src,
-        alt: `${activeProject?.projectName ?? "Project"} photo`,
-        category: "Other" as const,
-      })),
-    ]);
+    if (!files?.length || !activeProjectId) return;
+    setUploading(true);
+    setError(null);
+    try {
+      for (const file of Array.from(files)) {
+        const src = await compressImageFile(file);
+        const res = await fetch("/api/admin/gallery", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            project_id: activeProjectId,
+            src,
+            alt: `${activeProject?.projectName ?? "Project"} photo`,
+            category: "Other",
+          }),
+        });
+        const data = (await res.json()) as { image?: GalleryRow; error?: string };
+        if (!res.ok || !data.image) throw new Error(data.error ?? "Upload failed");
+        updateActiveAlbum((prev) => [...prev, toAlbumImage(data.image!)]);
+        setCounts((prev) => ({
+          ...prev,
+          [activeProjectId]: (prev[activeProjectId] ?? 0) + 1,
+        }));
+      }
+      onSave?.("Gallery");
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Upload failed");
+    } finally {
+      setUploading(false);
+    }
   };
 
-  const saveAll = () => {
-    saveStoredAlbums(albums);
-    onSave?.("Gallery");
+  const removeImage = async (id: string) => {
+    setError(null);
+    try {
+      const res = await fetch(`/api/admin/gallery/${id}`, { method: "DELETE" });
+      if (!res.ok) {
+        const data = (await res.json()) as { error?: string };
+        throw new Error(data.error ?? "Delete failed");
+      }
+      updateActiveAlbum((prev) => prev.filter((row) => row.id !== id));
+      setCounts((prev) => ({
+        ...prev,
+        [activeProjectId]: Math.max(0, (prev[activeProjectId] ?? 1) - 1),
+      }));
+      onSave?.("Gallery");
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Delete failed");
+    }
   };
 
-  const resetProject = () => {
-    updateActiveAlbum(() => defaultAlbumImages(activeProjectId));
+  const updateImageField = async (
+    id: string,
+    patch: { alt?: string; category?: GalleryImageCategory },
+  ) => {
+    updateActiveAlbum((prev) =>
+      prev.map((row) => (row.id === id ? { ...row, ...patch } : row)),
+    );
+    try {
+      const updated = await patchImage(id, patch);
+      updateActiveAlbum((prev) => prev.map((row) => (row.id === id ? updated : row)));
+      onSave?.("Gallery");
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Update failed");
+      void loadProject(activeProjectId);
+    }
   };
 
   const totalPhotos = useMemo(
-    () => Object.values(albums).reduce((sum, arr) => sum + arr.length, 0),
-    [albums]
+    () => Object.values(counts).reduce((sum, n) => sum + n, 0),
+    [counts],
   );
 
-  if (!hydrated) {
+  if (loading) {
     return (
       <Card>
         <CardContent className="py-12 text-sm text-brand-slate/70">Loading gallery…</CardContent>
@@ -97,29 +206,34 @@ export function GalleryTabContent({ onSave }: GalleryTabContentProps) {
       <Card>
         <CardHeader className="flex flex-row flex-wrap items-start justify-between gap-4 space-y-0">
           <div className="space-y-3">
-            <Badge className="bg-[#00EAFF] text-[#0B2043] hover:bg-[#00EAFF]">
+            <Badge className="bg-[#22D3EE] text-[#0A3A63] hover:bg-[#22D3EE]">
               Project albums
             </Badge>
             <div>
               <CardTitle>Manage Gallery</CardTitle>
               <CardDescription>
-                Matches public <code className="text-xs">/gallery/[id]</code> albums. Filter
-                tags: {galleryImageCategories.join(", ")}. Saved in this browser until Supabase
-                is connected.
+                Matches public <code className="text-xs">/gallery/[id]</code> albums. Filter tags:{" "}
+                {galleryImageCategories.join(", ")}. Changes save to the database immediately.
               </CardDescription>
             </div>
           </div>
           <p className="text-sm text-brand-slate/60">
-            <span className="font-semibold text-[#0B2043]">{totalPhotos}</span> album photos
-            across {galleryBentoItems.length} projects
+            <span className="font-semibold text-[#0A3A63]">{totalPhotos}</span> album photos across{" "}
+            {galleryBentoItems.length} projects
           </p>
         </CardHeader>
       </Card>
 
+      {error ?
+        <p className="rounded-[4px] border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
+          {error}
+        </p>
+      : null}
+
       <div className="flex flex-wrap gap-2">
         {galleryBentoItems.map((item) => {
           const active = item.id === activeProjectId;
-          const count = albums[item.id]?.length ?? 0;
+          const count = counts[item.id] ?? 0;
           return (
             <button
               key={item.id}
@@ -128,8 +242,8 @@ export function GalleryTabContent({ onSave }: GalleryTabContentProps) {
               className={cn(
                 "rounded-full border px-4 py-2 text-left text-sm font-medium transition-colors",
                 active ?
-                  "border-[#00EAFF] bg-[#00EAFF]/15 text-[#0B2043]"
-                : "border-slate-200 bg-white text-brand-slate hover:border-[#00EAFF]/40"
+                  "border-[#22D3EE] bg-[#22D3EE]/15 text-[#0A3A63]"
+                : "border-slate-200 bg-white text-brand-slate hover:border-[#22D3EE]/40",
               )}
             >
               {item.projectName}
@@ -153,18 +267,20 @@ export function GalleryTabContent({ onSave }: GalleryTabContentProps) {
             <Input
               id="gallery-upload"
               type="file"
-              accept="image/*"
+              accept="image/jpeg,image/png,image/webp"
               multiple
-              onChange={(e) => handleFiles(e.target.files)}
+              disabled={uploading || projectLoading}
+              onChange={(e) => void handleFiles(e.target.files)}
             />
           </div>
 
-          {activeAlbum.length === 0 ? (
+          {projectLoading ?
+            <p className="text-sm text-brand-slate/70">Loading album photos…</p>
+          : activeAlbum.length === 0 ?
             <p className="rounded-[4px] border border-dashed border-slate-200 bg-slate-50/80 px-4 py-8 text-center text-sm text-brand-slate/70">
-              No photos in this album. Upload images or reset to site defaults.
+              No photos in this album yet. Upload images or run the database seed.
             </p>
-          ) : (
-            <ul className="space-y-4">
+          : <ul className="space-y-4">
               {activeAlbum.map((img) => (
                 <li
                   key={img.id}
@@ -185,10 +301,11 @@ export function GalleryTabContent({ onSave }: GalleryTabContentProps) {
                         onChange={(e) =>
                           updateActiveAlbum((prev) =>
                             prev.map((row) =>
-                              row.id === img.id ? { ...row, alt: e.target.value } : row
-                            )
+                              row.id === img.id ? { ...row, alt: e.target.value } : row,
+                            ),
                           )
                         }
+                        onBlur={(e) => void updateImageField(img.id, { alt: e.target.value })}
                       />
                     </div>
                     <div className="space-y-1">
@@ -197,15 +314,11 @@ export function GalleryTabContent({ onSave }: GalleryTabContentProps) {
                         id={`cat-${img.id}`}
                         value={img.category}
                         onChange={(e) =>
-                          updateActiveAlbum((prev) =>
-                            prev.map((row) =>
-                              row.id === img.id ?
-                                { ...row, category: e.target.value as AdminGalleryImage["category"] }
-                              : row
-                            )
-                          )
+                          void updateImageField(img.id, {
+                            category: e.target.value as GalleryImageCategory,
+                          })
                         }
-                        className="flex h-10 w-full rounded-[4px] border border-slate-200 bg-white px-3 text-sm text-brand-slate focus:outline-none focus:ring-2 focus:ring-[#00EAFF]/50"
+                        className="flex h-10 w-full rounded-[4px] border border-slate-200 bg-white px-3 text-sm text-brand-slate focus:outline-none focus:ring-2 focus:ring-[#22D3EE]/50"
                       >
                         {galleryImageCategories.map((cat) => (
                           <option key={cat} value={cat}>
@@ -219,9 +332,7 @@ export function GalleryTabContent({ onSave }: GalleryTabContentProps) {
                         type="button"
                         variant="ghost"
                         className="text-red-600 hover:bg-red-50 hover:text-red-700"
-                        onClick={() =>
-                          updateActiveAlbum((prev) => prev.filter((row) => row.id !== img.id))
-                        }
+                        onClick={() => void removeImage(img.id)}
                       >
                         <Trash2 className="size-4" aria-hidden />
                         Remove
@@ -231,21 +342,22 @@ export function GalleryTabContent({ onSave }: GalleryTabContentProps) {
                 </li>
               ))}
             </ul>
-          )}
+          }
         </CardContent>
 
-        <div className="flex flex-wrap items-center justify-between gap-3 border-t border-slate-100 px-6 py-4">
-          <Button type="button" variant="secondary" onClick={resetProject}>
+        <div className="flex flex-wrap items-center justify-end gap-3 border-t border-slate-100 px-6 py-4">
+          <Button type="button" variant="secondary" onClick={() => void refreshAll()}>
             <RotateCcw className="size-4" aria-hidden />
-            Reset project to defaults
+            Refresh from database
           </Button>
           <Button
             type="button"
-            className="bg-[#00EAFF] text-[#0B2043] hover:bg-[#00EAFF]/90"
-            onClick={saveAll}
+            className="bg-[#22D3EE] text-[#0A3A63] hover:bg-[#22D3EE]/90"
+            disabled={uploading}
+            onClick={() => onSave?.("Gallery")}
           >
             <ImagePlus className="size-4" aria-hidden />
-            Save all gallery albums
+            {uploading ? "Uploading…" : "Gallery synced"}
           </Button>
         </div>
       </Card>

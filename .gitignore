@@ -17,6 +17,10 @@
 /.next/
 /out/
 
+# cloudflare / opennext build output (also keeps Tailwind from scanning stale classes)
+/.open-next/
+/.wrangler/
+
 # production
 /build
 

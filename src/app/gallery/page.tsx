@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { GalleryBentoTile } from "@/components/gallery/gallery-bento-tile";
 import { PageShell } from "@/components/page-shell";
+import { Reveal } from "@/components/ui/reveal";
 import { TeamPortraitMedia } from "@/components/team/team-portrait-media";
 import { galleryBentoItems } from "@/lib/gallery-data";
 import { boardMembers, galleryOperationsTeam } from "@/lib/team-members";
@@ -66,7 +67,7 @@ function ProfileCard({
   noStockPlaceholder?: boolean;
 }) {
   return (
-    <div className="group overflow-hidden rounded-[4px] border border-slate-200/80 bg-white shadow-sm transition-[border-color,box-shadow] hover:border-brand-cyan/60 hover:shadow-[0_0_0_1px_rgba(0,210,255,0.35)]">
+    <div className="group overflow-hidden rounded-[4px] border border-slate-200/80 bg-white shadow-sm transition-[border-color,box-shadow] hover:border-brand-cyan/60 hover:shadow-[0_0_0_1px_rgba(34,211,238,0.35)]">
       <div className="relative aspect-[4/5] overflow-hidden bg-slate-100">
         <TeamPortraitMedia
           name={name}
@@ -96,7 +97,7 @@ export default function GalleryPage() {
     <PageShell title="Gallery">
       <section className="py-20 first:pt-10 md:py-24">
         <SectionHeader kicker="Leadership" title="Board of Directors" />
-        <div className="mt-10 grid gap-8 lg:grid-cols-3">
+        <Reveal className="mt-10 grid gap-8 lg:grid-cols-3">
           {boardMembers.map((p) => (
             <ProfileCard
               key={p.name}
@@ -106,14 +107,14 @@ export default function GalleryPage() {
               noStockPlaceholder={p.noStockPlaceholder}
             />
           ))}
-        </div>
+        </Reveal>
 
         <div className="mt-12 border-t border-slate-200/60 pt-10 md:mt-14 md:pt-12">
           <SubsectionHeading
             title="Management & team"
             description="Operations leadership and core office roles."
           />
-          <div className="mt-10 grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+          <Reveal className="mt-10 grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
             {galleryOperationsTeam.map((p) => (
               <ProfileCard
               key={p.name}
@@ -123,7 +124,7 @@ export default function GalleryPage() {
               noStockPlaceholder={p.noStockPlaceholder}
             />
             ))}
-          </div>
+          </Reveal>
         </div>
       </section>
 
@@ -133,11 +134,11 @@ export default function GalleryPage() {
           Hover a tile for site and location, then open the full project strip.
         </p>
 
-        <div className="mt-10 grid grid-cols-1 gap-4 md:h-[800px] md:grid-cols-4 md:grid-rows-2 md:gap-4 md:overflow-hidden">
+        <Reveal className="mt-10 grid grid-cols-1 gap-4 md:h-[800px] md:grid-cols-4 md:grid-rows-2 md:gap-4 md:overflow-hidden">
           {galleryBentoItems.map((item) => (
             <GalleryBentoTile key={item.id} item={item} />
           ))}
-        </div>
+        </Reveal>
       </section>
     </PageShell>
   );

@@ -17,6 +17,7 @@ import type { GalleryDetailImage } from "@/lib/gallery-data";
 import {
   getProjectGalleryHref,
   getProjectGalleryImages,
+  getProjectGalleryStills,
 } from "@/lib/gallery-data";
 import type { SpecRow } from "@/lib/project-technical-data";
 import { iwaSalientRows } from "@/lib/project-technical-data";
@@ -24,20 +25,9 @@ import { SITE_IMAGES } from "@/lib/site-config";
 
 const ease = [0.22, 1, 0.36, 1] as const;
 
-const UPPER_GALLERY = [
-  { src: SITE_IMAGES.siteIntakeGates, alt: "Upper Phawa Khola — intake gates and forebay" },
-  { src: SITE_IMAGES.siteForebayCanal, alt: "Upper Phawa Khola — forebay canal and civil works" },
-  { src: SITE_IMAGES.sitePenstockTunnel, alt: "Upper Phawa Khola — penstock at tunnel portal" },
-] as const;
+const UPPER_GALLERY = getProjectGalleryStills("upper-phawa-khola", 3);
 
-const IWA_GALLERY = [
-  {
-    src: SITE_IMAGES.nepalGlacierRiver,
-    alt: "Iwa Khola — eastern Nepal river and mountain corridor",
-  },
-  { src: SITE_IMAGES.iwaKholaOperational, alt: "Iwa Khola — operational reference corridor" },
-  { src: SITE_IMAGES.upperPhawaHeadworks, alt: "Iwa Khola — civil layout reference" },
-] as const;
+const IWA_GALLERY = getProjectGalleryStills("middle-iwa-khola", 3);
 
 const upperPhawaCivilRows: SpecRow[] = [
   { particular: "Weir", feature: "15 m length, free-flow weir" },
@@ -166,16 +156,16 @@ function BentoGrid({ stats }: { stats: BentoStat[] }) {
         const Icon = stat.icon;
         return (
           <Reveal key={stat.label} delay={index * 0.06} className="h-full w-full">
-            <div className="relative h-full overflow-hidden rounded-xl border border-[#00EAFF]/20 bg-white p-6 shadow-md shadow-[#0B2043]/8 ring-1 ring-[#0B2043]/5 transition-shadow hover:border-[#00EAFF]/35 hover:shadow-lg">
+            <div className="relative h-full overflow-hidden rounded-xl border border-[#22D3EE]/20 bg-white p-6 shadow-md shadow-[#0A3A63]/8 ring-1 ring-[#0A3A63]/5 transition-shadow hover:border-[#22D3EE]/35 hover:shadow-lg">
               <div
-                className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-[#00EAFF] via-[#00D2FF] to-[#00EAFF]/40"
+                className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-[#22D3EE] via-[#00D2FF] to-[#22D3EE]/40"
                 aria-hidden
               />
-              <Icon className="mb-4 h-5 w-5 text-[#00EAFF]" strokeWidth={1.75} aria-hidden />
+              <Icon className="mb-4 h-5 w-5 text-[#22D3EE]" strokeWidth={1.75} aria-hidden />
               <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">
                 {stat.label}
               </p>
-              <p className="mt-2 text-xl font-bold text-[#0B2043]">{stat.value}</p>
+              <p className="mt-2 text-xl font-bold text-[#0A3A63]">{stat.value}</p>
             </div>
           </Reveal>
         );
@@ -194,7 +184,7 @@ function AsymmetricGallery({
   const [main, ...stacked] = images;
 
   const linkClassName =
-    "group relative block overflow-hidden rounded-2xl ring-1 ring-[#0B2043]/10 transition-[box-shadow,ring-color] hover:ring-[#00EAFF]/40 hover:shadow-lg hover:shadow-[#0B2043]/10";
+    "group relative block overflow-hidden rounded-2xl ring-1 ring-[#0A3A63]/10 transition-[box-shadow,ring-color] hover:ring-[#22D3EE]/40 hover:shadow-lg hover:shadow-[#0A3A63]/10";
 
   return (
     <Reveal className="mt-12">
@@ -215,7 +205,7 @@ function AsymmetricGallery({
             className="pointer-events-none absolute inset-0 bg-black/0 transition-colors duration-300 group-hover:bg-black/25"
             aria-hidden
           />
-          <span className="pointer-events-none absolute bottom-4 right-4 inline-flex items-center gap-1.5 rounded-full bg-white/90 px-3 py-1.5 text-xs font-semibold text-[#0B2043] opacity-0 shadow-sm transition-opacity duration-300 group-hover:opacity-100">
+          <span className="pointer-events-none absolute bottom-4 right-4 inline-flex items-center gap-1.5 rounded-full bg-white/90 px-3 py-1.5 text-xs font-semibold text-[#0A3A63] opacity-0 shadow-sm transition-opacity duration-300 group-hover:opacity-100">
             View gallery
             <ArrowUpRight className="h-3.5 w-3.5" aria-hidden />
           </span>
@@ -261,7 +251,7 @@ function ProjectGalleryPanel({
           <Link
             key={img.src}
             href={galleryHref}
-            className="group relative aspect-[4/3] overflow-hidden rounded-xl ring-1 ring-[#0B2043]/10 transition-[box-shadow,ring-color] hover:ring-[#00EAFF]/40 hover:shadow-md"
+            className="group relative aspect-[4/3] overflow-hidden rounded-xl ring-1 ring-[#0A3A63]/10 transition-[box-shadow,ring-color] hover:ring-[#22D3EE]/40 hover:shadow-md"
           >
             <Image
               src={img.src}
@@ -274,7 +264,7 @@ function ProjectGalleryPanel({
               className="pointer-events-none absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/60 to-transparent p-3 opacity-0 transition-opacity duration-300 group-hover:opacity-100"
               aria-hidden
             >
-              <p className="text-[10px] font-semibold uppercase tracking-wider text-[#00EAFF]">
+              <p className="text-[10px] font-semibold uppercase tracking-wider text-[#22D3EE]">
                 {img.category}
               </p>
             </div>
@@ -283,7 +273,7 @@ function ProjectGalleryPanel({
       </div>
       <Link
         href={galleryHref}
-        className="inline-flex items-center gap-2 text-sm font-semibold text-[#0B2043] underline-offset-4 hover:text-[#0099AA] hover:underline"
+        className="inline-flex items-center gap-2 text-sm font-semibold text-[#0A3A63] underline-offset-4 hover:text-[#0E9FB8] hover:underline"
       >
         Open full project gallery
         <ArrowUpRight className="h-4 w-4" aria-hidden />
@@ -294,13 +284,13 @@ function ProjectGalleryPanel({
 
 function SpecRows({ rows }: { rows: SpecRow[] }) {
   return (
-    <div className="overflow-hidden rounded-xl border border-[#0B2043]/10 bg-white shadow-sm ring-1 ring-[#00EAFF]/10">
+    <div className="overflow-hidden rounded-xl border border-[#0A3A63]/10 bg-white shadow-sm ring-1 ring-[#22D3EE]/10">
       {rows.map((row) => (
         <div
           key={row.particular}
           className="flex flex-col gap-1 border-b border-slate-100 px-4 py-4 last:border-0 sm:flex-row sm:items-start sm:justify-between sm:gap-8"
         >
-          <dt className="text-sm font-medium text-[#0B2043] sm:max-w-[34%]">{row.particular}</dt>
+          <dt className="text-sm font-medium text-[#0A3A63] sm:max-w-[34%]">{row.particular}</dt>
           <dd className="text-sm leading-relaxed text-slate-600 sm:flex-1">{row.feature}</dd>
         </div>
       ))}
@@ -323,7 +313,7 @@ function ProjectTabs({
   return (
     <Reveal className="mt-8">
       <Tabs defaultValue={defaultValue} className="w-full">
-        <TabsList className="h-auto w-full flex-wrap justify-start gap-1 border-[#0B2043]/10 bg-[#0B2043]/5 p-1">
+        <TabsList className="h-auto w-full flex-wrap justify-start gap-1 border-[#0A3A63]/10 bg-[#0A3A63]/5 p-1">
           {tabs.map((tab) => (
             <TabsTrigger key={tab.value} value={tab.value} className="flex-1 sm:flex-none">
               {tab.label}
@@ -373,10 +363,10 @@ function ProjectBlock({
 }) {
   return (
     <section className="mx-auto max-w-[1440px] px-6 py-16 md:px-12 md:py-20">
-      <div className="rounded-3xl border border-[#0B2043]/10 bg-gradient-to-br from-white via-[#f4f9fc] to-[#e8f4fa] p-8 shadow-xl shadow-[#0B2043]/10 md:p-12">
+      <div className="rounded-3xl border border-[#0A3A63]/10 bg-gradient-to-br from-white via-[#f4f9fc] to-[#e8f4fa] p-8 shadow-xl shadow-[#0A3A63]/10 md:p-12">
         <Reveal>
           <div className="flex flex-col gap-4 sm:flex-row sm:flex-wrap sm:items-center sm:justify-between">
-            <h2 className="text-3xl font-bold text-[#0B2043]">{title}</h2>
+            <h2 className="text-3xl font-bold text-[#0A3A63]">{title}</h2>
             <span
               className={cn(
                 "inline-flex w-fit items-center rounded-full border px-3 py-1 text-xs font-bold uppercase tracking-wider",
@@ -444,7 +434,7 @@ export function InfrastructurePortfolio() {
       <ProjectBlock
         title="Upper Phawa Khola (5.8 MW)"
         badge="Operational Asset (COD: 2081/01/08)"
-        badgeClassName="border-[#00EAFF]/20 bg-[#00EAFF]/10 text-[#0099AA]"
+        badgeClassName="border-[#22D3EE]/20 bg-[#22D3EE]/10 text-[#0E9FB8]"
         stats={upperPhawaStats}
         gallery={UPPER_GALLERY}
         galleryId="upper-phawa-khola"
@@ -458,7 +448,7 @@ export function InfrastructurePortfolio() {
       />
 
       <div
-        className="mx-auto my-10 h-px w-full max-w-[1440px] bg-gradient-to-r from-transparent via-[#00EAFF]/40 to-transparent px-6 md:my-14 md:px-12"
+        className="mx-auto my-10 h-px w-full max-w-[1440px] bg-gradient-to-r from-transparent via-[#22D3EE]/40 to-transparent px-6 md:my-14 md:px-12"
         aria-hidden
       />
 

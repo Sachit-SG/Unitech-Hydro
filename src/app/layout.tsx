@@ -43,6 +43,10 @@ export const metadata: Metadata = {
     title: SITE_NAME,
     description: SITE_DESCRIPTION,
   },
+  icons: {
+    icon: "/Hydro_logo.png",
+    apple: "/Hydro_logo.png",
+  },
   ...(googleVerification ?
     {
       verification: {
@@ -60,7 +64,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${inter.variable} ${syne.variable} h-full scroll-smooth scroll-pt-16`}
+      className={`${inter.variable} ${syne.variable} h-full scroll-pt-16`}
     >
       <body className="flex min-h-screen flex-col bg-glacier font-sans text-brand-slate antialiased">
         <OrganizationJsonLd />

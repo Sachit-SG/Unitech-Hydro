@@ -75,10 +75,13 @@ export function AboutExecutiveSummary({ features }: AboutExecutiveSummaryProps) 
       className="relative left-1/2 w-screen max-w-[100vw] -translate-x-1/2 border-y border-slate-200/60 bg-slate-50 py-24"
       aria-label="Executive summary"
     >
+      {/* Deep-link anchors for the Vision / Mission dropdown items */}
+      <span id="vision" className="absolute -top-20" aria-hidden />
+      <span id="mission" className="absolute -top-20" aria-hidden />
       <div className="mx-auto max-w-[1440px] px-8 md:px-20">
         <InteractiveFeatures
           features={withIcons(features)}
-          progressGradientLight="bg-[#00EAFF]"
+          progressGradientLight="bg-[#22D3EE]"
         />
       </div>
     </section>
