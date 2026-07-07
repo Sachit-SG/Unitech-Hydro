@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 56" role="img" aria-label="Laxmi Sunrise Bank">
+  <rect width="200" height="56" fill="none"/>
+  <circle cx="22" cy="28" r="14" fill="#F97316"/>
+  <path fill="#FDE68A" d="M22 14v6M22 36v6M8 28h6M30 28h6M12.5 17.5l4.2 4.2M27.3 32.3l4.2 4.2M31.5 17.5l-4.2 4.2M16.7 32.3l-4.2 4.2"/>
+  <text x="44" y="24" fill="#0A3A63" font-family="Arial,Helvetica,sans-serif" font-size="10.5" font-weight="700">LAXMI SUNRISE</text>
+  <text x="44" y="38" fill="#F97316" font-family="Arial,Helvetica,sans-serif" font-size="10.5" font-weight="700">BANK LTD.</text>
+</svg>

@@ -1,18 +1,11 @@
 "use client";
 
+import Image from "next/image";
 import { useReducedMotion } from "framer-motion";
 import { cn } from "@/lib/cn";
+import { PARTNERS } from "@/lib/partners-data";
 
-const partners = [
-  { name: "Machhapuchhre Bank", label: "MACHHAPUCHHRE BANK" },
-  { name: "Laxmi Sunrise Bank", label: "LAXMI SUNRISE BANK" },
-  { name: "Machhapuchhre Capital", label: "MACHHAPUCHHRE CAPITAL" },
-  { name: "Laxmi Sunrise Capital", label: "LAXMI SUNRISE CAPITAL" },
-  { name: "ICFC Finance", label: "ICFC" },
-  { name: "ICRA Nepal", label: "ICRA NEPAL" },
-] as const;
-
-const TRACK = [...partners, ...partners];
+const TRACK = [...PARTNERS, ...PARTNERS];
 
 export function PartnersMarquee() {
   const reduceMotion = useReducedMotion();
@@ -25,19 +18,23 @@ export function PartnersMarquee() {
       <div
         className={cn(
           "partners-marquee-track flex w-max items-stretch gap-5",
-          !reduceMotion && "partners-marquee-animate"
+          !reduceMotion && "partners-marquee-animate",
         )}
       >
-        {TRACK.map((p, idx) => (
+        {TRACK.map((partner, idx) => (
           <div
             // eslint-disable-next-line react/no-array-index-key
-            key={`${p.label}-${idx}`}
-            className="flex h-20 w-40 shrink-0 select-none items-center justify-center rounded-[4px] border border-slate-200 bg-slate-100 px-6 text-center font-bold text-slate-400 shadow-sm grayscale transition-[border-color,box-shadow,filter] hover:border-brand-cyan/60 hover:shadow-[0_0_0_1px_rgba(34,211,238,0.22)] hover:grayscale-0"
-            title={p.name}
+            key={`${partner.id}-${idx}`}
+            className="flex h-20 w-44 shrink-0 select-none items-center justify-center rounded-[4px] border border-slate-200 bg-white px-5 shadow-sm grayscale transition-[border-color,box-shadow,filter] hover:border-brand-cyan/60 hover:shadow-[0_0_0_1px_rgba(34,211,238,0.22)] hover:grayscale-0"
+            title={partner.name}
           >
-            <span className="font-heading text-xs font-bold uppercase tracking-[0.18em] text-slate-400">
-              {p.label}
-            </span>
+            <Image
+              src={partner.logo}
+              alt={partner.name}
+              width={160}
+              height={48}
+              className="h-10 w-auto max-w-[9.5rem] object-contain object-center"
+            />
           </div>
         ))}
       </div>
