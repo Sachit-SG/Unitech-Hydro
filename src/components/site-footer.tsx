@@ -73,7 +73,7 @@ export function SiteFooter() {
             </h2>
             <div className="mt-5 space-y-4 text-sm leading-relaxed text-slate-300">
               <div>
-                <p className="font-semibold text-white">Nepal headquarters</p>
+                <p className="font-semibold text-white">Nepal head office</p>
                 <p className="mt-1 text-slate-300">
                   Lalitpur-01, Kupondole
                   <br />

@@ -86,9 +86,9 @@ function LogoMark({
     return (
       <span
         className={cn(
-          "relative block shrink-0 overflow-hidden",
+          "relative block shrink-0 overflow-hidden justify-self-start",
           stacked
-            ? "h-36 w-full sm:h-40 md:h-44"
+            ? "h-40 w-40 sm:h-44 sm:w-44 md:h-52 md:w-52"
             : "inline-flex h-28 w-28 items-center justify-center sm:h-32 sm:w-32 md:h-36 md:w-36",
           className,
         )}
@@ -100,12 +100,12 @@ function LogoMark({
           fill
           className={cn(
             stacked
-              ? "origin-top-left scale-[1.22] object-contain object-left-top"
+              ? "scale-[1.34] object-contain object-center"
               : "object-contain object-center",
           )}
           sizes={
             stacked ?
-              "(min-width: 768px) 176px, 144px"
+              "(min-width: 768px) 208px, 176px"
             : "(min-width: 768px) 144px, 112px"
           }
         />

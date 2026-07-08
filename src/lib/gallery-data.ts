@@ -45,14 +45,14 @@ export const galleryBentoItems: GalleryBentoItem[] = [
     location: "Upper Phawa site",
   },
   {
-    id: "transmission-corridor",
+    id: "events",
     placement: "small",
     gridClass:
       "md:col-span-1 md:row-span-1 md:col-start-1 md:row-start-2 min-h-[200px] md:min-h-0",
-    imageSrc: "/gallery/grid-1.jpeg",
-    imageAlt: "Transmission — 33 kV switchyard and transformers",
-    projectName: "Transmission",
-    location: "Grid interface",
+    imageSrc: "/gallery/event/1.jpeg",
+    imageAlt: "Events — Annual General Meeting, Unitech Hydropower",
+    projectName: "Events",
+    location: "Company updates",
   },
   {
     id: "intake-headworks",
@@ -72,6 +72,7 @@ export const galleryImageCategories = [
   "Landscape",
   "Technical",
   "Aerial",
+  "Event",
   "Other",
 ] as const;
 
@@ -138,6 +139,13 @@ export const galleryDetailImages: Record<string, GalleryDetailImage[]> = {
     { src: "/gallery/civil-6.jpeg", alt: "Diversion weir and settling basin during construction", category: "Construction", w: 1040, h: 780 },
     { src: "/Hydro2.jpg", alt: "Intake gates and headworks — Upper Phawa Khola", category: "Construction", w: 1600, h: 1200 },
     { src: "/new1.jpeg", alt: "Forebay canal and lined channel at the intake", category: "Construction", w: 1600, h: 1200 },
+  ],
+  events: [
+    { src: "/gallery/event/1.jpeg", alt: "Unitech Hydropower — Annual General Meeting", category: "Event", w: 1600, h: 1200 },
+    { src: "/gallery/event/2.jpeg", alt: "Annual General Meeting — audience and proceedings", category: "Event", w: 1600, h: 1200 },
+    { src: "/gallery/event/3.jpeg", alt: "Annual General Meeting — company session", category: "Event", w: 1600, h: 1200 },
+    { src: "/gallery/event/5.jpeg", alt: "Annual General Meeting — meeting highlights", category: "Event", w: 1600, h: 1200 },
+    { src: "/gallery/event/6.jpeg", alt: "Annual General Meeting — participants and discussion", category: "Event", w: 1600, h: 1200 },
   ],
 };
 

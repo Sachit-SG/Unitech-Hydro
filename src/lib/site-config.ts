@@ -26,7 +26,7 @@ export const SITE_IMAGES = {
   /** Internal page title banners — gallery landscape stills. */
   pageHero: "/gallery/overview-7.jpeg",
   /** Homepage About preview — penstock / tunnel works. */
-  aboutPreview: "/Hydro2.jpg",
+  aboutPreview: "/gallery/civil-6.jpeg",
   /** About page — Company at a glance section. */
   aboutGlance: "/new3.jpeg",
   /** About page — Our Mission interactive panel. */
