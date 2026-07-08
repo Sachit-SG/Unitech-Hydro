@@ -121,10 +121,10 @@ export function NewsSection({ articles }: NewsSectionProps) {
 
         <div className="mt-10 text-center">
           <Link
-            href="/news"
+            href="/blog"
             className="inline-flex items-center justify-center rounded-[4px] border border-slate-200 bg-white px-6 py-3 font-sans text-sm font-semibold text-brand-blue shadow-sm transition-[border-color,box-shadow] hover:border-brand-cyan/60 hover:shadow-[0_0_0_1px_rgba(34,211,238,0.18)]"
           >
-            Explore All News →
+            Explore Blog & News →
           </Link>
         </div>
       </div>

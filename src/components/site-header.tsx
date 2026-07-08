@@ -26,12 +26,15 @@ const navItems: readonly NavItem[] = [
   },
   { href: "/projects", label: "Projects" },
   { href: "/gallery", label: "Gallery" },
-  { href: "/news", label: "News" },
+  { href: "/blog", label: "Blog & News" },
   { href: "/contact", label: "Contact" },
 ] as const;
 
 function navActive(pathname: string, href: string) {
   if (href === "/") return pathname === "/";
+  if (href === "/blog") {
+    return pathname === "/blog" || pathname.startsWith("/blog/") || pathname === "/news";
+  }
   return pathname === href || pathname.startsWith(`${href}/`);
 }
 

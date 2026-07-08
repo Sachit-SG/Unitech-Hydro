@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { BLOG_POSTS } from "@/lib/blog-content";
 import { galleryDetailImages } from "@/lib/gallery-data";
+import { apiErrorResponse } from "@/lib/api-error";
 import {
   createGalleryImage,
   createPost,
@@ -16,6 +17,10 @@ export async function POST(request: Request) {
     const refresh = new URL(request.url).searchParams.get("refresh");
 
     if (refresh === "blogs") {
+      if (process.env.NODE_ENV === "production") {
+        return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+      }
+
       const existing = await listPosts();
       for (const post of existing) {
         await deletePost(post.id);
@@ -78,9 +83,6 @@ export async function POST(request: Request) {
 
     return NextResponse.json({ ok: true, postsAdded, galleryAdded });
   } catch (err) {
-    return NextResponse.json(
-      { ok: false, error: err instanceof Error ? err.message : "seed failed" },
-      { status: 500 },
-    );
+    return apiErrorResponse(err, "admin-seed");
   }
 }

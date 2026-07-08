@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { apiErrorResponse } from "@/lib/api-error";
 import { deletePopupImage } from "@/lib/repos";
 
 export const dynamic = "force-dynamic";
@@ -12,9 +13,6 @@ export async function DELETE(
     await deletePopupImage(id);
     return NextResponse.json({ ok: true });
   } catch (err) {
-    return NextResponse.json(
-      { error: err instanceof Error ? err.message : "failed" },
-      { status: 500 },
-    );
+    return apiErrorResponse(err, "admin-popup-delete");
   }
 }

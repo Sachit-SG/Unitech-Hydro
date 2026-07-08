@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { FooterLeadColumn } from "@/components/footer-lead-column";
 import { SiteLogo } from "@/components/site-logo";
+import { SITE_IMAGES } from "@/lib/site-config";
 
 const PHONE_DISPLAY = "01-4106123";
 const PHONE_HREF = "tel:+97714106123";
@@ -16,7 +17,7 @@ const sitemapLinks = [
   { href: "/about#board", label: "Board of Directors" },
   { href: "/projects", label: "Projects" },
   { href: "/about#investment-profile", label: "Capital structure" },
-  { href: "/news", label: "News & Notice" },
+  { href: "/blog", label: "Blog & News" },
   { href: "/gallery", label: "Gallery" },
 ] as const;
 
@@ -30,8 +31,13 @@ export function SiteFooter() {
       <div className="relative mx-auto max-w-[1440px] px-8 py-20 md:px-20">
         <div className="grid grid-cols-1 gap-12 md:grid-cols-2 lg:grid-cols-4 lg:gap-10">
           {/* Column 1 — Identity */}
-          <div className="max-w-sm">
-            <SiteLogo />
+          <div className="max-w-sm text-left">
+            <SiteLogo
+              variant="dark"
+              markSrc={SITE_IMAGES.unitechLogo}
+              showWordmark
+              layout="stacked"
+            />
             <p className="mt-4 text-sm font-semibold uppercase tracking-wider text-white">
               Energy for a Developing Nation
             </p>

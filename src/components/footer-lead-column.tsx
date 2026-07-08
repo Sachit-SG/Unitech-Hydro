@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import type { FormEvent, SVGProps } from "react";
+import { type FormEvent, type SVGProps, useState } from "react";
 
 function IconLinkedIn(props: SVGProps<SVGSVGElement>) {
   return (
@@ -34,51 +34,98 @@ export function FooterLeadColumn({
   socialLinkedIn,
   socialInstagram,
 }: FooterLeadColumnProps) {
-  function handleSubscribe(e: FormEvent<HTMLFormElement>) {
+  const [submitting, setSubmitting] = useState(false);
+  const [subscribed, setSubscribed] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  async function handleSubscribe(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
+    setSubmitting(true);
+    setError(null);
+
     const data = new FormData(e.currentTarget);
     const address = String(data.get("email") ?? "").trim();
-    const subject = "Newsletter subscription — Unitech Hydropower";
-    const body = address
-      ? `Please add ${address} to project updates.`
-      : "Please add me to project updates.";
-    window.location.href = `mailto:${email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+
+    try {
+      const res = await fetch("/api/subscribe", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          email: address,
+          company: data.get("company"),
+        }),
+      });
+      const payload = (await res.json()) as { error?: string };
+      if (!res.ok) {
+        throw new Error(payload.error ?? "Subscription failed. Please try again.");
+      }
+      setSubscribed(true);
+      e.currentTarget.reset();
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Subscription failed.");
+    } finally {
+      setSubmitting(false);
+    }
   }
 
   return (
     <div className="w-full min-w-0">
-      <form
-        onSubmit={handleSubscribe}
-        className="w-full"
-        aria-label="Subscribe to project updates"
-      >
-        <label htmlFor="footer-email" className="sr-only">
-          Email for updates
-        </label>
-        <input
-          id="footer-email"
-          name="email"
-          type="email"
-          inputMode="email"
-          autoComplete="email"
-          placeholder="Enter your email"
-          className="w-full min-w-0 border-0 border-b border-white/20 bg-transparent pb-2 text-sm text-white outline-none transition-colors placeholder:text-slate-500 focus:border-[#22D3EE] focus:outline-none focus-visible:ring-0"
-        />
-        <div className="mt-4 flex flex-row flex-nowrap gap-3">
-          <Link
-            href="/contact"
-            className="inline-flex shrink-0 items-center justify-center whitespace-nowrap rounded-sm bg-[#22D3EE] px-4 py-2 text-xs font-semibold text-[#0A3A63] transition-colors hover:bg-[#22D3EE]/90"
-          >
-            Contact Us
-          </Link>
-          <button
-            type="submit"
-            className="inline-flex shrink-0 items-center justify-center whitespace-nowrap rounded-sm border border-[#22D3EE] bg-transparent px-4 py-2 text-xs font-semibold text-[#22D3EE] transition-colors hover:bg-[#22D3EE]/10"
-          >
-            Subscribe
-          </button>
-        </div>
-      </form>
+      {subscribed ?
+        <p
+          className="text-sm leading-relaxed text-slate-300"
+          role="status"
+        >
+          Thanks — you&apos;re on the list. We&apos;ll send project updates to your inbox.
+        </p>
+      : <form
+          onSubmit={handleSubscribe}
+          className="w-full"
+          aria-label="Subscribe to project updates"
+        >
+          <input
+            type="text"
+            name="company"
+            tabIndex={-1}
+            autoComplete="off"
+            className="hidden"
+            aria-hidden
+          />
+          <label htmlFor="footer-email" className="sr-only">
+            Email for updates
+          </label>
+          <input
+            id="footer-email"
+            name="email"
+            type="email"
+            inputMode="email"
+            autoComplete="email"
+            required
+            placeholder="Enter your email"
+            disabled={submitting}
+            className="w-full min-w-0 border-0 border-b border-white/20 bg-transparent pb-2 text-sm text-white outline-none transition-colors placeholder:text-slate-500 focus:border-[#22D3EE] focus:outline-none focus-visible:ring-0 disabled:opacity-60"
+          />
+          {error ?
+            <p className="mt-2 text-xs text-red-300" role="alert">
+              {error}
+            </p>
+          : null}
+          <div className="mt-4 flex flex-row flex-nowrap gap-3">
+            <Link
+              href="/contact"
+              className="inline-flex shrink-0 items-center justify-center whitespace-nowrap rounded-sm bg-[#22D3EE] px-4 py-2 text-xs font-semibold text-[#0A3A63] transition-colors hover:bg-[#22D3EE]/90"
+            >
+              Contact Us
+            </Link>
+            <button
+              type="submit"
+              disabled={submitting}
+              className="inline-flex shrink-0 items-center justify-center whitespace-nowrap rounded-sm border border-[#22D3EE] bg-transparent px-4 py-2 text-xs font-semibold text-[#22D3EE] transition-colors hover:bg-[#22D3EE]/10 disabled:cursor-not-allowed disabled:opacity-60"
+            >
+              {submitting ? "Sending…" : "Subscribe"}
+            </button>
+          </div>
+        </form>
+      }
 
       <div className="mt-6 space-y-2">
         <a

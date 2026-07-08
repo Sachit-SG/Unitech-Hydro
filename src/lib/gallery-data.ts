@@ -99,6 +99,9 @@ export const galleryDetailImages: Record<string, GalleryDetailImage[]> = {
     { src: "/gallery/overview-6.jpeg", alt: "Steep forested slopes of the catchment", category: "Landscape", w: 1600, h: 1200 },
     { src: "/gallery/overview-4.jpeg", alt: "Access track cut into the hillside to the works", category: "Other", w: 1600, h: 1200 },
     { src: "/gallery/overview-2.jpeg", alt: "Field survey and site assessment along the project corridor", category: "Other", w: 1200, h: 1600 },
+    { src: "/images/upper-phawa-headworks.jpg", alt: "Upper Phawa Khola — headworks and intake structures", category: "Construction", w: 1600, h: 1200 },
+    { src: "/images/upper-phawa-civil-works.jpg", alt: "Upper Phawa Khola — civil works along the conveyance", category: "Construction", w: 1600, h: 1200 },
+    { src: "/new2.jpeg", alt: "Phawa Khola valley — project corridor aerial context", category: "Landscape", w: 1600, h: 1200 },
   ],
   "middle-iwa-khola": [
     { src: "/gallery/iwa-2.jpeg", alt: "River valley panorama across the Iwa catchment", category: "Aerial", w: 1600, h: 1200 },
@@ -122,6 +125,8 @@ export const galleryDetailImages: Record<string, GalleryDetailImage[]> = {
     { src: "/gallery/grid-4.jpeg", alt: "Penstock on saddle supports with excavator", category: "Construction", w: 956, h: 1280 },
     { src: "/gallery/grid-9.jpeg", alt: "Excavator laying penstock along the supports", category: "Construction", w: 780, h: 1040 },
     { src: "/gallery/grid-7.jpeg", alt: "Exposed penstock section at dusk", category: "Technical", w: 1040, h: 780 },
+    { src: "/slide1.jpg", alt: "Penstock tunnel and hillside alignment", category: "Construction", w: 1600, h: 1200 },
+    { src: "/new7.jpeg", alt: "Adit tunnel portal and access works", category: "Technical", w: 1600, h: 1200 },
   ],
   "intake-headworks": [
     { src: "/gallery/civil-5.jpeg", alt: "Intake and headworks concrete structure", category: "Construction", w: 1600, h: 1200 },
@@ -131,6 +136,8 @@ export const galleryDetailImages: Record<string, GalleryDetailImage[]> = {
     { src: "/gallery/civil-2.jpeg", alt: "Forebay canal and civil structures at the intake", category: "Construction", w: 1280, h: 960 },
     { src: "/gallery/civil-4.jpeg", alt: "Forebay basin with worker for scale", category: "Construction", w: 1600, h: 1200 },
     { src: "/gallery/civil-6.jpeg", alt: "Diversion weir and settling basin during construction", category: "Construction", w: 1040, h: 780 },
+    { src: "/Hydro2.jpg", alt: "Intake gates and headworks — Upper Phawa Khola", category: "Construction", w: 1600, h: 1200 },
+    { src: "/new1.jpeg", alt: "Forebay canal and lined channel at the intake", category: "Construction", w: 1600, h: 1200 },
   ],
 };
 
@@ -145,20 +152,31 @@ const PROJECT_GALLERY_ALBUMS: Record<string, readonly string[]> = {
   "middle-iwa-khola": ["middle-iwa-khola"],
 };
 
-export function getProjectGalleryImages(primaryId: string): GalleryDetailImage[] | undefined {
+/** Album slugs that make up a public project gallery page. */
+export function getGalleryAlbumIds(primaryId: string): string[] | undefined {
   const albumIds = PROJECT_GALLERY_ALBUMS[primaryId];
-  const ids = albumIds ?? (galleryDetailImages[primaryId] ? [primaryId] : undefined);
-  if (!ids) return undefined;
+  if (albumIds) return [...albumIds];
+  if (galleryDetailImages[primaryId]) return [primaryId];
+  return undefined;
+}
 
+export function mergeStaticGalleryImages(albumIds: readonly string[]): GalleryDetailImage[] {
   const seen = new Set<string>();
   const merged: GalleryDetailImage[] = [];
-  for (const id of ids) {
+  for (const id of albumIds) {
     for (const img of galleryDetailImages[id] ?? []) {
       if (seen.has(img.src)) continue;
       seen.add(img.src);
       merged.push(img);
     }
   }
+  return merged;
+}
+
+export function getProjectGalleryImages(primaryId: string): GalleryDetailImage[] | undefined {
+  const ids = getGalleryAlbumIds(primaryId);
+  if (!ids) return undefined;
+  const merged = mergeStaticGalleryImages(ids);
   return merged.length ? merged : undefined;
 }
 

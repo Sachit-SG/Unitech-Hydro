@@ -1,10 +1,11 @@
 import { NextResponse } from "next/server";
-import { dbReady, listGallery } from "@/lib/repos";
+import { getMergedGalleryForProject } from "@/lib/gallery-public";
 import { getPublicAlbumImages } from "@/lib/gallery-admin-storage";
+import { dbReady } from "@/lib/repos";
 
 export const dynamic = "force-dynamic";
 
-/** Public: album images for a project. Falls back to static defaults if the DB is empty. */
+/** Public: merged album images for a project (static + database). */
 export async function GET(
   _request: Request,
   { params }: { params: Promise<{ projectId: string }> },
@@ -13,20 +14,12 @@ export async function GET(
 
   if (dbReady()) {
     try {
-      const rows = await listGallery(projectId);
-      if (rows.length > 0) {
-        return NextResponse.json({
-          images: rows.map((r) => ({
-            src: r.src,
-            alt: r.alt,
-            category: r.category,
-            w: r.w ?? undefined,
-            h: r.h ?? undefined,
-          })),
-        });
+      const images = await getMergedGalleryForProject(projectId);
+      if (images.length > 0) {
+        return NextResponse.json({ images });
       }
     } catch {
-      // fall through to static
+      // fall through
     }
   }
 

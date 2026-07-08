@@ -7,13 +7,12 @@ import { NewsNoticesPanel } from "@/components/admin/news-notices-panel";
 import { PopupTabContent } from "@/components/admin/popup-tab-content";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
-const VALID_TABS = ["gallery", "blog", "popup"] as const;
+const VALID_TABS = ["gallery", "blog", "news", "popup"] as const;
 type AdminTab = (typeof VALID_TABS)[number];
 
 const LEGACY_TAB_MAP: Record<string, AdminTab> = {
   dashboard: "gallery",
   about: "gallery",
-  news: "blog",
 };
 
 const TAB_TRIGGER_CLASS =
@@ -70,8 +69,7 @@ export function AdminCommandCenter() {
           Content Manager
         </h1>
         <p className="mt-2 max-w-2xl text-sm text-brand-slate/70">
-          Manage gallery albums, blog posts, and the homepage popup. Changes save to the
-          database and appear on the live site.
+          Manage gallery albums, blog articles, external news links, and the homepage popup.
         </p>
       </header>
 
@@ -92,6 +90,9 @@ export function AdminCommandCenter() {
           <TabsTrigger value="blog" className={TAB_TRIGGER_CLASS}>
             Blog
           </TabsTrigger>
+          <TabsTrigger value="news" className={TAB_TRIGGER_CLASS}>
+            News
+          </TabsTrigger>
           <TabsTrigger value="popup" className={TAB_TRIGGER_CLASS}>
             Popup
           </TabsTrigger>
@@ -102,7 +103,11 @@ export function AdminCommandCenter() {
         </TabsContent>
 
         <TabsContent value="blog" className="mt-6 outline-none">
-          <NewsNoticesPanel title="Manage Blog" createLabel="Create Post" />
+          <NewsNoticesPanel mode="blog" />
+        </TabsContent>
+
+        <TabsContent value="news" className="mt-6 outline-none">
+          <NewsNoticesPanel mode="news" />
         </TabsContent>
 
         <TabsContent value="popup" className="mt-6 outline-none">

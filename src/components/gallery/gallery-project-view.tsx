@@ -10,34 +10,28 @@ import { ArrowLeft } from "lucide-react";
 import { cn } from "@/lib/cn";
 import type {
   GalleryDetailImage,
-  GalleryFilterLabel,
 } from "@/lib/gallery-data";
-import { galleryFilterLabels } from "@/lib/gallery-data";
+import { galleryBentoItems } from "@/lib/gallery-data";
 
 type GalleryProjectViewProps = {
+  projectId: string;
   title: string;
   images: GalleryDetailImage[];
 };
 
-export function GalleryProjectView({ title, images }: GalleryProjectViewProps) {
-  const [category, setCategory] = useState<GalleryFilterLabel>("All");
+export function GalleryProjectView({ projectId, title, images }: GalleryProjectViewProps) {
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const [lightboxIndex, setLightboxIndex] = useState(0);
 
-  const filtered = useMemo(() => {
-    if (category === "All") return images;
-    return images.filter((img) => img.category === category);
-  }, [images, category]);
-
   const slides = useMemo(
-    () => filtered.map((img) => ({ src: img.src, alt: img.alt })),
-    [filtered],
+    () => images.map((img) => ({ src: img.src, alt: img.alt })),
+    [images],
   );
 
   useEffect(() => {
     setLightboxOpen(false);
     setLightboxIndex(0);
-  }, [category]);
+  }, [projectId]);
 
   const openAt = useCallback((index: number) => {
     setLightboxIndex(index);
@@ -60,92 +54,76 @@ export function GalleryProjectView({ title, images }: GalleryProjectViewProps) {
             {title}
           </h1>
           <p className="mt-2 font-sans text-sm text-white/50">
-            {filtered.length} photo{filtered.length === 1 ? "" : "s"}
-            {category !== "All" ? ` · ${category}` : ""}
+            {images.length} photo{images.length === 1 ? "" : "s"}
           </p>
           <nav
             className="mt-6 overflow-x-auto pb-1 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
-            aria-label="Photo categories"
+            aria-label="Gallery projects"
           >
             <div className="flex w-max min-w-0 flex-wrap gap-2 md:w-auto">
-          {galleryFilterLabels.map((label) => {
-            const active = category === label;
-            return (
-              <button
-                key={label}
-                type="button"
-                onClick={() => setCategory(label)}
-                className={cn(
-                  "rounded-full border px-4 py-2 font-mono text-[10px] font-semibold uppercase tracking-[0.18em] transition-all",
-                  active
-                    ? "border-[#22D3EE] bg-[#22D3EE]/15 text-[#22D3EE]"
-                    : "border-white/20 bg-white/5 text-white/70 hover:border-white/35 hover:text-white",
-                )}
-              >
-                {label}
-              </button>
-            );
-          })}
+              {galleryBentoItems.map((item) => {
+                const active = projectId === item.id;
+                return (
+                  <Link
+                    key={item.id}
+                    href={`/gallery/${item.id}`}
+                    className={cn(
+                      "rounded-full border px-4 py-2 font-mono text-[10px] font-semibold uppercase tracking-[0.18em] transition-all",
+                      active
+                        ? "border-[#22D3EE] bg-[#22D3EE]/15 text-[#22D3EE]"
+                        : "border-white/20 bg-white/5 text-white/70 hover:border-white/35 hover:text-white",
+                    )}
+                  >
+                    {item.projectName}
+                  </Link>
+                );
+              })}
             </div>
           </nav>
         </div>
       </header>
 
       <main className="mx-auto w-full max-w-[1400px] px-6 pb-16 pt-8 md:px-10 md:pb-24 md:pt-10">
-        <AnimatePresence mode="wait">
-          <motion.ul
-            key={category}
-            role="list"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.22 }}
-            className="w-full list-none gap-4 space-y-4 p-0 [column-gap:1rem] sm:columns-2 md:gap-5 lg:columns-3"
-          >
-            {filtered.map((img, i) => (
-              <motion.li
-                key={`${img.src}-${img.category}-${i}`}
-                role="listitem"
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.32, delay: Math.min(i * 0.03, 0.24) }}
-                className="mb-4 break-inside-avoid"
+        <motion.ul
+          role="list"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.22 }}
+          className="w-full list-none gap-4 space-y-4 p-0 [column-gap:1rem] sm:columns-2 md:gap-5 lg:columns-3"
+        >
+          {images.map((img, i) => (
+            <motion.li
+              key={`${img.src}-${i}`}
+              role="listitem"
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.32, delay: Math.min(i * 0.03, 0.24) }}
+              className="mb-4 break-inside-avoid"
+            >
+              <button
+                type="button"
+                onClick={() => openAt(i)}
+                className="group relative block w-full cursor-zoom-in overflow-hidden rounded-xl border border-white/10 bg-[#0A3A63]/80 text-left shadow-md shadow-black/40 outline-none focus-visible:ring-2 focus-visible:ring-[#22D3EE]"
               >
-                <button
-                  type="button"
-                  onClick={() => openAt(i)}
-                  className="group relative block w-full cursor-zoom-in overflow-hidden rounded-xl border border-white/10 bg-[#0A3A63]/80 text-left shadow-md shadow-black/40 outline-none focus-visible:ring-2 focus-visible:ring-[#22D3EE]"
-                >
-                  <Image
-                    src={img.src}
-                    alt={img.alt}
-                    width={img.w ?? 1600}
-                    height={img.h ?? 1200}
-                    loading="lazy"
-                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                    className="h-auto w-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
-                  />
-                  {/* Always-on category chip */}
-                  <span className="absolute left-3 top-3 rounded-full bg-black/45 px-2.5 py-1 font-mono text-[9px] font-semibold uppercase tracking-widest text-[#22D3EE] backdrop-blur-sm">
-                    {img.category}
+                <Image
+                  src={img.src}
+                  alt={img.alt}
+                  width={img.w ?? 1600}
+                  height={img.h ?? 1200}
+                  loading="lazy"
+                  sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                  className="h-auto w-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
+                />
+                {/* Caption reveals on hover */}
+                <figcaption className="pointer-events-none absolute inset-x-0 bottom-0 translate-y-2 bg-gradient-to-t from-black/85 via-black/40 to-transparent px-4 pb-3 pt-10 opacity-0 transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100">
+                  <span className="font-sans text-xs leading-snug text-white/90">
+                    {img.alt}
                   </span>
-                  {/* Caption reveals on hover */}
-                  <figcaption className="pointer-events-none absolute inset-x-0 bottom-0 translate-y-2 bg-gradient-to-t from-black/85 via-black/40 to-transparent px-4 pb-3 pt-10 opacity-0 transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100">
-                    <span className="font-sans text-xs leading-snug text-white/90">
-                      {img.alt}
-                    </span>
-                  </figcaption>
-                </button>
-              </motion.li>
-            ))}
-          </motion.ul>
-        </AnimatePresence>
-
-        {filtered.length === 0 ? (
-          <p className="mt-10 text-center text-sm text-white/55">
-            No photos in this category yet.
-          </p>
-        ) : null}
+                </figcaption>
+              </button>
+            </motion.li>
+          ))}
+        </motion.ul>
       </main>
 
       <Lightbox

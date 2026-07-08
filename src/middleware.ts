@@ -1,26 +1,43 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
-
-const ADMIN_COOKIE = "admin_token";
+import { verifyAdminSessionToken, ADMIN_SESSION_COOKIE } from "@/lib/admin-session";
+import { CANONICAL_HOST, getRequestHost, isAlternateHost } from "@/lib/canonical-host";
 
 function isAdminPath(pathname: string): boolean {
   return pathname === "/admin" || pathname.startsWith("/admin/") || pathname.startsWith("/api/admin/");
 }
 
 function isPublicAdminPath(pathname: string): boolean {
-  return pathname === "/admin/login" || pathname === "/api/admin/login";
+  return (
+    pathname === "/admin/login" ||
+    pathname === "/api/admin/login" ||
+    pathname === "/api/admin/logout"
+  );
 }
 
-export function middleware(request: NextRequest) {
-  const secret = process.env.ADMIN_SECRET;
+function redirectToCanonicalHost(request: NextRequest): NextResponse | null {
+  const host = getRequestHost(request);
+  if (!isAlternateHost(host)) return null;
+
+  const url = request.nextUrl.clone();
+  url.hostname = CANONICAL_HOST;
+  url.protocol = "https:";
+  url.port = "";
+  return NextResponse.redirect(url, 308);
+}
+
+export async function middleware(request: NextRequest) {
+  const hostRedirect = redirectToCanonicalHost(request);
+  if (hostRedirect) return hostRedirect;
+
   const { pathname } = request.nextUrl;
 
-  if (!secret || !isAdminPath(pathname) || isPublicAdminPath(pathname)) {
+  if (!isAdminPath(pathname) || isPublicAdminPath(pathname)) {
     return NextResponse.next();
   }
 
-  const token = request.cookies.get(ADMIN_COOKIE)?.value;
-  if (token === secret) {
+  const token = request.cookies.get(ADMIN_SESSION_COOKIE)?.value;
+  if (await verifyAdminSessionToken(token)) {
     return NextResponse.next();
   }
 
@@ -34,5 +51,7 @@ export function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/admin", "/admin/:path*", "/api/admin/:path*"],
+  matcher: [
+    "/((?!_next/static|_next/image|favicon.ico|icon.png|.*\\.(?:svg|png|jpg|jpeg|webp|gif|ico|woff2?|mp4)$).*)",
+  ],
 };

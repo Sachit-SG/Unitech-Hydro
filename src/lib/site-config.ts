@@ -1,7 +1,9 @@
 /** Canonical production URL — override with NEXT_PUBLIC_SITE_URL in env. */
 export const SITE_URL =
   process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, "") ??
-  "https://unitechhydropower.com";
+  (process.env.NODE_ENV === "development"
+    ? "http://localhost:3000"
+    : "https://unitechhydropower.com");
 
 export const SITE_NAME = "Unitech Hydropower Company Limited";
 
@@ -10,8 +12,10 @@ export const SITE_DESCRIPTION =
 
 /** Public image paths (SEO-friendly filenames — avoid generic “dam” in URLs). */
 export const SITE_IMAGES = {
-  /** Company logo — header, footer, favicon source. */
+  /** Header logo mark (cropped). */
   logo: "/Hydro_logo.png",
+  /** Circular seal — footer. */
+  unitechLogo: "/Unitech_logo.png",
   upperPhawaHeadworks: "/images/upper-phawa-headworks.jpg",
   upperPhawaCivilWorks: "/images/upper-phawa-civil-works.jpg",
   heroBackground: "/hero-bg.jpg",
@@ -22,7 +26,7 @@ export const SITE_IMAGES = {
   /** Internal page title banners — gallery landscape stills. */
   pageHero: "/gallery/overview-7.jpeg",
   /** Homepage About preview — penstock / tunnel works. */
-  aboutPreview: "/new7.jpeg",
+  aboutPreview: "/Hydro2.jpg",
   /** About page — Company at a glance section. */
   aboutGlance: "/new3.jpeg",
   /** About page — Our Mission interactive panel. */

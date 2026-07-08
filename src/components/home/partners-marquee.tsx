@@ -17,7 +17,7 @@ export function PartnersMarquee() {
     >
       <div
         className={cn(
-          "partners-marquee-track flex w-max items-stretch gap-5",
+          "partners-marquee-track flex w-max items-stretch gap-10 md:gap-12",
           !reduceMotion && "partners-marquee-animate",
         )}
       >
@@ -25,7 +25,7 @@ export function PartnersMarquee() {
           <div
             // eslint-disable-next-line react/no-array-index-key
             key={`${partner.id}-${idx}`}
-            className="flex h-20 w-44 shrink-0 select-none items-center justify-center rounded-[4px] border border-slate-200 bg-white px-5 shadow-sm grayscale transition-[border-color,box-shadow,filter] hover:border-brand-cyan/60 hover:shadow-[0_0_0_1px_rgba(34,211,238,0.22)] hover:grayscale-0"
+            className="flex h-16 w-40 shrink-0 select-none items-center justify-center px-2"
             title={partner.name}
           >
             <Image
@@ -33,7 +33,7 @@ export function PartnersMarquee() {
               alt={partner.name}
               width={160}
               height={48}
-              className="h-10 w-auto max-w-[9.5rem] object-contain object-center"
+              className="h-11 w-auto max-w-[10rem] object-contain object-center"
             />
           </div>
         ))}

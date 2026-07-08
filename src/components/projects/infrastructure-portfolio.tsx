@@ -2,7 +2,8 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { motion } from "framer-motion";
+import { useRef, type ReactNode } from "react";
+import { motion, useReducedMotion, useScroll, useTransform } from "framer-motion";
 import {
   Activity,
   ArrowDown,
@@ -350,6 +351,7 @@ function ProjectBlock({
   tabs,
   tabsDefault,
   galleryId,
+  embedded = false,
 }: {
   title: string;
   badge: React.ReactNode;
@@ -360,10 +362,21 @@ function ProjectBlock({
   tabs: { value: string; label: string; rows: SpecRow[] }[];
   tabsDefault: string;
   galleryId: string;
+  embedded?: boolean;
 }) {
   return (
-    <section className="mx-auto max-w-[1440px] px-6 py-16 md:px-12 md:py-20">
-      <div className="rounded-3xl border border-[#0A3A63]/10 bg-gradient-to-br from-white via-[#f4f9fc] to-[#e8f4fa] p-8 shadow-xl shadow-[#0A3A63]/10 md:p-12">
+    <section
+      className={cn(
+        "mx-auto max-w-[1440px] px-6 md:px-12",
+        embedded ? "py-6 md:py-8" : "py-16 md:py-20"
+      )}
+    >
+      <div
+        className={cn(
+          "rounded-3xl border border-[#0A3A63]/10 bg-gradient-to-br from-white via-[#f4f9fc] to-[#e8f4fa] p-8 shadow-xl shadow-[#0A3A63]/10 md:p-12",
+          embedded && "shadow-2xl shadow-[#0A3A63]/15"
+        )}
+      >
         <Reveal>
           <div className="flex flex-col gap-4 sm:flex-row sm:flex-wrap sm:items-center sm:justify-between">
             <h2 className="text-3xl font-bold text-[#0A3A63]">{title}</h2>
@@ -390,6 +403,38 @@ function ProjectBlock({
 
         <ProjectTabs defaultValue={tabsDefault} tabs={tabs} galleryId={galleryId} />
       </div>
+    </section>
+  );
+}
+
+const STICKY_TOP = "top-20 md:top-24";
+
+function StickyFirstProject({ children }: { children: ReactNode }) {
+  return (
+    <div className="relative z-10">
+      <div className={cn("sticky z-10", STICKY_TOP)}>{children}</div>
+    </div>
+  );
+}
+
+function SlideUpSecondProject({ children }: { children: ReactNode }) {
+  const containerRef = useRef<HTMLElement>(null);
+  const reduceMotion = useReducedMotion();
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start end", "start 0.32"],
+  });
+  const y = useTransform(scrollYProgress, [0, 1], [120, 0]);
+  const opacity = useTransform(scrollYProgress, [0, 0.45, 1], [0.82, 0.94, 1]);
+
+  return (
+    <section ref={containerRef} className="relative -mt-2 md:-mt-6">
+      <motion.div
+        style={reduceMotion ? undefined : { y, opacity }}
+        className={cn("sticky z-20 pb-16 md:pb-20", STICKY_TOP)}
+      >
+        {children}
+      </motion.div>
     </section>
   );
 }
@@ -431,41 +476,42 @@ export function InfrastructurePortfolio() {
         </div>
       </section>
 
-      <ProjectBlock
-        title="Upper Phawa Khola (5.8 MW)"
-        badge="Operational Asset (COD: 2081/01/08)"
-        badgeClassName="border-[#22D3EE]/20 bg-[#22D3EE]/10 text-[#0E9FB8]"
-        stats={upperPhawaStats}
-        gallery={UPPER_GALLERY}
-        galleryId="upper-phawa-khola"
-        narrative="The Upper Phawa Khola Hydroelectric Project is a run-of-river scheme on Phawa Khola in Pathivara Yangbarak, Dumrise Shrijangha, and Sikaicha, Taplejung. The asset reached commercial operation on BS 2081/01/08 following a PPA dated BS 2074/11/11. Design discharge is 2.6 m³/s with a gross head of 270 m (net 260.1 m), delivering 33.05 GWh annual energy under the contracted dry and wet season split. Civil works span the left bank of Phawa Khola from intake near Ose Dobhan to a surface powerhouse at Dumrise, with export to Amarpur substation on an 8 km, 33 kV link."
-        tabsDefault="civil"
-        tabs={[
-          { value: "civil", label: "Civil Structures", rows: upperPhawaCivilRows },
-          { value: "electro", label: "Electro-Mechanical", rows: upperPhawaElectroRows },
-          { value: "financials", label: "Financials", rows: upperPhawaFinancialRows },
-        ]}
-      />
+      <StickyFirstProject>
+        <ProjectBlock
+          embedded
+          title="Upper Phawa Khola (5.8 MW)"
+          badge="Operational Asset (COD: 2081/01/08)"
+          badgeClassName="border-[#22D3EE]/20 bg-[#22D3EE]/10 text-[#0E9FB8]"
+          stats={upperPhawaStats}
+          gallery={UPPER_GALLERY}
+          galleryId="upper-phawa-khola"
+          narrative="The Upper Phawa Khola Hydroelectric Project is a run-of-river scheme on Phawa Khola in Pathivara Yangbarak, Dumrise Shrijangha, and Sikaicha, Taplejung. The asset reached commercial operation on BS 2081/01/08 following a PPA dated BS 2074/11/11. Design discharge is 2.6 m³/s with a gross head of 270 m (net 260.1 m), delivering 33.05 GWh annual energy under the contracted dry and wet season split. Civil works span the left bank of Phawa Khola from intake near Ose Dobhan to a surface powerhouse at Dumrise, with export to Amarpur substation on an 8 km, 33 kV link."
+          tabsDefault="civil"
+          tabs={[
+            { value: "civil", label: "Civil Structures", rows: upperPhawaCivilRows },
+            { value: "electro", label: "Electro-Mechanical", rows: upperPhawaElectroRows },
+            { value: "financials", label: "Financials", rows: upperPhawaFinancialRows },
+          ]}
+        />
+      </StickyFirstProject>
 
-      <div
-        className="mx-auto my-10 h-px w-full max-w-[1440px] bg-gradient-to-r from-transparent via-[#22D3EE]/40 to-transparent px-6 md:my-14 md:px-12"
-        aria-hidden
-      />
-
-      <ProjectBlock
-        title="Iwa Khola (15.0 MW)"
-        badge="Under Detailed Study"
-        badgeClassName="border-amber-500/20 bg-amber-500/10 text-amber-700"
-        stats={iwaStats}
-        gallery={IWA_GALLERY}
-        galleryId="middle-iwa-khola"
-        narrative="The Iwa Khola Hydropower Project is a feasibility-stage run-of-river development in Taplejung and Panchthar districts, planned for execution through Unitech Iwa Hydro Energy Pvt. Ltd., with Unitech Hydropower Company Limited holding a 51% ownership stake. The scheme is designed with a gross head of 400.10 m and design discharge of 4.36 m³/s, combining a 4,382 m headrace tunnel, headrace pipe, adit tunnel, and penstock with a vertical Pelton turbine and a 132 kV transmission line spanning 22 km. Feasibility materials indicate NPR 336.7 crore total project cost, NPR 51.15 crore first-year revenue, IRR 13.22%, and a benefit–cost ratio of 1.56."
-        tabsDefault="engineering"
-        tabs={[
-          { value: "engineering", label: "Engineering", rows: iwaEngineeringRows },
-          { value: "investment", label: "Investment Metrics", rows: iwaInvestmentRows },
-        ]}
-      />
+      <SlideUpSecondProject>
+        <ProjectBlock
+          embedded
+          title="Iwa Khola (15.0 MW)"
+          badge="Under Detailed Study"
+          badgeClassName="border-amber-500/20 bg-amber-500/10 text-amber-700"
+          stats={iwaStats}
+          gallery={IWA_GALLERY}
+          galleryId="middle-iwa-khola"
+          narrative="The Iwa Khola Hydropower Project is a feasibility-stage run-of-river development in Taplejung and Panchthar districts, planned for execution through Unitech Iwa Hydro Energy Pvt. Ltd., with Unitech Hydropower Company Limited holding a 51% ownership stake. The scheme is designed with a gross head of 400.10 m and design discharge of 4.36 m³/s, combining a 4,382 m headrace tunnel, headrace pipe, adit tunnel, and penstock with a vertical Pelton turbine and a 132 kV transmission line spanning 22 km. Feasibility materials indicate NPR 336.7 crore total project cost, NPR 51.15 crore first-year revenue, IRR 13.22%, and a benefit–cost ratio of 1.56."
+          tabsDefault="engineering"
+          tabs={[
+            { value: "engineering", label: "Engineering", rows: iwaEngineeringRows },
+            { value: "investment", label: "Investment Metrics", rows: iwaInvestmentRows },
+          ]}
+        />
+      </SlideUpSecondProject>
     </div>
   );
 }

@@ -33,7 +33,7 @@ export function GalleryProjectPageClient({
     return () => {
       cancelled = true;
     };
-  }, [projectId, defaultImages]);
+  }, [projectId]);
 
-  return <GalleryProjectView title={title} images={images} />;
+  return <GalleryProjectView projectId={projectId} title={title} images={images} />;
 }

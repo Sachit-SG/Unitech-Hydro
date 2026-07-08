@@ -1,9 +1,9 @@
 "use client";
 
 import Image from "next/image";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { format } from "date-fns";
-import { ImagePlus, Pencil, Plus, Trash2 } from "lucide-react";
+import { ExternalLink, Pencil, Plus, Trash2 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -34,68 +34,55 @@ import { cn } from "@/lib/utils";
 
 export type NewsStatus = "Draft" | "Published";
 
-export type NewsItem = {
-  id: string;
-  date: Date;
-  headline: string;
-  status: NewsStatus;
-  content: string;
-};
-
-const BLOG_CATEGORIES: PostCategory[] = ["Corporate", "Projects", "Reports"];
+type PanelMode = "blog" | "news";
 
 type NewsFormState = {
   title: string;
   publishDate: Date | undefined;
   content: string;
   coverUrl: string;
-  category: PostCategory;
+  externalUrl: string;
 };
 
-const emptyForm = (): NewsFormState => ({
+const emptyForm = (mode: PanelMode): NewsFormState => ({
   title: "",
   publishDate: undefined,
   content: "",
   coverUrl: BLOG_COVER_PRESETS[0]?.src ?? "/gallery/overview-1.jpeg",
-  category: "Corporate",
+  externalUrl: "",
 });
-
-function toNewsItem(post: Post): NewsItem {
-  const date =
-    post.published_at ? new Date(post.published_at)
-    : post.created_at ? new Date(post.created_at)
-    : new Date();
-  return {
-    id: post.id,
-    date,
-    headline: post.title,
-    status: post.status === "published" ? "Published" : "Draft",
-    content: post.body ?? post.excerpt ?? "",
-  };
-}
 
 function toApiStatus(status: NewsStatus): PostStatus {
   return status === "Published" ? "published" : "draft";
 }
 
+function categoryForMode(mode: PanelMode): PostCategory {
+  return mode === "blog" ? "Blog" : "News";
+}
+
 type NewsNoticesPanelProps = {
-  title?: string;
-  createLabel?: string;
+  mode: PanelMode;
 };
 
-export function NewsNoticesPanel({
-  title = "Manage Blog",
-  createLabel = "Create Post",
-}: NewsNoticesPanelProps) {
-  const [newsItems, setNewsItems] = useState<NewsItem[]>([]);
+export function NewsNoticesPanel({ mode }: NewsNoticesPanelProps) {
+  const isBlog = mode === "blog";
+  const title = isBlog ? "Manage Blog" : "Manage News";
+  const createLabel = isBlog ? "New article" : "Add news link";
+  const category = categoryForMode(mode);
+
   const [posts, setPosts] = useState<Post[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [editingId, setEditingId] = useState<string | null>(null);
-  const [form, setForm] = useState<NewsFormState>(emptyForm);
+  const [form, setForm] = useState<NewsFormState>(() => emptyForm(mode));
   const [saving, setSaving] = useState(false);
   const [coverUploading, setCoverUploading] = useState(false);
+
+  const filteredPosts = useMemo(
+    () => posts.filter((post) => post.category === category),
+    [posts, category],
+  );
 
   const loadPosts = useCallback(async () => {
     setLoading(true);
@@ -105,7 +92,6 @@ export function NewsNoticesPanel({
       const data = (await res.json()) as { posts?: Post[]; error?: string };
       if (!res.ok) throw new Error(data.error ?? "Failed to load posts");
       setPosts(data.posts ?? []);
-      setNewsItems((data.posts ?? []).map(toNewsItem));
     } catch (err) {
       setError(err instanceof Error ? err.message : "Failed to load posts");
     } finally {
@@ -119,19 +105,21 @@ export function NewsNoticesPanel({
 
   function openCreateDialog() {
     setEditingId(null);
-    setForm(emptyForm());
+    setForm(emptyForm(mode));
     setDialogOpen(true);
   }
 
-  function openEditDialog(item: NewsItem) {
-    const post = posts.find((p) => p.id === item.id);
-    setEditingId(item.id);
+  function openEditDialog(post: Post) {
+    setEditingId(post.id);
     setForm({
-      title: item.headline,
-      publishDate: item.date,
-      content: item.content,
-      coverUrl: post?.cover_url ?? BLOG_COVER_PRESETS[0]?.src ?? "",
-      category: post?.category ?? "Corporate",
+      title: post.title,
+      publishDate:
+        post.published_at ? new Date(post.published_at)
+        : post.created_at ? new Date(post.created_at)
+        : undefined,
+      content: post.body ?? "",
+      coverUrl: post.cover_url ?? BLOG_COVER_PRESETS[0]?.src ?? "",
+      externalUrl: post.external_url ?? "",
     });
     setDialogOpen(true);
   }
@@ -151,33 +139,53 @@ export function NewsNoticesPanel({
   }
 
   async function handleDelete(id: string) {
-    if (!window.confirm("Delete this notice?")) return;
+    if (!window.confirm(`Delete this ${isBlog ? "article" : "news link"}?`)) return;
     try {
       const res = await fetch(`/api/admin/posts/${id}`, { method: "DELETE" });
       if (!res.ok) {
         const data = (await res.json()) as { error?: string };
         throw new Error(data.error ?? "Delete failed");
       }
-      setNewsItems((prev) => prev.filter((item) => item.id !== id));
+      setPosts((prev) => prev.filter((post) => post.id !== id));
     } catch (err) {
       setError(err instanceof Error ? err.message : "Delete failed");
     }
   }
 
+  function canSave(status: NewsStatus): boolean {
+    if (!form.title.trim() || !form.publishDate) return false;
+    if (isBlog) return form.content.trim().length > 0;
+    if (status === "Published") return form.externalUrl.trim().length > 0;
+    return true;
+  }
+
   async function upsertItem(status: NewsStatus) {
-    if (!form.title.trim() || !form.publishDate) return;
+    if (!canSave(status)) return;
 
     setSaving(true);
     setError(null);
-    const payload = {
-      title: form.title.trim(),
-      body: form.content,
-      excerpt: form.content.slice(0, 280) || null,
-      cover_url: form.coverUrl || null,
-      category: form.category,
-      status: toApiStatus(status),
-      published_at: form.publishDate.toISOString(),
-    };
+    const externalUrl = form.externalUrl.trim();
+    const payload = isBlog ?
+      {
+        title: form.title.trim(),
+        body: form.content.trim(),
+        excerpt: form.content.trim().slice(0, 280),
+        cover_url: form.coverUrl || null,
+        category,
+        external_url: null,
+        status: toApiStatus(status),
+        published_at: form.publishDate!.toISOString(),
+      }
+    : {
+        title: form.title.trim(),
+        body: null,
+        excerpt: null,
+        cover_url: form.coverUrl || null,
+        category,
+        external_url: externalUrl || null,
+        status: toApiStatus(status),
+        published_at: form.publishDate!.toISOString(),
+      };
 
     try {
       if (editingId) {
@@ -189,9 +197,6 @@ export function NewsNoticesPanel({
         const data = (await res.json()) as { post?: Post; error?: string };
         if (!res.ok || !data.post) throw new Error(data.error ?? "Update failed");
         setPosts((prev) => prev.map((p) => (p.id === editingId ? data.post! : p)));
-        setNewsItems((prev) =>
-          prev.map((item) => (item.id === editingId ? toNewsItem(data.post!) : item)),
-        );
       } else {
         const res = await fetch("/api/admin/posts", {
           method: "POST",
@@ -201,10 +206,9 @@ export function NewsNoticesPanel({
         const data = (await res.json()) as { post?: Post; error?: string };
         if (!res.ok || !data.post) throw new Error(data.error ?? "Create failed");
         setPosts((prev) => [data.post!, ...prev]);
-        setNewsItems((prev) => [toNewsItem(data.post!), ...prev]);
       }
       setDialogOpen(false);
-      setForm(emptyForm());
+      setForm(emptyForm(mode));
       setEditingId(null);
     } catch (err) {
       setError(err instanceof Error ? err.message : "Save failed");
@@ -220,12 +224,14 @@ export function NewsNoticesPanel({
           <div className="flex flex-wrap items-start justify-between gap-4">
             <div className="space-y-3">
               <Badge className="bg-[#22D3EE] text-[#0A3A63] hover:bg-[#22D3EE]">
-                Dynamic Content
+                {isBlog ? "Blog" : "News"}
               </Badge>
               <div>
                 <h2 className="font-heading text-xl font-bold text-brand-blue">{title}</h2>
                 <p className="mt-1 text-sm text-brand-slate/70">
-                  Publish corporate updates, AGM notices, and project milestones.
+                  {isBlog ?
+                    "Write full articles that open on this website."
+                  : "Add headlines that link to press releases or notices on other sites."}
                 </p>
               </div>
             </div>
@@ -246,69 +252,92 @@ export function NewsNoticesPanel({
           : null}
 
           {loading ?
-            <p className="text-sm text-brand-slate/70">Loading notices…</p>
+            <p className="text-sm text-brand-slate/70">Loading…</p>
           : <Table>
               <TableHeader>
                 <TableRow>
                   <TableHead>Date</TableHead>
-                  <TableHead>Headline</TableHead>
-                  <TableHead>Category</TableHead>
+                  <TableHead>Title</TableHead>
+                  {isBlog ? null : <TableHead>Link</TableHead>}
                   <TableHead>Status</TableHead>
                   <TableHead className="text-right">Actions</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {newsItems.length === 0 ?
+                {filteredPosts.length === 0 ?
                   <TableRow>
-                    <TableCell colSpan={5} className="text-center text-brand-slate/60">
-                      No notices yet. Create one or run the database seed.
+                    <TableCell
+                      colSpan={isBlog ? 4 : 5}
+                      className="text-center text-brand-slate/60"
+                    >
+                      {isBlog ?
+                        "No articles yet. Create one to publish on the Blog tab of the site."
+                      : "No news links yet. Add a title and external URL."}
                     </TableCell>
                   </TableRow>
-                : newsItems.map((item) => (
-                    <TableRow key={item.id}>
-                      <TableCell className="whitespace-nowrap text-brand-slate/80">
-                        {format(item.date, "dd MMM yyyy")}
-                      </TableCell>
-                      <TableCell className="max-w-md font-medium">{item.headline}</TableCell>
-                      <TableCell className="text-brand-slate/70">
-                        {posts.find((p) => p.id === item.id)?.category ?? "Corporate"}
-                      </TableCell>
-                      <TableCell>
-                        <Badge
-                          variant={item.status === "Published" ? "default" : "secondary"}
-                          className={cn(
-                            item.status === "Published" &&
-                              "border-transparent bg-[#0A3A63] text-white",
-                          )}
-                        >
-                          {item.status}
-                        </Badge>
-                      </TableCell>
-                      <TableCell className="text-right">
-                        <div className="flex justify-end gap-2">
-                          <Button
-                            type="button"
-                            variant="outline"
-                            size="sm"
-                            onClick={() => openEditDialog(item)}
+                : filteredPosts.map((post) => {
+                    const date =
+                      post.published_at ? new Date(post.published_at)
+                      : post.created_at ? new Date(post.created_at)
+                      : new Date();
+                    return (
+                      <TableRow key={post.id}>
+                        <TableCell className="whitespace-nowrap text-brand-slate/80">
+                          {format(date, "dd MMM yyyy")}
+                        </TableCell>
+                        <TableCell className="max-w-md font-medium">{post.title}</TableCell>
+                        {isBlog ? null : (
+                          <TableCell className="max-w-xs truncate text-brand-slate/70">
+                            {post.external_url ?
+                              <a
+                                href={post.external_url}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="inline-flex items-center gap-1 hover:text-brand-blue"
+                              >
+                                <span className="truncate">{post.external_url}</span>
+                                <ExternalLink className="size-3 shrink-0" aria-hidden />
+                              </a>
+                            : "—"}
+                          </TableCell>
+                        )}
+                        <TableCell>
+                          <Badge
+                            variant={post.status === "published" ? "default" : "secondary"}
+                            className={cn(
+                              post.status === "published" &&
+                                "border-transparent bg-[#0A3A63] text-white",
+                            )}
                           >
-                            <Pencil className="size-3.5" aria-hidden />
-                            Edit
-                          </Button>
-                          <Button
-                            type="button"
-                            variant="ghost"
-                            size="sm"
-                            className="text-red-600 hover:bg-red-50 hover:text-red-700"
-                            onClick={() => void handleDelete(item.id)}
-                          >
-                            <Trash2 className="size-3.5" aria-hidden />
-                            Delete
-                          </Button>
-                        </div>
-                      </TableCell>
-                    </TableRow>
-                  ))
+                            {post.status === "published" ? "Published" : "Draft"}
+                          </Badge>
+                        </TableCell>
+                        <TableCell className="text-right">
+                          <div className="flex justify-end gap-2">
+                            <Button
+                              type="button"
+                              variant="outline"
+                              size="sm"
+                              onClick={() => openEditDialog(post)}
+                            >
+                              <Pencil className="size-3.5" aria-hidden />
+                              Edit
+                            </Button>
+                            <Button
+                              type="button"
+                              variant="ghost"
+                              size="sm"
+                              className="text-red-600 hover:bg-red-50 hover:text-red-700"
+                              onClick={() => void handleDelete(post.id)}
+                            >
+                              <Trash2 className="size-3.5" aria-hidden />
+                              Delete
+                            </Button>
+                          </div>
+                        </TableCell>
+                      </TableRow>
+                    );
+                  })
                 }
               </TableBody>
             </Table>
@@ -319,55 +348,62 @@ export function NewsNoticesPanel({
       <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
         <DialogContent className="max-h-[90vh] overflow-y-auto sm:max-w-2xl">
           <DialogHeader>
-            <DialogTitle>{editingId ? "Edit notice" : "Create notice"}</DialogTitle>
-            <DialogDescription>
+            <DialogTitle>
               {editingId ?
-                "Update this entry. Published notices appear on the public News page."
-              : "Add a new corporate notice. Save as draft or publish immediately."}
+                isBlog ?
+                  "Edit article"
+                : "Edit news link"
+              : isBlog ?
+                "New article"
+              : "Add news link"}
+            </DialogTitle>
+            <DialogDescription>
+              {isBlog ?
+                "Published articles appear under the Blog tab on the Blog & News page."
+              : "Published links appear under the News tab and open the external URL in a new tab."}
             </DialogDescription>
           </DialogHeader>
 
           <div className="space-y-5 py-2">
             <div className="space-y-2">
-              <Label htmlFor="news-title">Title</Label>
+              <Label htmlFor="post-title">Title</Label>
               <Input
-                id="news-title"
+                id="post-title"
                 value={form.title}
                 onChange={(e) => setForm((f) => ({ ...f, title: e.target.value }))}
-                placeholder="Notice headline"
+                placeholder={isBlog ? "Article headline" : "News headline"}
               />
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="news-publish-date">Publish date</Label>
+              <Label htmlFor="post-publish-date">Publish date</Label>
               <DatePicker
-                id="news-publish-date"
+                id="post-publish-date"
                 date={form.publishDate}
                 onDateChange={(date) => setForm((f) => ({ ...f, publishDate: date }))}
                 placeholder="Select publish date"
               />
             </div>
 
-            <div className="space-y-2">
-              <Label htmlFor="news-category">Category</Label>
-              <select
-                id="news-category"
-                value={form.category}
-                onChange={(e) =>
-                  setForm((f) => ({ ...f, category: e.target.value as PostCategory }))
-                }
-                className="flex h-10 w-full rounded-[4px] border border-slate-200 bg-white px-3 text-sm text-brand-slate focus:outline-none focus:ring-2 focus:ring-[#22D3EE]/50"
-              >
-                {BLOG_CATEGORIES.map((cat) => (
-                  <option key={cat} value={cat}>
-                    {cat}
-                  </option>
-                ))}
-              </select>
-            </div>
+            {!isBlog ?
+              <div className="space-y-2">
+                <Label htmlFor="post-external-url">External link</Label>
+                <Input
+                  id="post-external-url"
+                  type="url"
+                  value={form.externalUrl}
+                  onChange={(e) => setForm((f) => ({ ...f, externalUrl: e.target.value }))}
+                  placeholder="https://example.com/press-release"
+                  required
+                />
+                <p className="text-xs text-brand-slate/60">
+                  Required to publish. Visitors click the card and go straight to this URL.
+                </p>
+              </div>
+            : null}
 
             <div className="space-y-2">
-              <Label>Cover image</Label>
+              <Label>Cover image {isBlog ? "" : "(optional)"}</Label>
               <div className="grid grid-cols-3 gap-2 sm:grid-cols-4">
                 {BLOG_COVER_PRESETS.map((preset) => {
                   const selected = form.coverUrl === preset.src;
@@ -411,21 +447,20 @@ export function NewsNoticesPanel({
                   : <Image src={form.coverUrl} alt="" fill className="object-cover" />}
                 </div>
               : null}
-              <p className="text-xs text-brand-slate/60">
-                Choose a Nepal / project preset or upload a custom thumbnail.
-              </p>
             </div>
 
-            <div className="space-y-2">
-              <Label htmlFor="news-content">Content</Label>
-              <Textarea
-                id="news-content"
-                value={form.content}
-                onChange={(e) => setForm((f) => ({ ...f, content: e.target.value }))}
-                placeholder="Full notice body…"
-                className="min-h-64"
-              />
-            </div>
+            {isBlog ?
+              <div className="space-y-2">
+                <Label htmlFor="post-content">Article content</Label>
+                <Textarea
+                  id="post-content"
+                  value={form.content}
+                  onChange={(e) => setForm((f) => ({ ...f, content: e.target.value }))}
+                  placeholder="Write your full article here…"
+                  className="min-h-64"
+                />
+              </div>
+            : null}
           </div>
 
           <DialogFooter className="gap-2 sm:gap-3">
@@ -433,14 +468,14 @@ export function NewsNoticesPanel({
               type="button"
               variant="outline"
               onClick={() => void upsertItem("Draft")}
-              disabled={!form.title.trim() || !form.publishDate || saving}
+              disabled={!canSave("Draft") || saving}
             >
               Save as Draft
             </Button>
             <Button
               type="button"
               onClick={() => void upsertItem("Published")}
-              disabled={!form.title.trim() || !form.publishDate || saving}
+              disabled={!canSave("Published") || saving}
             >
               {saving ? "Saving…" : "Publish"}
             </Button>

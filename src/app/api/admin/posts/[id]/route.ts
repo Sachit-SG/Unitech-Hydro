@@ -1,5 +1,7 @@
 import { NextResponse } from "next/server";
+import { apiErrorResponse } from "@/lib/api-error";
 import { deletePost, updatePost, type PostInput } from "@/lib/repos";
+import { sanitizePostInput } from "@/lib/validate-post-input";
 
 export const dynamic = "force-dynamic";
 
@@ -10,17 +12,12 @@ export async function PATCH(
   try {
     const { id } = await params;
     const body = (await request.json()) as PostInput;
-    if (!body?.title?.trim()) {
-      return NextResponse.json({ error: "Title is required" }, { status: 400 });
-    }
-    const post = await updatePost(id, { ...body, title: body.title.trim() });
+    const sanitized = sanitizePostInput(body);
+    const post = await updatePost(id, sanitized);
     if (!post) return NextResponse.json({ error: "Not found" }, { status: 404 });
     return NextResponse.json({ post });
   } catch (err) {
-    return NextResponse.json(
-      { error: err instanceof Error ? err.message : "failed" },
-      { status: 500 },
-    );
+    return apiErrorResponse(err, "admin-posts-update");
   }
 }
 
@@ -33,9 +30,6 @@ export async function DELETE(
     await deletePost(id);
     return NextResponse.json({ ok: true });
   } catch (err) {
-    return NextResponse.json(
-      { error: err instanceof Error ? err.message : "failed" },
-      { status: 500 },
-    );
+    return apiErrorResponse(err, "admin-posts-delete");
   }
 }

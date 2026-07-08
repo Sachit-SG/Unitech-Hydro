@@ -4,7 +4,7 @@ import type { GalleryImageCategory } from "@/lib/gallery-data";
 
 /** Data access for the admin-managed content. All server-only. */
 
-export type PostCategory = "Corporate" | "Projects" | "Reports";
+export type PostCategory = "Blog" | "News";
 export type PostStatus = "draft" | "published";
 
 export type Post = {
@@ -59,8 +59,18 @@ function slugify(input: string): string {
 
 /* ─────────────── Posts (news / blog) ─────────────── */
 
-export async function listPosts(opts?: { publishedOnly?: boolean }): Promise<Post[]> {
+export async function listPosts(opts?: {
+  publishedOnly?: boolean;
+  category?: PostCategory;
+}): Promise<Post[]> {
   const sql = getSql();
+  if (opts?.publishedOnly && opts.category) {
+    return (await sql`
+      select * from posts
+      where status = 'published' and category = ${opts.category}
+      order by coalesce(published_at, created_at) desc
+    `) as Post[];
+  }
   if (opts?.publishedOnly) {
     return (await sql`
       select * from posts
@@ -68,7 +78,24 @@ export async function listPosts(opts?: { publishedOnly?: boolean }): Promise<Pos
       order by coalesce(published_at, created_at) desc
     `) as Post[];
   }
+  if (opts?.category) {
+    return (await sql`
+      select * from posts
+      where category = ${opts.category}
+      order by created_at desc
+    `) as Post[];
+  }
   return (await sql`select * from posts order by created_at desc`) as Post[];
+}
+
+export async function getPublishedPostBySlug(slug: string): Promise<Post | null> {
+  const sql = getSql();
+  const rows = (await sql`
+    select * from posts
+    where slug = ${slug} and status = 'published'
+    limit 1
+  `) as Post[];
+  return rows[0] ?? null;
 }
 
 export type PostInput = {
@@ -84,7 +111,7 @@ export type PostInput = {
 
 export async function createPost(input: PostInput): Promise<Post> {
   const sql = getSql();
-  const category = input.category ?? "Corporate";
+  const category = input.category ?? "Blog";
   const status = input.status ?? "draft";
   const publishedAt =
     status === "published" ?
@@ -111,7 +138,7 @@ export async function updatePost(id: string, input: PostInput): Promise<Post | n
       excerpt = ${input.excerpt ?? null},
       body = ${input.body ?? null},
       cover_url = ${input.cover_url ?? null},
-      category = ${input.category ?? "Corporate"},
+      category = ${input.category ?? "Blog"},
       external_url = ${input.external_url ?? null},
       status = ${status},
       published_at = case

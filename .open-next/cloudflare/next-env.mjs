@@ -1,3 +1,3 @@
-export const production = {};
-export const development = {};
+export const production = {"DATABASE_URL":"postgresql://neondb_owner:npg_GyCw0qE1SvsD@ep-shy-resonance-adeezmoj.c-2.us-east-1.aws.neon.tech/neondb?sslmode=require","ADMIN_SECRET":"unitech-admin-2026","SESSION_SIGNING_SECRET":"6bf436375b2e73e6d210fb93aa9406683906d09152ac644d666611ce2dc10ee8","RESEND_API_KEY":"re_18xtYT2m_9Dhck2NupEsHbFigx4vNnWJh","CONTACT_TO_EMAIL":"unitechhydropower@gmail.com","CONTACT_FROM_EMAIL":"Unitech Hydropower <onboarding@resend.dev>"};
+export const development = {"DATABASE_URL":"postgresql://neondb_owner:npg_GyCw0qE1SvsD@ep-shy-resonance-adeezmoj.c-2.us-east-1.aws.neon.tech/neondb?sslmode=require","ADMIN_SECRET":"unitech-admin-2026","SESSION_SIGNING_SECRET":"6bf436375b2e73e6d210fb93aa9406683906d09152ac644d666611ce2dc10ee8","RESEND_API_KEY":"re_18xtYT2m_9Dhck2NupEsHbFigx4vNnWJh","CONTACT_TO_EMAIL":"unitechhydropower@gmail.com","CONTACT_FROM_EMAIL":"Unitech Hydropower <onboarding@resend.dev>"};
 export const test = {};

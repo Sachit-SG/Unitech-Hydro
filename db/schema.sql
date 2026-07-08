@@ -8,7 +8,7 @@ create table if not exists posts (
   excerpt      text,
   body         text,
   cover_url    text,
-  category     text not null default 'Corporate',   -- Corporate | Projects | Reports
+  category     text not null default 'Blog',   -- Blog | News
   external_url text,
   status       text not null default 'draft',        -- draft | published
   published_at timestamptz,
@@ -16,6 +16,17 @@ create table if not exists posts (
   updated_at   timestamptz not null default now()
 );
 create index if not exists posts_pub_idx on posts (status, published_at desc);
+
+create table if not exists rate_limit_buckets (
+  bucket_key text primary key,
+  hits       int not null default 0,
+  reset_at   timestamptz not null default now()
+);
+create index if not exists rate_limit_reset_idx on rate_limit_buckets (reset_at);
+
+-- Migrate legacy post categories (safe to re-run)
+update posts set category = 'News' where external_url is not null and btrim(external_url) <> '';
+update posts set category = 'Blog' where category not in ('Blog', 'News');
 
 create table if not exists gallery_images (
   id         uuid primary key default gen_random_uuid(),

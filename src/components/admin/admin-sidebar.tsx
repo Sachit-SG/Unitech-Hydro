@@ -2,18 +2,19 @@
 
 import Link from "next/link";
 import { usePathname, useSearchParams } from "next/navigation";
-import { Bell, ImageIcon, Newspaper } from "lucide-react";
+import { Bell, ExternalLink, ImageIcon, Newspaper } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Separator } from "@/components/ui/separator";
+import { AdminLogoutButton } from "@/components/admin/admin-logout-button";
 
 const navItems = [
   { tab: "gallery", label: "Gallery", icon: ImageIcon },
   { tab: "blog", label: "Blog", icon: Newspaper },
+  { tab: "news", label: "News", icon: ExternalLink },
   { tab: "popup", label: "Popup", icon: Bell },
 ] as const;
 
 function resolveTab(raw: string | null): string {
-  if (raw === "news") return "blog";
   if (raw === "dashboard" || raw === "about") return "gallery";
   if (raw && navItems.some((item) => item.tab === raw)) return raw;
   return "gallery";
@@ -63,8 +64,12 @@ export function AdminSidebar() {
 
       <Separator className="bg-white/10" />
 
+      <div className="px-3 py-3">
+        <AdminLogoutButton />
+      </div>
+
       <div className="px-6 py-4 text-xs text-slate-500">
-        <p>Gallery, blog, and popup — synced to the live site.</p>
+        <p>Gallery, blog, news links, and popup — synced to the live site.</p>
       </div>
     </aside>
   );

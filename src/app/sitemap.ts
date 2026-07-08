@@ -1,8 +1,9 @@
 import type { MetadataRoute } from "next";
 import { galleryBentoItems } from "@/lib/gallery-data";
 import { SITE_URL } from "@/lib/site-config";
+import { dbReady, listPosts } from "@/lib/repos";
 
-export default function sitemap(): MetadataRoute.Sitemap {
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const now = new Date();
 
   const staticRoutes: MetadataRoute.Sitemap = [
@@ -10,6 +11,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     "/about",
     "/projects",
     "/gallery",
+    "/blog",
     "/news",
     "/impact",
     "/contact",
@@ -29,5 +31,22 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.7,
   }));
 
-  return [...staticRoutes, ...galleryRoutes];
+  let articleRoutes: MetadataRoute.Sitemap = [];
+  if (dbReady()) {
+    try {
+      const posts = await listPosts({ publishedOnly: true });
+      articleRoutes = posts
+        .filter((post) => !post.external_url)
+        .map((post) => ({
+          url: `${SITE_URL}${post.category === "Blog" ? `/blog/${post.slug}` : `/news/${post.slug}`}`,
+          lastModified: post.updated_at ? new Date(post.updated_at) : now,
+          changeFrequency: "monthly" as const,
+          priority: 0.65,
+        }));
+    } catch {
+      articleRoutes = [];
+    }
+  }
+
+  return [...staticRoutes, ...galleryRoutes, ...articleRoutes];
 }

@@ -2,7 +2,7 @@
 
 import { type FormEvent, useState } from "react";
 import { motion } from "framer-motion";
-import { ArrowRight, Mail, MapPin, Phone } from "lucide-react";
+import { ArrowRight, Loader2, Mail, MapPin, Phone } from "lucide-react";
 
 const ease = [0.22, 1, 0.36, 1] as const;
 const CONTACT_EMAIL = "unitechhydropower@gmail.com";
@@ -33,29 +33,42 @@ const contactItems = [
 
 export function ContactPageView() {
   const [submitted, setSubmitted] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
-  function handleSubmit(event: FormEvent<HTMLFormElement>) {
+  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
+    setSubmitting(true);
+    setError(null);
+
     const form = event.currentTarget;
     const data = new FormData(form);
-    const name = String(data.get("name") ?? "").trim();
-    const email = String(data.get("email") ?? "").trim();
-    const subject = String(data.get("subject") ?? "").trim();
-    const message = String(data.get("message") ?? "").trim();
 
-    const mailSubject = subject || `Website enquiry from ${name || "visitor"}`;
-    const mailBody = [
-      name ? `Name: ${name}` : null,
-      email ? `Email: ${email}` : null,
-      "",
-      message,
-    ]
-      .filter((line) => line !== null)
-      .join("\n");
+    try {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: data.get("name"),
+          email: data.get("email"),
+          subject: data.get("subject"),
+          message: data.get("message"),
+          company: data.get("company"),
+        }),
+      });
 
-    const mailto = `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent(mailSubject)}&body=${encodeURIComponent(mailBody)}`;
-    window.location.href = mailto;
-    setSubmitted(true);
+      const payload = (await res.json()) as { error?: string };
+      if (!res.ok) {
+        throw new Error(payload.error ?? "Could not send your message. Please try again.");
+      }
+
+      setSubmitted(true);
+      form.reset();
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Could not send your message.");
+    } finally {
+      setSubmitting(false);
+    }
   }
 
   return (
@@ -85,16 +98,14 @@ export function ContactPageView() {
                 </div>
                 <div>
                   <h3 className="mb-1 font-semibold text-white">{title}</h3>
-                  {href ? (
+                  {href ?
                     <a
                       href={href}
                       className="text-sm text-slate-400 transition-colors hover:text-[#22D3EE]"
                     >
                       {value}
                     </a>
-                  ) : (
-                    <p className="text-sm text-slate-400">{value}</p>
-                  )}
+                  : <p className="text-sm text-slate-400">{value}</p>}
                 </div>
               </div>
             ))}
@@ -111,30 +122,56 @@ export function ContactPageView() {
             Send us a message
           </h2>
           <p className="mb-8 text-sm text-slate-500 md:text-base">
-            Submitting opens your email app with your message addressed to our team.
+            Your message is delivered directly to our team inbox. We typically respond
+            within one business day.
           </p>
 
-          {submitted ? (
-            <p
+          {submitted ?
+            <div
               className="rounded-xl border border-[#22D3EE]/30 bg-[#22D3EE]/5 px-4 py-6 text-center text-sm text-[#0A3A63] md:text-base"
               role="status"
             >
-              Your email app should open with the message ready to send. If it did not,
-              email us directly at{" "}
-              <a
-                href={`mailto:${CONTACT_EMAIL}`}
-                className="font-semibold text-[#0A3A63] underline underline-offset-2"
+              <p className="font-semibold">Message sent successfully.</p>
+              <p className="mt-2">
+                Thank you — we have received your enquiry and will get back to you soon.
+              </p>
+              <button
+                type="button"
+                onClick={() => setSubmitted(false)}
+                className="mt-4 text-sm font-semibold text-[#0A3A63] underline underline-offset-2"
               >
-                {CONTACT_EMAIL}
-              </a>
-              .
-            </p>
-          ) : (
-            <form
+                Send another message
+              </button>
+            </div>
+          : <form
               className="grid grid-cols-1 gap-6 md:grid-cols-2"
               onSubmit={handleSubmit}
               noValidate
             >
+              <input
+                type="text"
+                name="company"
+                tabIndex={-1}
+                autoComplete="off"
+                className="hidden"
+                aria-hidden
+              />
+
+              {error ?
+                <p
+                  className="rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700 md:col-span-2"
+                  role="alert"
+                >
+                  {error}
+                  {" "}
+                  You can also email{" "}
+                  <a href={`mailto:${CONTACT_EMAIL}`} className="font-semibold underline">
+                    {CONTACT_EMAIL}
+                  </a>{" "}
+                  directly.
+                </p>
+              : null}
+
               <div>
                 <label htmlFor="contact-name" className="sr-only">
                   Name
@@ -147,6 +184,7 @@ export function ContactPageView() {
                   autoComplete="name"
                   placeholder="Full name"
                   className={inputClassName}
+                  disabled={submitting}
                 />
               </div>
               <div>
@@ -161,6 +199,7 @@ export function ContactPageView() {
                   autoComplete="email"
                   placeholder="Email address"
                   className={inputClassName}
+                  disabled={submitting}
                 />
               </div>
               <div className="md:col-span-2">
@@ -174,6 +213,7 @@ export function ContactPageView() {
                   required
                   placeholder="Subject"
                   className={inputClassName}
+                  disabled={submitting}
                 />
               </div>
               <div className="md:col-span-2">
@@ -184,23 +224,34 @@ export function ContactPageView() {
                   id="contact-message"
                   name="message"
                   required
+                  minLength={10}
                   rows={5}
                   placeholder="How can we help?"
                   className={`${inputClassName} h-32 resize-none`}
+                  disabled={submitting}
                 />
               </div>
               <button
                 type="submit"
-                className="group mt-4 flex w-full items-center justify-center gap-2 rounded-xl bg-[#0A3A63] px-8 py-4 font-semibold text-white transition-all hover:bg-[#0A3A63]/90 md:col-span-2"
+                disabled={submitting}
+                className="group mt-4 flex w-full items-center justify-center gap-2 rounded-xl bg-[#0A3A63] px-8 py-4 font-semibold text-white transition-all hover:bg-[#0A3A63]/90 disabled:cursor-not-allowed disabled:opacity-70 md:col-span-2"
               >
-                Send Message
-                <ArrowRight
-                  className="h-5 w-5 transition-transform group-hover:translate-x-1"
-                  aria-hidden
-                />
+                {submitting ?
+                  <>
+                    <Loader2 className="h-5 w-5 animate-spin" aria-hidden />
+                    Sending…
+                  </>
+                : <>
+                    Send Message
+                    <ArrowRight
+                      className="h-5 w-5 transition-transform group-hover:translate-x-1"
+                      aria-hidden
+                    />
+                  </>
+                }
               </button>
             </form>
-          )}
+          }
         </motion.div>
       </div>
     </main>
