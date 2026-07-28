@@ -367,38 +367,31 @@ function ProjectBlock({
         embedded ? "py-6 md:py-8" : "py-16 md:py-20"
       )}
     >
-      <div
-        className={cn(
-          "rounded-3xl border border-[#0A3A63]/10 bg-gradient-to-br from-white via-[#f4f9fc] to-[#e8f4fa] p-8 shadow-xl shadow-[#0A3A63]/10 md:p-12",
-          embedded && "shadow-2xl shadow-[#0A3A63]/15"
-        )}
-      >
-        <Reveal>
-          <div className="flex flex-col gap-4 sm:flex-row sm:flex-wrap sm:items-center sm:justify-between">
-            <h2 className="text-3xl font-bold text-[#0A3A63]">{title}</h2>
-            <span
-              className={cn(
-                "inline-flex w-fit items-center rounded-full border px-3 py-1 text-xs font-bold uppercase tracking-wider",
-                badgeClassName
-              )}
-            >
-              {badge}
-            </span>
-          </div>
-        </Reveal>
+      <Reveal>
+        <div className="flex flex-col gap-4 sm:flex-row sm:flex-wrap sm:items-center sm:justify-between">
+          <h2 className="text-3xl font-bold text-[#0A3A63] lg:text-5xl">{title}</h2>
+          <span
+            className={cn(
+              "inline-flex w-fit items-center rounded-full border px-3 py-1 text-xs font-bold uppercase tracking-wider",
+              badgeClassName
+            )}
+          >
+            {badge}
+          </span>
+        </div>
+      </Reveal>
 
-        <StatRail stats={stats} />
-        <AsymmetricGallery
-          images={gallery}
-          galleryHref={getProjectGalleryHref(galleryId)}
-        />
+      <StatRail stats={stats} />
+      <AsymmetricGallery
+        images={gallery}
+        galleryHref={getProjectGalleryHref(galleryId)}
+      />
 
-        <Reveal className="mt-12 w-full">
-          <p className="mb-8 w-full text-lg leading-relaxed text-slate-700">{narrative}</p>
-        </Reveal>
+      <Reveal className="mt-12 w-full">
+        <p className="mb-8 max-w-3xl text-lg leading-relaxed text-slate-700">{narrative}</p>
+      </Reveal>
 
-        <ProjectTabs defaultValue={tabsDefault} tabs={tabs} galleryId={galleryId} />
-      </div>
+      <ProjectTabs defaultValue={tabsDefault} tabs={tabs} galleryId={galleryId} />
     </section>
   );
 }
@@ -429,6 +422,10 @@ function SlideUpSecondProject({ children }: { children: ReactNode }) {
         style={reduceMotion ? undefined : { y, opacity }}
         className={cn("sticky z-20 pb-16 md:pb-20", STICKY_TOP)}
       >
+        <div
+          className="absolute inset-y-0 left-1/2 -z-10 w-screen -translate-x-1/2 bg-gradient-to-b from-[#eef4f8] to-[#e2ecf4]"
+          aria-hidden
+        />
         {children}
       </motion.div>
     </section>
