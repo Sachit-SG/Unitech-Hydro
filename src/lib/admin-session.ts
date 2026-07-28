@@ -1,4 +1,3 @@
-import { createHash, timingSafeEqual } from "node:crypto";
 import { SignJWT, jwtVerify } from "jose";
 
 /** Prefer __Host- in production (Secure + Path=/ + no Domain). */
@@ -16,13 +15,6 @@ function getSessionSecret(): Uint8Array {
     );
   }
   return new TextEncoder().encode(secret);
-}
-
-/** Digest both sides so length cannot be inferred from compare timing. */
-export function passwordsMatch(input: string, secret: string): boolean {
-  const a = createHash("sha256").update(input, "utf8").digest();
-  const b = createHash("sha256").update(secret, "utf8").digest();
-  return timingSafeEqual(a, b);
 }
 
 export async function createAdminSessionToken(): Promise<string> {

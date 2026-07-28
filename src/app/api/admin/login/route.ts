@@ -1,9 +1,9 @@
 import { NextResponse } from "next/server";
+import { passwordsMatch } from "@/lib/admin-password";
 import {
   adminSessionCookieOptions,
   ADMIN_SESSION_COOKIE,
   createAdminSessionToken,
-  passwordsMatch,
 } from "@/lib/admin-session";
 import { apiErrorResponse } from "@/lib/api-error";
 import { enforceRateLimit } from "@/lib/rate-limit";
