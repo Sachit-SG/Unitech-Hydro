@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { apiErrorResponse } from "@/lib/api-error";
 import { deleteGalleryImage, updateGalleryImage, type GalleryUpdateInput } from "@/lib/repos";
 import { ValidationError } from "@/lib/validation-error";
+import { rejectIfAdminWriteRateLimited } from "@/lib/rate-limit";
 
 export const dynamic = "force-dynamic";
 
@@ -18,6 +19,9 @@ export async function PATCH(
   { params }: { params: Promise<{ id: string }> },
 ) {
   try {
+    const limited = await rejectIfAdminWriteRateLimited(request);
+    if (limited) return limited;
+
     const { id } = await params;
     const body = (await request.json()) as GalleryUpdateInput;
     const image = await updateGalleryImage(id, sanitizeGalleryUpdate(body));
@@ -29,10 +33,13 @@ export async function PATCH(
 }
 
 export async function DELETE(
-  _request: Request,
+  request: Request,
   { params }: { params: Promise<{ id: string }> },
 ) {
   try {
+    const limited = await rejectIfAdminWriteRateLimited(request);
+    if (limited) return limited;
+
     const { id } = await params;
     await deleteGalleryImage(id);
     return NextResponse.json({ ok: true });

@@ -105,7 +105,7 @@ export function ScrollExpandMedia({
   const [titleLeft, titleRight] = splitHeroTitle(title);
 
   const titleHeadingClass = cn(
-    "m-0 whitespace-nowrap text-center font-heading text-2xl font-extrabold leading-tight tracking-wider text-white drop-shadow-[0_5px_15px_rgba(0,0,0,0.8)] md:text-4xl lg:text-5xl",
+    "m-0 whitespace-nowrap text-center font-heading text-[clamp(1rem,4vw,1.5rem)] font-extrabold leading-tight tracking-wider text-white drop-shadow-[0_5px_15px_rgba(0,0,0,0.8)] md:text-4xl lg:text-5xl",
     textBlend && "mix-blend-difference",
   );
 

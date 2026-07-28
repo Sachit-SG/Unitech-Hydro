@@ -1,4 +1,5 @@
 import "server-only";
+import { NextResponse } from "next/server";
 import { getSql, isDbConfigured } from "@/lib/db";
 
 type Bucket = { hits: number; resetAt: number };
@@ -102,4 +103,16 @@ export async function enforceRateLimit(
 ): Promise<RateLimitResult> {
   const ip = getClientIp(request);
   return checkRateLimit(`${namespace}:${ip}`, limit, windowSeconds);
+}
+
+/** Shared limit for authenticated admin write endpoints (posts/gallery/popup CRUD). */
+export async function rejectIfAdminWriteRateLimited(
+  request: Request,
+): Promise<NextResponse | null> {
+  const limit = await enforceRateLimit(request, "admin-write", 60, 300);
+  if (limit.allowed) return null;
+  return NextResponse.json(
+    { error: "Too many requests. Please slow down." },
+    { status: 429, headers: { "Retry-After": String(limit.retryAfterSeconds ?? 60) } },
+  );
 }

@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { apiErrorResponse } from "@/lib/api-error";
 import { createPost, listPosts, type PostInput } from "@/lib/repos";
 import { sanitizePostInput } from "@/lib/validate-post-input";
+import { rejectIfAdminWriteRateLimited } from "@/lib/rate-limit";
 
 export const dynamic = "force-dynamic";
 
@@ -15,6 +16,9 @@ export async function GET() {
 
 export async function POST(request: Request) {
   try {
+    const limited = await rejectIfAdminWriteRateLimited(request);
+    if (limited) return limited;
+
     const body = (await request.json()) as PostInput;
     const sanitized = sanitizePostInput(body);
     const post = await createPost(sanitized);

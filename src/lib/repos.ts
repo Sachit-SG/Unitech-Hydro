@@ -237,12 +237,12 @@ export async function listPopupImages(opts?: { activeOnly?: boolean }): Promise<
   const sql = getSql();
   if (opts?.activeOnly) {
     return (await sql`
-      select * from popup_images where active = true and length(src) > 2000
+      select * from popup_images where active = true
       order by created_at desc, sort_order desc
     `) as PopupRow[];
   }
   return (await sql`
-    select * from popup_images where length(src) > 2000
+    select * from popup_images
     order by created_at desc, sort_order desc
   `) as PopupRow[];
 }

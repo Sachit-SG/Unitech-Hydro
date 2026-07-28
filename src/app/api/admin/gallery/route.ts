@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { apiErrorResponse } from "@/lib/api-error";
 import { assertSafeImageSrc } from "@/lib/safe-image-src";
 import { ValidationError } from "@/lib/validation-error";
+import { rejectIfAdminWriteRateLimited } from "@/lib/rate-limit";
 import {
   createGalleryImage,
   listGallery,
@@ -52,6 +53,9 @@ export async function GET(request: Request) {
 
 export async function POST(request: Request) {
   try {
+    const limited = await rejectIfAdminWriteRateLimited(request);
+    if (limited) return limited;
+
     const body = (await request.json()) as GalleryInput;
     const image = await createGalleryImage(sanitizeGalleryInput(body));
     return NextResponse.json({ image }, { status: 201 });

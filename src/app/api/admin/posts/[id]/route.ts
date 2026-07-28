@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { apiErrorResponse } from "@/lib/api-error";
 import { deletePost, updatePost, type PostInput } from "@/lib/repos";
 import { sanitizePostInput } from "@/lib/validate-post-input";
+import { rejectIfAdminWriteRateLimited } from "@/lib/rate-limit";
 
 export const dynamic = "force-dynamic";
 
@@ -10,6 +11,9 @@ export async function PATCH(
   { params }: { params: Promise<{ id: string }> },
 ) {
   try {
+    const limited = await rejectIfAdminWriteRateLimited(request);
+    if (limited) return limited;
+
     const { id } = await params;
     const body = (await request.json()) as PostInput;
     const sanitized = sanitizePostInput(body);
@@ -22,10 +26,13 @@ export async function PATCH(
 }
 
 export async function DELETE(
-  _request: Request,
+  request: Request,
   { params }: { params: Promise<{ id: string }> },
 ) {
   try {
+    const limited = await rejectIfAdminWriteRateLimited(request);
+    if (limited) return limited;
+
     const { id } = await params;
     await deletePost(id);
     return NextResponse.json({ ok: true });
