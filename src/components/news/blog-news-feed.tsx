@@ -5,6 +5,7 @@ import { Suspense } from "react";
 import { cn } from "@/lib/cn";
 import type { PublicBlogArticle } from "@/lib/blog-public";
 import { NewsArticleGrid } from "@/components/news/news-article-grid";
+import { Reveal } from "@/components/ui/reveal";
 
 type View = "blog" | "news";
 
@@ -35,7 +36,7 @@ function BlogNewsFeedInner({ blogArticles, newsArticles }: BlogNewsFeedProps) {
 
   return (
     <section className="py-28 first:pt-10">
-      <div className="flex flex-wrap items-center gap-2 rounded-[4px] border border-slate-200/80 bg-white p-3 shadow-sm">
+      <Reveal className="flex flex-wrap items-center gap-2 rounded-[4px] border border-slate-200/80 bg-white p-3 shadow-sm">
         {tabs.map((tab) => (
           <button
             key={tab.id}
@@ -52,7 +53,7 @@ function BlogNewsFeedInner({ blogArticles, newsArticles }: BlogNewsFeedProps) {
             {tab.label}
           </button>
         ))}
-      </div>
+      </Reveal>
 
       <div className="mt-10">
         <NewsArticleGrid articles={articles} emptyMessage={emptyMessage} />

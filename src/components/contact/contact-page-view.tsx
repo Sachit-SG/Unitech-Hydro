@@ -76,7 +76,8 @@ export function ContactPageView() {
       <div className="mx-auto flex max-w-[1200px] flex-col overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-[0_20px_40px_-15px_rgba(0,0,0,0.1)] lg:flex-row">
         <motion.div
           initial={{ opacity: 0, x: -20 }}
-          animate={{ opacity: 1, x: 0 }}
+          whileInView={{ opacity: 1, x: 0 }}
+          viewport={{ once: true, amount: 0.2 }}
           transition={{ duration: 0.55, ease }}
           className="flex w-full flex-col justify-between bg-[#0A3A63] p-10 md:p-16 lg:w-5/12"
         >
@@ -114,7 +115,8 @@ export function ContactPageView() {
 
         <motion.div
           initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.2 }}
           transition={{ duration: 0.55, delay: 0.08, ease }}
           className="w-full bg-white p-10 md:p-16 lg:w-7/12"
         >
