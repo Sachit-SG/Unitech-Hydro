@@ -6,8 +6,6 @@ import { AnimatePresence, motion } from "framer-motion";
 import { ChevronLeft, ChevronRight, X } from "lucide-react";
 import { cn } from "@/lib/cn";
 
-const MIN_IMAGE_CHARS = 2_000;
-
 let dismissed = false;
 
 export function SiteNoticePopup() {
@@ -27,10 +25,7 @@ export function SiteNoticePopup() {
         const res = await fetch("/api/popup", { cache: "no-store" });
         const data = (await res.json()) as { images?: unknown };
         const fromDb = Array.isArray(data.images)
-          ? data.images.filter(
-              (s): s is string =>
-                typeof s === "string" && s.length >= MIN_IMAGE_CHARS,
-            )
+          ? data.images.filter((s): s is string => typeof s === "string" && s.length > 0)
           : [];
         if (!cancelled) setImages(fromDb);
       } catch {
