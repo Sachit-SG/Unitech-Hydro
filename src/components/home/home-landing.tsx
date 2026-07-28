@@ -7,18 +7,17 @@ import { ArrowUpRight } from "lucide-react";
 import { AboutPreview } from "@/components/home/about-preview";
 import { NewsSection } from "@/components/home/news-section";
 import { PartnersMarquee } from "@/components/home/partners-marquee";
+import { REVEAL_DISTANCE, REVEAL_DURATION, REVEAL_EASE } from "@/components/ui/reveal";
 import { getProjectCardImage } from "@/lib/gallery-data";
 import type { PublicBlogArticle } from "@/lib/blog-public";
 import { SITE_IMAGES } from "@/lib/site-config";
 
-const easeOutExpo: [number, number, number, number] = [0.16, 1, 0.3, 1];
-
 const fadeUp: Variants = {
-  hidden: { opacity: 0, y: 20 },
+  hidden: { opacity: 0, y: REVEAL_DISTANCE },
   visible: {
     opacity: 1,
     y: 0,
-    transition: { duration: 0.55, ease: easeOutExpo },
+    transition: { duration: REVEAL_DURATION, ease: REVEAL_EASE },
   },
 };
 

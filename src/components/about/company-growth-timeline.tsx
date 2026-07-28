@@ -7,6 +7,7 @@ import {
   useScroll,
   useTransform,
 } from "framer-motion";
+import { REVEAL_DISTANCE, REVEAL_DURATION, REVEAL_EASE } from "@/components/ui/reveal";
 import { cn } from "@/lib/utils";
 
 export type CompanyTimelineEvent = {
@@ -97,10 +98,10 @@ function TimelineText({
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 28 }}
+      initial={{ opacity: 0, y: REVEAL_DISTANCE }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-60px 0px -80px 0px" }}
-      transition={{ duration: 0.55, delay: index * 0.07, ease: [0.22, 1, 0.36, 1] }}
+      transition={{ duration: REVEAL_DURATION, delay: index * 0.07, ease: REVEAL_EASE }}
       className="relative z-20"
     >
       {content}

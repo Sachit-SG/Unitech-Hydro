@@ -12,6 +12,7 @@ import {
   type LucideIcon,
   Zap,
 } from "lucide-react";
+import { Reveal } from "@/components/ui/reveal";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { cn } from "@/lib/cn";
 import type { GalleryDetailImage } from "@/lib/gallery-data";
@@ -127,28 +128,6 @@ const iwaStats: BentoStat[] = [
   { label: "Est. Revenue", value: "51.15 Cr", icon: CircleDollarSign },
   { label: "IRR", value: "13.22%", icon: Activity },
 ];
-
-function Reveal({
-  children,
-  className,
-  delay = 0,
-}: {
-  children: React.ReactNode;
-  className?: string;
-  delay?: number;
-}) {
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-48px" }}
-      transition={{ duration: 0.55, delay, ease }}
-      className={className}
-    >
-      {children}
-    </motion.div>
-  );
-}
 
 function StatRail({ stats }: { stats: BentoStat[] }) {
   return (

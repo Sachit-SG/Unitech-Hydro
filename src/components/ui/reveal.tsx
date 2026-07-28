@@ -2,14 +2,17 @@
 
 import { motion, type Variants } from "framer-motion";
 
-const easeOutExpo: [number, number, number, number] = [0.16, 1, 0.3, 1];
+/** Canonical sitewide reveal curve/duration/distance -- keep every scroll-reveal on this. */
+export const REVEAL_EASE: [number, number, number, number] = [0.22, 1, 0.36, 1];
+export const REVEAL_DURATION = 0.55;
+export const REVEAL_DISTANCE = 20;
 
 const fadeUp: Variants = {
-  hidden: { opacity: 0, y: 22 },
+  hidden: { opacity: 0, y: REVEAL_DISTANCE },
   visible: (delay: number) => ({
     opacity: 1,
     y: 0,
-    transition: { duration: 0.6, ease: easeOutExpo, delay },
+    transition: { duration: REVEAL_DURATION, ease: REVEAL_EASE, delay },
   }),
 };
 

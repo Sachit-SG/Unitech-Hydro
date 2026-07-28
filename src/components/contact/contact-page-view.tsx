@@ -3,8 +3,8 @@
 import { type FormEvent, useState } from "react";
 import { motion } from "framer-motion";
 import { ArrowRight, Loader2, Mail, MapPin, Phone } from "lucide-react";
+import { REVEAL_DISTANCE, REVEAL_DURATION, REVEAL_EASE } from "@/components/ui/reveal";
 
-const ease = [0.22, 1, 0.36, 1] as const;
 const CONTACT_EMAIL = "unitechhydropower@gmail.com";
 
 const inputClassName =
@@ -75,10 +75,10 @@ export function ContactPageView() {
     <main className="min-h-screen bg-slate-50 px-4 pb-32 pt-24 md:px-8">
       <div className="mx-auto flex max-w-[1200px] flex-col overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-[0_20px_40px_-15px_rgba(0,0,0,0.1)] lg:flex-row">
         <motion.div
-          initial={{ opacity: 0, x: -20 }}
-          whileInView={{ opacity: 1, x: 0 }}
+          initial={{ opacity: 0, y: REVEAL_DISTANCE }}
+          whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.2 }}
-          transition={{ duration: 0.55, ease }}
+          transition={{ duration: REVEAL_DURATION, ease: REVEAL_EASE }}
           className="flex w-full flex-col justify-between bg-[#0A3A63] p-10 md:p-16 lg:w-5/12"
         >
           <div>
@@ -114,10 +114,10 @@ export function ContactPageView() {
         </motion.div>
 
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: REVEAL_DISTANCE }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.2 }}
-          transition={{ duration: 0.55, delay: 0.08, ease }}
+          transition={{ duration: REVEAL_DURATION, delay: 0.08, ease: REVEAL_EASE }}
           className="w-full bg-white p-10 md:p-16 lg:w-7/12"
         >
           <h2 className="mb-2 font-heading text-2xl font-bold text-[#0A3A63] md:text-3xl">
