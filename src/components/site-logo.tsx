@@ -14,7 +14,7 @@ type SiteLogoProps = {
   markSrc?: string;
   /** Primary wordmark line (defaults to UNITECH). */
   wordmarkPrimary?: string;
-  /** Secondary wordmark line (defaults to HYDROPOWER). Omit for a single-line lockup. */
+  /** Secondary wordmark line (defaults to HYDROPOWER). */
   wordmarkSecondary?: string;
   /** Footer: logo above wordmark. Header keeps default inline layout. */
   layout?: "inline" | "stacked";
@@ -24,13 +24,11 @@ function WordmarkStack({
   primary,
   secondary,
   variant,
-  compact,
   stacked = false,
 }: {
   primary: string;
   secondary: string;
   variant: "light" | "dark";
-  compact?: boolean;
   stacked?: boolean;
 }) {
   const isDark = variant === "dark";
@@ -38,10 +36,8 @@ function WordmarkStack({
   return (
     <div
       className={cn(
-        stacked ? "grid w-fit grid-cols-1 justify-items-start text-left" : "inline-grid grid-cols-1",
-        "leading-none",
-        compact ? "gap-[2px]" : "gap-[3px]",
-        "text-base sm:text-lg md:text-xl",
+        "grid grid-cols-1 justify-items-start gap-[2px] text-left leading-none",
+        stacked ? "text-lg sm:text-xl md:text-2xl" : "text-base sm:text-lg md:text-xl",
       )}
     >
       <span
@@ -54,8 +50,7 @@ function WordmarkStack({
       </span>
       <span
         className={cn(
-          "font-heading justify-self-stretch font-semibold uppercase",
-          stacked ? "text-left" : "text-center",
+          "font-heading justify-self-stretch text-left font-semibold uppercase",
           "text-[0.46em] tracking-[0.34em] sm:tracking-[0.36em]",
           isDark ? "text-white/75" : "text-brand-slate/55",
         )}
@@ -79,21 +74,15 @@ function LogoMark({
 }) {
   const src = markSrc ?? SITE_IMAGES.logo;
 
-  // Footer seal sized to roughly match the UNITECH wordmark width.
   const sizeClass = stacked
-    ? "h-[7.25rem] w-[7.25rem] sm:h-32 sm:w-32 md:h-36 md:w-36"
+    ? "aspect-square w-full"
     : variant === "dark"
       ? "h-[3.75rem] w-[3.75rem] md:h-16 md:w-16"
       : "h-11 w-11 sm:h-12 sm:w-12";
 
   return (
     <span
-      className={cn(
-        "relative block shrink-0 overflow-hidden",
-        stacked && "justify-self-start",
-        sizeClass,
-        className,
-      )}
+      className={cn("relative block shrink-0 overflow-hidden", sizeClass, className)}
       aria-hidden
     >
       <Image
@@ -101,13 +90,10 @@ function LogoMark({
         alt=""
         fill
         priority={!stacked}
-        className={cn(
-          "object-contain",
-          stacked ? "object-left-top" : "object-center",
-        )}
+        className="object-contain object-left"
         sizes={
           stacked ?
-            "(min-width: 768px) 144px, 116px"
+            "(min-width: 768px) 180px, 140px"
           : "(min-width: 768px) 64px, 48px"
         }
       />
@@ -127,27 +113,39 @@ export function SiteLogo({
 }: SiteLogoProps) {
   const isStacked = layout === "stacked";
 
+  if (isStacked && showWordmark) {
+    return (
+      <Link
+        href="/"
+        onClick={onClick}
+        // w-max: column width = wordmark. Seal is w-full so left edges match.
+        className={cn("grid w-max max-w-full grid-cols-1 gap-2.5", className)}
+        aria-label={SITE_NAME}
+      >
+        <LogoMark variant={variant} markSrc={markSrc} stacked />
+        <WordmarkStack
+          primary={wordmarkPrimary}
+          secondary={wordmarkSecondary}
+          variant={variant}
+          stacked
+        />
+      </Link>
+    );
+  }
+
   return (
     <Link
       href="/"
       onClick={onClick}
-      className={cn(
-        isStacked
-          ? "flex w-fit max-w-full flex-col items-start gap-2"
-          : "inline-flex shrink-0 items-center",
-        !isStacked && (variant === "dark" ? "gap-4 sm:gap-5" : "gap-3"),
-        className,
-      )}
+      className={cn("inline-flex shrink-0 items-center gap-3", className)}
       aria-label={SITE_NAME}
     >
-      <LogoMark variant={variant} markSrc={markSrc} stacked={isStacked} />
+      <LogoMark variant={variant} markSrc={markSrc} />
       {showWordmark ?
         <WordmarkStack
           primary={wordmarkPrimary}
           secondary={wordmarkSecondary}
           variant={variant}
-          compact={markSrc != null}
-          stacked={isStacked}
         />
       : null}
     </Link>

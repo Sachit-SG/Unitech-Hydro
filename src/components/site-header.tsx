@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useId, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { ChevronDown, Menu, X } from "lucide-react";
 import { SiteLogo } from "@/components/site-logo";
@@ -38,57 +38,152 @@ function navActive(pathname: string, href: string) {
   return pathname === href || pathname.startsWith(`${href}/`);
 }
 
+function AboutDropdown({
+  href,
+  label,
+  items,
+  active,
+}: {
+  href: string;
+  label: string;
+  items: readonly NavChild[];
+  active: boolean;
+}) {
+  const [open, setOpen] = useState(false);
+  const wrapRef = useRef<HTMLDivElement>(null);
+  const menuId = useId();
+
+  useEffect(() => {
+    if (!open) return;
+
+    const onPointerDown = (event: PointerEvent) => {
+      if (!wrapRef.current?.contains(event.target as Node)) {
+        setOpen(false);
+      }
+    };
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") setOpen(false);
+    };
+
+    document.addEventListener("pointerdown", onPointerDown);
+    document.addEventListener("keydown", onKeyDown);
+    return () => {
+      document.removeEventListener("pointerdown", onPointerDown);
+      document.removeEventListener("keydown", onKeyDown);
+    };
+  }, [open]);
+
+  return (
+    <div ref={wrapRef} className="relative">
+      <button
+        type="button"
+        aria-expanded={open}
+        aria-haspopup="menu"
+        aria-controls={menuId}
+        onClick={() => setOpen((value) => !value)}
+        className={cn(
+          "inline-flex min-h-11 items-center gap-1.5 border-b-2 px-1 text-[15px] font-medium tracking-wide transition-colors",
+          open || active
+            ? "border-[#22D3EE] text-[#0A3A63]"
+            : "border-transparent text-brand-slate hover:text-[#0A3A63]",
+        )}
+      >
+        {label}
+        <ChevronDown
+          className={cn(
+            "h-3.5 w-3.5 transition-transform duration-200",
+            open && "rotate-180",
+          )}
+          aria-hidden
+        />
+      </button>
+
+      <AnimatePresence>
+        {open ? (
+          <motion.div
+            id={menuId}
+            role="menu"
+            aria-label={label}
+            initial={{ opacity: 0, y: 6 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 6 }}
+            transition={{ duration: 0.16, ease: [0.16, 1, 0.3, 1] }}
+            className="absolute left-0 top-[calc(100%+0.65rem)] z-50 min-w-[15rem]"
+          >
+            <div className="overflow-hidden rounded-md border border-slate-200/80 bg-white shadow-[0_18px_40px_-24px_rgba(10,58,99,0.45)]">
+              <div className="border-b border-slate-100 px-4 py-3">
+                <Link
+                  href={href}
+                  role="menuitem"
+                  onClick={() => setOpen(false)}
+                  className="text-xs font-semibold uppercase tracking-[0.18em] text-[#0A3A63] transition-colors hover:text-[#22D3EE]"
+                >
+                  Overview
+                </Link>
+              </div>
+              <ul className="p-1.5">
+                {items.map((item) => (
+                  <li key={item.href}>
+                    <Link
+                      href={item.href}
+                      role="menuitem"
+                      onClick={() => setOpen(false)}
+                      className="block rounded-sm px-3 py-2.5 text-sm font-medium text-brand-slate transition-colors hover:bg-slate-50 hover:text-[#0A3A63]"
+                    >
+                      {item.label}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </motion.div>
+        ) : null}
+      </AnimatePresence>
+    </div>
+  );
+}
+
 export function SiteHeader() {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
+  const [mobileAboutOpen, setMobileAboutOpen] = useState(false);
+
+  useEffect(() => {
+    setOpen(false);
+    setMobileAboutOpen(false);
+  }, [pathname]);
 
   return (
-    <header className="fixed inset-x-0 top-0 z-[200] isolate border-b border-slate-100 bg-white shadow-sm pointer-events-auto">
+    <header className="fixed inset-x-0 top-0 z-[200] isolate border-b border-slate-100/90 bg-white/95 shadow-[0_1px_0_rgba(10,58,99,0.04)] backdrop-blur-md pointer-events-auto">
       <div className="mx-auto flex h-16 max-w-[1440px] items-center justify-between gap-4 px-8 md:px-20">
         <SiteLogo onClick={() => setOpen(false)} />
 
-        <nav
-          className="hidden items-center gap-1 md:flex"
-          aria-label="Primary"
-        >
+        <nav className="hidden items-center gap-7 md:flex" aria-label="Primary">
           {navItems.map(({ href, label, children }) => {
             const active = navActive(pathname, href);
             const isCta = href === "/contact";
 
             if (children) {
               return (
-                <div key={href} className="group relative">
-                  <Link
-                    href={href}
-                    className={cn(
-                      "inline-flex min-h-11 items-center gap-1 rounded-[4px] px-4 text-[15px] font-medium tracking-wide transition-colors",
-                      active
-                        ? "bg-brand-blue/10 text-brand-blue"
-                        : "text-brand-slate hover:bg-slate-50 hover:text-[#22D3EE]",
-                    )}
-                  >
-                    {label}
-                    <ChevronDown
-                      className="h-3.5 w-3.5 transition-transform duration-200 group-hover:rotate-180"
-                      aria-hidden
-                    />
-                  </Link>
-                  {/* Dropdown — opens on hover/focus */}
-                  <div className="invisible absolute left-0 top-full z-50 pt-2 opacity-0 transition-all duration-200 group-hover:visible group-hover:opacity-100 group-focus-within:visible group-focus-within:opacity-100">
-                    <ul className="min-w-[220px] overflow-hidden rounded-xl border border-slate-200/80 bg-white p-1.5 shadow-[0_12px_34px_-12px_rgba(10,58,99,0.28)]">
-                      {children.map((child) => (
-                        <li key={child.href}>
-                          <Link
-                            href={child.href}
-                            className="block rounded-lg px-3.5 py-2.5 text-sm font-medium text-brand-slate transition-colors hover:bg-slate-50 hover:text-brand-blue"
-                          >
-                            {child.label}
-                          </Link>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                </div>
+                <AboutDropdown
+                  key={href}
+                  href={href}
+                  label={label}
+                  items={children}
+                  active={active}
+                />
+              );
+            }
+
+            if (isCta) {
+              return (
+                <Link
+                  key={href}
+                  href={href}
+                  className="ml-1 inline-flex min-h-10 items-center rounded-md bg-[#0A3A63] px-5 text-[13px] font-semibold uppercase tracking-[0.14em] text-white transition-colors hover:bg-[#0A3A63]/90"
+                >
+                  {label}
+                </Link>
               );
             }
 
@@ -97,12 +192,10 @@ export function SiteHeader() {
                 key={href}
                 href={href}
                 className={cn(
-                  "inline-flex min-h-11 items-center rounded-[4px] px-4 text-[15px] font-medium tracking-wide transition-colors",
-                  isCta
-                    ? "ml-2 bg-[#22D3EE] px-6 font-bold text-[#0A3A63] hover:bg-[#22D3EE]/90"
-                    : active
-                      ? "bg-brand-blue/10 text-brand-blue"
-                      : "text-brand-slate hover:bg-slate-50 hover:text-[#22D3EE]",
+                  "inline-flex min-h-11 items-center border-b-2 px-1 text-[15px] font-medium tracking-wide transition-colors",
+                  active
+                    ? "border-[#22D3EE] text-[#0A3A63]"
+                    : "border-transparent text-brand-slate hover:text-[#0A3A63]",
                 )}
               >
                 {label}
@@ -113,10 +206,10 @@ export function SiteHeader() {
 
         <button
           type="button"
-          className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-slate-200 bg-white text-brand-slate shadow-sm transition-colors hover:border-slate-300 hover:text-brand-blue md:hidden"
+          className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-md border border-slate-200 bg-white text-brand-slate transition-colors hover:border-slate-300 hover:text-[#0A3A63] md:hidden"
           aria-expanded={open}
           aria-controls="mobile-nav"
-          onClick={() => setOpen((v) => !v)}
+          onClick={() => setOpen((value) => !value)}
         >
           {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
           <span className="sr-only">Toggle menu</span>
@@ -131,44 +224,89 @@ export function SiteHeader() {
             animate={{ opacity: 1, height: "auto" }}
             exit={{ opacity: 0, height: 0 }}
             transition={{ duration: 0.2 }}
-            className="border-b border-slate-100 bg-white md:hidden"
+            className="overflow-hidden border-b border-slate-100 bg-white md:hidden"
             aria-label="Primary mobile"
           >
-            <ul className="mx-auto max-w-[1440px] space-y-0.5 px-8 py-3 md:px-20">
+            <ul className="mx-auto max-w-[1440px] space-y-1 px-8 py-4 md:px-20">
               {navItems.map(({ href, label, children }) => {
                 const active = navActive(pathname, href);
                 const isCta = href === "/contact";
+
+                if (children) {
+                  return (
+                    <li key={href}>
+                      <button
+                        type="button"
+                        aria-expanded={mobileAboutOpen}
+                        onClick={() => setMobileAboutOpen((value) => !value)}
+                        className={cn(
+                          "flex w-full items-center justify-between rounded-md px-3 py-3 text-left text-[15px] font-medium tracking-wide transition-colors",
+                          active || mobileAboutOpen
+                            ? "bg-slate-50 text-[#0A3A63]"
+                            : "text-brand-slate hover:bg-slate-50 hover:text-[#0A3A63]",
+                        )}
+                      >
+                        {label}
+                        <ChevronDown
+                          className={cn(
+                            "h-4 w-4 transition-transform duration-200",
+                            mobileAboutOpen && "rotate-180",
+                          )}
+                          aria-hidden
+                        />
+                      </button>
+                      <AnimatePresence initial={false}>
+                        {mobileAboutOpen ? (
+                          <motion.ul
+                            initial={{ opacity: 0, height: 0 }}
+                            animate={{ opacity: 1, height: "auto" }}
+                            exit={{ opacity: 0, height: 0 }}
+                            transition={{ duration: 0.18 }}
+                            className="overflow-hidden"
+                          >
+                            <li>
+                              <Link
+                                href={href}
+                                className="block rounded-md px-3 py-2.5 pl-5 text-sm font-medium text-[#0A3A63]"
+                                onClick={() => setOpen(false)}
+                              >
+                                Overview
+                              </Link>
+                            </li>
+                            {children.map((child) => (
+                              <li key={child.href}>
+                                <Link
+                                  href={child.href}
+                                  className="block rounded-md px-3 py-2.5 pl-5 text-sm font-medium text-brand-slate/80 transition-colors hover:bg-slate-50 hover:text-[#0A3A63]"
+                                  onClick={() => setOpen(false)}
+                                >
+                                  {child.label}
+                                </Link>
+                              </li>
+                            ))}
+                          </motion.ul>
+                        ) : null}
+                      </AnimatePresence>
+                    </li>
+                  );
+                }
+
                 return (
                   <li key={href}>
                     <Link
                       href={href}
                       className={cn(
-                        "block rounded-[4px] px-4 py-3 text-[15px] font-medium tracking-wide transition-colors",
+                        "block rounded-md px-3 py-3 text-[15px] font-medium tracking-wide transition-colors",
                         isCta
-                          ? "bg-[#22D3EE] font-bold text-[#0A3A63] hover:bg-[#22D3EE]/90"
+                          ? "bg-[#0A3A63] font-semibold text-white"
                           : active
-                            ? "bg-brand-blue/10 text-brand-blue"
-                            : "text-brand-slate hover:bg-slate-50 hover:text-[#22D3EE]",
+                            ? "bg-slate-50 text-[#0A3A63]"
+                            : "text-brand-slate hover:bg-slate-50 hover:text-[#0A3A63]",
                       )}
                       onClick={() => setOpen(false)}
                     >
                       {label}
                     </Link>
-                    {children ? (
-                      <ul className="mb-1 ml-3 border-l border-slate-200 pl-3">
-                        {children.map((child) => (
-                          <li key={child.href}>
-                            <Link
-                              href={child.href}
-                              className="block rounded-[4px] px-4 py-2.5 text-sm font-medium text-brand-slate/80 transition-colors hover:bg-slate-50 hover:text-brand-blue"
-                              onClick={() => setOpen(false)}
-                            >
-                              {child.label}
-                            </Link>
-                          </li>
-                        ))}
-                      </ul>
-                    ) : null}
                   </li>
                 );
               })}
