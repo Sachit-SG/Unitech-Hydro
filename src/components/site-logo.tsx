@@ -41,9 +41,7 @@ function WordmarkStack({
         stacked ? "grid w-fit grid-cols-1 justify-items-start text-left" : "inline-grid grid-cols-1",
         "leading-none",
         compact ? "gap-[2px]" : "gap-[3px]",
-        compact
-          ? "text-base sm:text-lg md:text-xl"
-          : "text-base sm:text-lg md:text-xl",
+        "text-base sm:text-lg md:text-xl",
       )}
     >
       <span
@@ -80,59 +78,38 @@ function LogoMark({
   className?: string;
 }) {
   const src = markSrc ?? SITE_IMAGES.logo;
-  const isSealLogo = markSrc != null;
 
-  if (isSealLogo) {
-    return (
-      <span
-        className={cn(
-          "relative block shrink-0 overflow-hidden justify-self-start",
-          stacked
-            ? "h-40 w-40 sm:h-44 sm:w-44 md:h-52 md:w-52"
-            : "inline-flex h-28 w-28 items-center justify-center sm:h-32 sm:w-32 md:h-36 md:w-36",
-          className,
-        )}
-        aria-hidden
-      >
-        <Image
-          src={src}
-          alt=""
-          fill
-          className={cn(
-            stacked
-              ? "scale-[1.34] object-contain object-center"
-              : "object-contain object-center",
-          )}
-          sizes={
-            stacked ?
-              "(min-width: 768px) 208px, 176px"
-            : "(min-width: 768px) 144px, 112px"
-          }
-        />
-      </span>
-    );
-  }
+  // Footer seal sized to roughly match the UNITECH wordmark width.
+  const sizeClass = stacked
+    ? "h-[7.25rem] w-[7.25rem] sm:h-32 sm:w-32 md:h-36 md:w-36"
+    : variant === "dark"
+      ? "h-[3.75rem] w-[3.75rem] md:h-16 md:w-16"
+      : "h-11 w-11 sm:h-12 sm:w-12";
 
   return (
     <span
       className={cn(
-        "relative inline-flex shrink-0 items-center justify-center overflow-hidden",
-        variant === "dark"
-          ? "h-[3.75rem] w-[3.75rem] md:h-16 md:w-16"
-          : "h-11 w-11 sm:h-12 sm:w-12",
+        "relative block shrink-0 overflow-hidden",
+        stacked && "justify-self-start",
+        sizeClass,
+        className,
       )}
       aria-hidden
     >
       <Image
         src={src}
         alt=""
-        width={200}
-        height={200}
-        priority
+        fill
+        priority={!stacked}
         className={cn(
-          "absolute left-1/2 top-1/2 max-h-none max-w-none -translate-x-1/2 -translate-y-1/2 object-contain",
-          variant === "dark" ? "h-[170%] w-[170%]" : "h-[158%] w-[158%]",
+          "object-contain",
+          stacked ? "object-left-top" : "object-center",
         )}
+        sizes={
+          stacked ?
+            "(min-width: 768px) 144px, 116px"
+          : "(min-width: 768px) 64px, 48px"
+        }
       />
     </span>
   );
@@ -148,7 +125,6 @@ export function SiteLogo({
   wordmarkSecondary = "HYDROPOWER",
   layout = "inline",
 }: SiteLogoProps) {
-  const showSecondary = wordmarkSecondary !== "";
   const isStacked = layout === "stacked";
 
   return (
@@ -156,9 +132,9 @@ export function SiteLogo({
       href="/"
       onClick={onClick}
       className={cn(
-        isStacked ? "grid w-max max-w-full grid-cols-1 justify-items-start gap-2" : (
-          "inline-flex shrink-0 items-center"
-        ),
+        isStacked
+          ? "flex w-fit max-w-full flex-col items-start gap-2"
+          : "inline-flex shrink-0 items-center",
         !isStacked && (variant === "dark" ? "gap-4 sm:gap-5" : "gap-3"),
         className,
       )}

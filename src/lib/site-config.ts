@@ -12,10 +12,10 @@ export const SITE_DESCRIPTION =
 
 /** Public image paths (SEO-friendly filenames — avoid generic “dam” in URLs). */
 export const SITE_IMAGES = {
-  /** Header logo mark (cropped). */
-  logo: "/Hydro_logo.png",
-  /** Circular seal — footer. */
-  unitechLogo: "/Unitech_logo.png",
+  /** Header logo mark (cropped tight to content, no padding). */
+  logo: "/unitech-navbar-mark.png",
+  /** Circular seal — footer (white ink, cropped tight to content). */
+  unitechLogo: "/unitech-footer-seal.png",
   upperPhawaHeadworks: "/images/upper-phawa-headworks.jpg",
   upperPhawaCivilWorks: "/images/upper-phawa-civil-works.jpg",
   heroBackground: "/hero-bg.jpg",

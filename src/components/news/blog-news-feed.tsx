@@ -36,17 +36,17 @@ function BlogNewsFeedInner({ blogArticles, newsArticles }: BlogNewsFeedProps) {
 
   return (
     <section className="py-28 first:pt-10">
-      <Reveal className="flex flex-wrap items-center gap-2 rounded-[4px] border border-slate-200/80 bg-white p-3 shadow-sm">
+      <Reveal className="flex flex-wrap items-center gap-6 border-b border-[#0A3A63]/12">
         {tabs.map((tab) => (
           <button
             key={tab.id}
             type="button"
             onClick={() => setView(tab.id)}
             className={cn(
-              "rounded-[4px] px-5 py-2.5 text-xs font-semibold uppercase tracking-[0.16em] transition-colors",
+              "border-b-2 px-1 py-3 text-xs font-semibold uppercase tracking-[0.16em] transition-colors",
               tab.id === view ?
-                "bg-brand-blue text-white"
-              : "text-brand-slate hover:bg-slate-50 hover:text-brand-blue",
+                "border-[#22D3EE] text-[#0A3A63]"
+              : "border-transparent text-brand-slate/60 hover:text-[#0A3A63]",
             )}
             aria-pressed={tab.id === view}
           >
