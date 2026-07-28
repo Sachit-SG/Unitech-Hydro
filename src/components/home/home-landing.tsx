@@ -49,19 +49,14 @@ export function HomeLanding({ blogArticles }: { blogArticles: PublicBlogArticle[
             variants={staggerContainer}
           >
             <motion.div variants={fadeUp}>
-              <div className="flex items-start gap-4">
-                <span
-                  className="mt-1 h-8 w-[2px] shrink-0 bg-brand-cyan"
-                  aria-hidden
-                />
-                <div className="w-max max-w-[min(100vw-6rem,36rem)] lg:w-[34rem] lg:max-w-none">
-                  <p className="text-xs font-semibold uppercase tracking-[0.22em] text-brand-cyan">
-                    Leadership
-                  </p>
-                  <h2 className="mt-3 font-heading text-3xl font-bold leading-tight tracking-tight text-brand-blue lg:text-5xl">
-                    Chairman&apos;s message
-                  </h2>
-                </div>
+              <div className="w-max max-w-[min(100vw-6rem,36rem)] lg:w-[34rem] lg:max-w-none">
+                <div className="h-px w-12 bg-brand-cyan/70" aria-hidden />
+                <p className="mt-5 text-xs font-semibold uppercase tracking-[0.22em] text-brand-cyan">
+                  Leadership
+                </p>
+                <h2 className="mt-3 font-heading text-2xl font-bold leading-tight tracking-tight text-brand-blue lg:text-4xl">
+                  Chairman&apos;s message
+                </h2>
               </div>
               <p className="mt-3 max-w-2xl text-base leading-relaxed text-brand-slate/85 md:text-lg">
                 From <strong className="font-semibold text-brand-blue">Anoj Khadka</strong>, Chairman
@@ -74,11 +69,7 @@ export function HomeLanding({ blogArticles }: { blogArticles: PublicBlogArticle[
               variants={fadeUp}
               className="mt-14 grid items-stretch gap-8 md:grid-cols-[max-content_minmax(0,1fr)] md:gap-10 lg:gap-12"
             >
-              <div className="flex h-full min-h-0 items-stretch gap-4">
-                <span
-                  className="mt-1 h-8 w-[2px] shrink-0 opacity-0"
-                  aria-hidden
-                />
+              <div className="flex h-full min-h-0 items-stretch">
                 <figure className="flex h-full w-max max-w-[min(100vw-6rem,36rem)] flex-col overflow-hidden rounded-[4px] border border-slate-200/80 bg-white shadow-sm lg:w-[34rem] lg:max-w-none">
                   <div className="relative aspect-[5/6] w-full shrink-0 overflow-hidden bg-slate-100">
                     <Image

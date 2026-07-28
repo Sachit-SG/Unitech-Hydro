@@ -9,7 +9,7 @@ import { SITE_IMAGES } from "@/lib/site-config";
 const ABOUT_IMAGE = SITE_IMAGES.aboutPreview;
 
 const shortDescription =
-  "The Company was established on 2071/06/20 under the Companies Act of Nepal. Initially, the company was registered as a Private Limited and then converted public limited on 2079/10/19 to facilitate business growth and attract public investment. The office is located at Lalitpur-01, Kupondole, Lalitpur Metropolitan City, Lalitpur district.";
+  "Unitech Hydropower Company Limited develops clean, run-of-river hydroelectricity across eastern Nepal, with a focus on environmental responsibility and long-term reliability. Now a public limited company, the head office is located at Lalitpur-01, Kupondole, Lalitpur Metropolitan City.";
 
 export function AboutPreview() {
   return (
@@ -24,7 +24,7 @@ export function AboutPreview() {
                   About us
                 </p>
                 <h2 className="mt-3 max-w-none font-heading text-3xl font-bold leading-tight tracking-tight text-brand-blue lg:text-5xl">
-                  Welcome to Unitech Hydropower Company Limited
+                  A public company building Nepal&apos;s hydropower future
                 </h2>
               </div>
             </div>

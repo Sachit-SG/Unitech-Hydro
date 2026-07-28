@@ -31,19 +31,14 @@ export function NewsSection({ articles }: NewsSectionProps) {
     <section className="border-t border-slate-200/60 bg-slate-50 py-16">
       <div className="mx-auto max-w-[1440px] px-8 md:px-20">
         <div className="flex items-start justify-between gap-6">
-          <div className="flex items-start gap-4">
-            <span
-              className="mt-1 h-8 w-[2px] shrink-0 bg-brand-cyan"
-              aria-hidden
-            />
-            <div>
-              <p className="text-xs font-semibold uppercase tracking-[0.22em] text-brand-cyan">
-                Newsroom
-              </p>
-              <h2 className="mt-3 font-heading text-3xl font-bold leading-tight tracking-tight text-brand-blue lg:text-5xl">
-                Latest News &amp; Insights
-              </h2>
-            </div>
+          <div>
+            <div className="h-px w-12 bg-brand-cyan/70" aria-hidden />
+            <p className="mt-5 text-xs font-semibold uppercase tracking-[0.22em] text-brand-cyan">
+              Newsroom
+            </p>
+            <h2 className="mt-3 font-heading text-2xl font-bold leading-tight tracking-tight text-brand-blue lg:text-4xl">
+              Latest News &amp; Insights
+            </h2>
           </div>
 
           <div className="mt-1 flex items-center gap-2">
