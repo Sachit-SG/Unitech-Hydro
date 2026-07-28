@@ -3,30 +3,14 @@
 import Image from "next/image";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { format } from "date-fns";
-import { ExternalLink, Pencil, Plus, Trash2 } from "lucide-react";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
 import { DatePicker } from "@/components/ui/date-picker";
 import {
   Dialog,
   DialogContent,
-  DialogDescription,
   DialogFooter,
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
-import { Textarea } from "@/components/ui/textarea";
 import type { Post, PostCategory, PostStatus } from "@/lib/repos";
 import { BLOG_COVER_PRESETS } from "@/lib/blog-content";
 import { compressImageFile } from "@/lib/compress-image";
@@ -66,8 +50,7 @@ type NewsNoticesPanelProps = {
 
 export function NewsNoticesPanel({ mode }: NewsNoticesPanelProps) {
   const isBlog = mode === "blog";
-  const title = isBlog ? "Manage Blog" : "Manage News";
-  const createLabel = isBlog ? "New article" : "Add news link";
+  const createLabel = isBlog ? "New article" : "Add link";
   const category = categoryForMode(mode);
 
   const [posts, setPosts] = useState<Post[]>([]);
@@ -219,131 +202,114 @@ export function NewsNoticesPanel({ mode }: NewsNoticesPanelProps) {
 
   return (
     <>
-      <Card className="overflow-hidden">
-        <CardContent className="space-y-6 p-6">
-          <div className="flex flex-wrap items-start justify-between gap-4">
-            <div className="space-y-3">
-              <Badge className="bg-[#22D3EE] text-[#0A3A63] hover:bg-[#22D3EE]">
-                {isBlog ? "Blog" : "News"}
-              </Badge>
-              <div>
-                <h2 className="font-heading text-xl font-bold text-brand-blue">{title}</h2>
-                <p className="mt-1 text-sm text-brand-slate/70">
-                  {isBlog ?
-                    "Write full articles that open on this website."
-                  : "Add headlines that link to press releases or notices on other sites."}
-                </p>
-              </div>
-            </div>
-            <Button
-              type="button"
-              className="shrink-0 bg-[#22D3EE] text-[#0A3A63] hover:bg-[#22D3EE]/90"
-              onClick={openCreateDialog}
-            >
-              <Plus className="size-4" aria-hidden />
-              {createLabel}
-            </Button>
-          </div>
+      <div className="overflow-hidden rounded-[4px] border border-cloud bg-white">
+        <div className="flex flex-wrap items-center justify-between gap-3 border-b border-cloud bg-glacier-mist/60 px-5 py-4">
+          <p className="font-heading text-base font-bold text-ink">
+            {isBlog ? "Articles" : "External links"}
+          </p>
+          <button
+            type="button"
+            onClick={openCreateDialog}
+            className="rounded-[4px] bg-brand-cyan px-3 py-2 text-sm font-semibold text-brand-blue hover:bg-brand-cyan/90"
+          >
+            {createLabel}
+          </button>
+        </div>
 
+        <div className="px-5 py-4">
           {error ?
-            <p className="rounded-[4px] border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
+            <p className="mb-4 rounded-[4px] border border-status-fault/30 bg-status-fault/10 px-4 py-3 text-sm text-status-fault">
               {error}
             </p>
           : null}
 
           {loading ?
-            <p className="text-sm text-brand-slate/70">Loading…</p>
-          : <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead>Date</TableHead>
-                  <TableHead>Title</TableHead>
-                  {isBlog ? null : <TableHead>Link</TableHead>}
-                  <TableHead>Status</TableHead>
-                  <TableHead className="text-right">Actions</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {filteredPosts.length === 0 ?
-                  <TableRow>
-                    <TableCell
-                      colSpan={isBlog ? 4 : 5}
-                      className="text-center text-brand-slate/60"
-                    >
-                      {isBlog ?
-                        "No articles yet. Create one to publish on the Blog tab of the site."
-                      : "No news links yet. Add a title and external URL."}
-                    </TableCell>
-                  </TableRow>
-                : filteredPosts.map((post) => {
-                    const date =
-                      post.published_at ? new Date(post.published_at)
-                      : post.created_at ? new Date(post.created_at)
-                      : new Date();
-                    return (
-                      <TableRow key={post.id}>
-                        <TableCell className="whitespace-nowrap text-brand-slate/80">
-                          {format(date, "dd MMM yyyy")}
-                        </TableCell>
-                        <TableCell className="max-w-md font-medium">{post.title}</TableCell>
-                        {isBlog ? null : (
-                          <TableCell className="max-w-xs truncate text-brand-slate/70">
-                            {post.external_url ?
-                              <a
-                                href={post.external_url}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="inline-flex items-center gap-1 hover:text-brand-blue"
-                              >
-                                <span className="truncate">{post.external_url}</span>
-                                <ExternalLink className="size-3 shrink-0" aria-hidden />
-                              </a>
-                            : "—"}
-                          </TableCell>
-                        )}
-                        <TableCell>
-                          <Badge
-                            variant={post.status === "published" ? "default" : "secondary"}
-                            className={cn(
-                              post.status === "published" &&
-                                "border-transparent bg-[#0A3A63] text-white",
-                            )}
-                          >
-                            {post.status === "published" ? "Published" : "Draft"}
-                          </Badge>
-                        </TableCell>
-                        <TableCell className="text-right">
-                          <div className="flex justify-end gap-2">
-                            <Button
+            <p className="py-8 text-sm text-steel">Loading…</p>
+          : <div className="overflow-x-auto">
+              <table className="w-full text-left text-sm">
+                <thead>
+                  <tr className="border-b border-cloud text-xs uppercase tracking-wide text-steel">
+                    <th className="pb-3 pr-4 font-semibold">Date</th>
+                    <th className="pb-3 pr-4 font-semibold">Title</th>
+                    {isBlog ? null : <th className="pb-3 pr-4 font-semibold">Link</th>}
+                    <th className="pb-3 pr-4 font-semibold">Status</th>
+                    <th className="pb-3 text-right font-semibold">Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {filteredPosts.length === 0 ?
+                    <tr>
+                      <td
+                        colSpan={isBlog ? 4 : 5}
+                        className="py-10 text-center text-steel"
+                      >
+                        {isBlog ? "No articles yet." : "No news links yet."}
+                      </td>
+                    </tr>
+                  : filteredPosts.map((post) => {
+                      const date =
+                        post.published_at ? new Date(post.published_at)
+                        : post.created_at ? new Date(post.created_at)
+                        : new Date();
+                      return (
+                        <tr key={post.id} className="border-b border-cloud/80 last:border-0">
+                          <td className="whitespace-nowrap py-3.5 pr-4 text-steel">
+                            {format(date, "dd MMM yyyy")}
+                          </td>
+                          <td className="max-w-md py-3.5 pr-4 font-medium text-ink">
+                            {post.title}
+                          </td>
+                          {isBlog ? null : (
+                            <td className="max-w-xs truncate py-3.5 pr-4 text-steel">
+                              {post.external_url ?
+                                <a
+                                  href={post.external_url}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  className="text-current-blue hover:underline"
+                                >
+                                  {post.external_url}
+                                </a>
+                              : "—"}
+                            </td>
+                          )}
+                          <td className="py-3.5 pr-4">
+                            <span
+                              className={
+                                post.status === "published" ?
+                                  "rounded-[4px] bg-brand-blue/10 px-2 py-0.5 text-xs font-medium text-brand-blue"
+                                : "rounded-[4px] bg-glacier-mist px-2 py-0.5 text-xs font-medium text-steel"
+                              }
+                            >
+                              {post.status === "published" ? "Published" : "Draft"}
+                            </span>
+                          </td>
+                          <td className="py-3.5 text-right">
+                            <button
                               type="button"
-                              variant="outline"
-                              size="sm"
                               onClick={() => openEditDialog(post)}
+                              className="mr-3 font-medium text-brand-blue hover:underline"
                             >
-                              <Pencil className="size-3.5" aria-hidden />
                               Edit
-                            </Button>
-                            <Button
+                            </button>
+                            <button
                               type="button"
-                              variant="ghost"
-                              size="sm"
-                              className="text-red-600 hover:bg-red-50 hover:text-red-700"
                               onClick={() => void handleDelete(post.id)}
+                              className="font-medium text-status-fault hover:underline"
                             >
-                              <Trash2 className="size-3.5" aria-hidden />
                               Delete
-                            </Button>
-                          </div>
-                        </TableCell>
-                      </TableRow>
-                    );
-                  })
-                }
-              </TableBody>
-            </Table>
+                            </button>
+                          </td>
+                        </tr>
+                      );
+                    })
+                  }
+                </tbody>
+              </table>
+            </div>
           }
-        </CardContent>
-      </Card>
+        </div>
+      </div>
 
       <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
         <DialogContent className="max-h-[90vh] overflow-y-auto sm:max-w-2xl">
@@ -357,53 +323,53 @@ export function NewsNoticesPanel({ mode }: NewsNoticesPanelProps) {
                 "New article"
               : "Add news link"}
             </DialogTitle>
-            <DialogDescription>
-              {isBlog ?
-                "Published articles appear under the Blog tab on the Blog & News page."
-              : "Published links appear under the News tab and open the external URL in a new tab."}
-            </DialogDescription>
           </DialogHeader>
 
-          <div className="space-y-5 py-2">
-            <div className="space-y-2">
-              <Label htmlFor="post-title">Title</Label>
-              <Input
+          <div className="space-y-4 py-2">
+            <div className="space-y-1.5">
+              <label htmlFor="post-title" className="text-sm font-medium text-brand-slate">
+                Title
+              </label>
+              <input
                 id="post-title"
                 value={form.title}
                 onChange={(e) => setForm((f) => ({ ...f, title: e.target.value }))}
-                placeholder={isBlog ? "Article headline" : "News headline"}
+                className="h-10 w-full rounded-[4px] border border-cloud px-3 text-sm text-brand-slate outline-none focus:border-brand-cyan focus:ring-1 focus:ring-brand-cyan/40"
               />
             </div>
 
-            <div className="space-y-2">
-              <Label htmlFor="post-publish-date">Publish date</Label>
+            <div className="space-y-1.5">
+              <label htmlFor="post-publish-date" className="text-sm font-medium text-brand-slate">
+                Publish date
+              </label>
               <DatePicker
                 id="post-publish-date"
                 date={form.publishDate}
                 onDateChange={(date) => setForm((f) => ({ ...f, publishDate: date }))}
-                placeholder="Select publish date"
+                placeholder="Select date"
               />
             </div>
 
             {!isBlog ?
-              <div className="space-y-2">
-                <Label htmlFor="post-external-url">External link</Label>
-                <Input
+              <div className="space-y-1.5">
+                <label htmlFor="post-external-url" className="text-sm font-medium text-brand-slate">
+                  External link
+                </label>
+                <input
                   id="post-external-url"
                   type="url"
                   value={form.externalUrl}
                   onChange={(e) => setForm((f) => ({ ...f, externalUrl: e.target.value }))}
-                  placeholder="https://example.com/press-release"
-                  required
+                  placeholder="https://"
+                  className="h-10 w-full rounded-[4px] border border-cloud px-3 text-sm text-brand-slate outline-none focus:border-brand-cyan focus:ring-1 focus:ring-brand-cyan/40"
                 />
-                <p className="text-xs text-brand-slate/60">
-                  Required to publish. Visitors click the card and go straight to this URL.
-                </p>
               </div>
             : null}
 
-            <div className="space-y-2">
-              <Label>Cover image {isBlog ? "" : "(optional)"}</Label>
+            <div className="space-y-1.5">
+              <p className="text-sm font-medium text-brand-slate">
+                Cover {isBlog ? "" : "(optional)"}
+              </p>
               <div className="grid grid-cols-3 gap-2 sm:grid-cols-4">
                 {BLOG_COVER_PRESETS.map((preset) => {
                   const selected = form.coverUrl === preset.src;
@@ -413,10 +379,10 @@ export function NewsNoticesPanel({ mode }: NewsNoticesPanelProps) {
                       type="button"
                       onClick={() => setForm((f) => ({ ...f, coverUrl: preset.src }))}
                       className={cn(
-                        "overflow-hidden rounded-[4px] border-2 text-left transition-colors",
+                        "overflow-hidden rounded-[4px] border text-left",
                         selected ?
-                          "border-[#22D3EE] ring-2 ring-[#22D3EE]/30"
-                        : "border-slate-200 hover:border-[#22D3EE]/50",
+                          "border-brand-cyan ring-2 ring-brand-cyan/30"
+                        : "border-cloud hover:border-brand-blue/40",
                       )}
                     >
                       <Image
@@ -424,23 +390,21 @@ export function NewsNoticesPanel({ mode }: NewsNoticesPanelProps) {
                         alt=""
                         width={120}
                         height={72}
-                        className="h-16 w-full object-cover"
+                        className="h-14 w-full object-cover"
                       />
-                      <span className="block truncate px-1 py-1 text-[10px] text-brand-slate/70">
-                        {preset.label}
-                      </span>
                     </button>
                   );
                 })}
               </div>
-              <Input
+              <input
                 type="file"
                 accept="image/jpeg,image/png,image/webp"
                 disabled={coverUploading}
+                className="block w-full text-sm text-steel"
                 onChange={(e) => void handleCoverFile(e.target.files?.[0] ?? null)}
               />
               {form.coverUrl ?
-                <div className="relative h-32 overflow-hidden rounded-[4px] border border-slate-200">
+                <div className="relative h-28 overflow-hidden rounded-[4px] border border-cloud">
                   {form.coverUrl.startsWith("data:") ?
                     // eslint-disable-next-line @next/next/no-img-element
                     <img src={form.coverUrl} alt="" className="h-full w-full object-cover" />
@@ -450,35 +414,37 @@ export function NewsNoticesPanel({ mode }: NewsNoticesPanelProps) {
             </div>
 
             {isBlog ?
-              <div className="space-y-2">
-                <Label htmlFor="post-content">Article content</Label>
-                <Textarea
+              <div className="space-y-1.5">
+                <label htmlFor="post-content" className="text-sm font-medium text-brand-slate">
+                  Content
+                </label>
+                <textarea
                   id="post-content"
                   value={form.content}
                   onChange={(e) => setForm((f) => ({ ...f, content: e.target.value }))}
-                  placeholder="Write your full article here…"
-                  className="min-h-64"
+                  className="min-h-56 w-full rounded-[4px] border border-cloud px-3 py-2 text-sm text-brand-slate outline-none focus:border-brand-cyan focus:ring-1 focus:ring-brand-cyan/40"
                 />
               </div>
             : null}
           </div>
 
-          <DialogFooter className="gap-2 sm:gap-3">
-            <Button
+          <DialogFooter className="gap-2">
+            <button
               type="button"
-              variant="outline"
               onClick={() => void upsertItem("Draft")}
               disabled={!canSave("Draft") || saving}
+              className="rounded-[4px] border border-cloud px-3 py-2 text-sm font-medium text-brand-slate hover:bg-glacier disabled:opacity-50"
             >
-              Save as Draft
-            </Button>
-            <Button
+              Save draft
+            </button>
+            <button
               type="button"
               onClick={() => void upsertItem("Published")}
               disabled={!canSave("Published") || saving}
+              className="rounded-[4px] bg-brand-blue px-3 py-2 text-sm font-semibold text-white hover:bg-brand-blue-deep disabled:opacity-50"
             >
               {saving ? "Saving…" : "Publish"}
-            </Button>
+            </button>
           </DialogFooter>
         </DialogContent>
       </Dialog>

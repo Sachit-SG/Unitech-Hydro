@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 import { verifyAdminSessionToken, ADMIN_SESSION_COOKIE } from "@/lib/admin-session";
 import { CANONICAL_HOST, getRequestHost, isAlternateHost } from "@/lib/canonical-host";
+import { safeAdminRedirectPath } from "@/lib/safe-admin-path";
 
 function isAdminPath(pathname: string): boolean {
   return pathname === "/admin" || pathname.startsWith("/admin/") || pathname.startsWith("/api/admin/");
@@ -46,7 +47,10 @@ export async function middleware(request: NextRequest) {
   }
 
   const login = new URL("/admin/login", request.url);
-  login.searchParams.set("next", pathname + request.nextUrl.search);
+  const safeNext = safeAdminRedirectPath(pathname + request.nextUrl.search);
+  if (safeNext !== "/admin") {
+    login.searchParams.set("next", safeNext);
+  }
   return NextResponse.redirect(login);
 }
 

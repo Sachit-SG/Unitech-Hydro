@@ -1,19 +1,12 @@
-import { timingSafeEqual } from "node:crypto";
 import { NextResponse } from "next/server";
 import {
   adminSessionCookieOptions,
   ADMIN_SESSION_COOKIE,
   createAdminSessionToken,
+  passwordsMatch,
 } from "@/lib/admin-session";
 import { apiErrorResponse } from "@/lib/api-error";
 import { enforceRateLimit } from "@/lib/rate-limit";
-
-function passwordsMatch(input: string, secret: string): boolean {
-  const a = Buffer.from(input);
-  const b = Buffer.from(secret);
-  if (a.length !== b.length) return false;
-  return timingSafeEqual(a, b);
-}
 
 export async function POST(request: Request) {
   try {
@@ -37,8 +30,15 @@ export async function POST(request: Request) {
       );
     }
 
-    const body = (await request.json()) as { password?: string };
-    if (!body.password || !passwordsMatch(body.password, secret)) {
+    let body: { password?: unknown };
+    try {
+      body = (await request.json()) as { password?: unknown };
+    } catch {
+      return NextResponse.json({ error: "Invalid request" }, { status: 400 });
+    }
+
+    const password = typeof body.password === "string" ? body.password : "";
+    if (!password || !passwordsMatch(password, secret)) {
       return NextResponse.json({ error: "Invalid password" }, { status: 401 });
     }
 

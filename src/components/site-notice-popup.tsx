@@ -114,7 +114,7 @@ export function SiteNoticePopup() {
             <img
               src={current}
               alt="Notice"
-              className="max-h-[85vh] w-full rounded-lg object-contain shadow-[0_24px_80px_-12px_rgba(6,35,63,0.65)]"
+              className="max-h-[85vh] w-full rounded-xl object-contain shadow-[0_24px_80px_-12px_rgba(6,35,63,0.65)]"
             />
 
             {multi ?

@@ -1,6 +1,6 @@
 "use client";
 
-import { motion, type Variants } from "framer-motion";
+import { motion, useReducedMotion, type Variants } from "framer-motion";
 
 /** Canonical sitewide reveal curve/duration/distance -- keep every scroll-reveal on this. */
 export const REVEAL_EASE: [number, number, number, number] = [0.22, 1, 0.36, 1];
@@ -33,10 +33,16 @@ const MOTION_TAG = {
 
 /**
  * Fade-up on first scroll into view. Small client island so server pages stay server.
- * Respects reduced-motion via framer-motion's global reducedMotion handling.
  */
 export function Reveal({ children, delay = 0, className, as = "div" }: RevealProps) {
+  const reduceMotion = useReducedMotion();
   const MotionTag = MOTION_TAG[as];
+
+  if (reduceMotion) {
+    const Tag = as;
+    return <Tag className={className}>{children}</Tag>;
+  }
+
   return (
     <MotionTag
       className={className}
@@ -44,7 +50,7 @@ export function Reveal({ children, delay = 0, className, as = "div" }: RevealPro
       custom={delay}
       initial="hidden"
       whileInView="visible"
-      viewport={{ once: true, amount: 0.2 }}
+      viewport={{ once: true, amount: 0.15, margin: "0px 0px -40px 0px" }}
     >
       {children}
     </MotionTag>

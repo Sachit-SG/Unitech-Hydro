@@ -8,7 +8,7 @@ import { REVEAL_DISTANCE, REVEAL_DURATION, REVEAL_EASE } from "@/components/ui/r
 const CONTACT_EMAIL = "unitechhydropower@gmail.com";
 
 const inputClassName =
-  "w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-700 placeholder-slate-400 transition-all focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#22D3EE]";
+  "w-full rounded-[4px] border border-slate-200 bg-slate-50 px-4 py-3 text-slate-700 placeholder-slate-400 transition-all focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#22D3EE]";
 
 const contactItems = [
   {
@@ -73,7 +73,7 @@ export function ContactPageView() {
 
   return (
     <main className="min-h-screen bg-slate-50 px-4 pb-32 pt-24 md:px-8">
-      <div className="mx-auto flex max-w-[1200px] flex-col overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-[0_20px_40px_-15px_rgba(0,0,0,0.1)] lg:flex-row">
+      <div className="mx-auto flex max-w-[1200px] flex-col overflow-hidden rounded-[4px] border border-slate-200 bg-white shadow-[0_20px_40px_-15px_rgba(0,0,0,0.1)] lg:flex-row">
         <motion.div
           initial={{ opacity: 0, y: REVEAL_DISTANCE }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -94,7 +94,7 @@ export function ContactPageView() {
           <div className="mt-12 flex flex-col gap-8 lg:mt-16">
             {contactItems.map(({ icon: Icon, title, value, href }) => (
               <div key={title} className="flex items-start gap-4">
-                <div className="shrink-0 rounded-lg bg-[#22D3EE]/10 p-3 text-[#22D3EE]">
+                <div className="shrink-0 rounded-[4px] bg-[#22D3EE]/10 p-3 text-[#22D3EE]">
                   <Icon className="h-5 w-5" strokeWidth={1.75} aria-hidden />
                 </div>
                 <div>
@@ -130,7 +130,7 @@ export function ContactPageView() {
 
           {submitted ?
             <div
-              className="rounded-xl border border-[#22D3EE]/30 bg-[#22D3EE]/5 px-4 py-6 text-center text-sm text-[#0A3A63] md:text-base"
+              className="rounded-[4px] border border-[#22D3EE]/30 bg-[#22D3EE]/5 px-4 py-6 text-center text-sm text-[#0A3A63] md:text-base"
               role="status"
             >
               <p className="font-semibold">Message sent successfully.</p>
@@ -161,7 +161,7 @@ export function ContactPageView() {
 
               {error ?
                 <p
-                  className="rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700 md:col-span-2"
+                  className="rounded-[4px] border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700 md:col-span-2"
                   role="alert"
                 >
                   {error}
@@ -236,7 +236,7 @@ export function ContactPageView() {
               <button
                 type="submit"
                 disabled={submitting}
-                className="group mt-4 flex w-full items-center justify-center gap-2 rounded-xl bg-[#0A3A63] px-8 py-4 font-semibold text-white transition-all hover:bg-[#0A3A63]/90 disabled:cursor-not-allowed disabled:opacity-70 md:col-span-2"
+                className="group mt-4 flex w-full items-center justify-center gap-2 rounded-[4px] bg-[#0A3A63] px-8 py-4 font-semibold text-white transition-all hover:bg-[#0A3A63]/90 disabled:cursor-not-allowed disabled:opacity-70 md:col-span-2"
               >
                 {submitting ?
                   <>

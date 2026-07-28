@@ -38,8 +38,8 @@
   --brand-blue-deep: var(--color-brand-blue-deep);
   --glacier-mist: #f5f8fb;
 
-  /* Radius — deliberate 2-tier: sharp structure (buttons, chips, inputs, tags),
-     softly-rounded cards/panels/modals. Pills use rounded-full separately. */
+  /* Radius — sharp industrial default (4px) for controls/shells;
+     rounded-xl (~12px) for large media only. Pills use rounded-full. */
   --radius: 4px;
   --radius-sm: 4px;
   --radius-md: 6px;

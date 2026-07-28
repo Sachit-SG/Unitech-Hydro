@@ -42,7 +42,7 @@ export function ProjectGalleryCarousel({
   return (
     <div
       className={cn(
-        "group relative isolate h-full min-h-[280px] w-full overflow-hidden rounded-2xl bg-slate-200 shadow-lg shadow-brand-blue/10",
+        "group relative isolate h-full min-h-[280px] w-full overflow-hidden rounded-xl bg-slate-200 shadow-lg shadow-brand-blue/10",
         className,
       )}
     >
@@ -80,7 +80,7 @@ export function ProjectGalleryCarousel({
           <button
             type="button"
             onClick={() => go(-1)}
-            className="pointer-events-auto rounded-lg border border-white/25 bg-black/50 p-2.5 text-white shadow-md backdrop-blur-sm transition-colors hover:bg-black/65 focus-visible:outline focus-visible:ring-2 focus-visible:ring-brand-cyan"
+            className="pointer-events-auto rounded-[4px] border border-white/25 bg-black/50 p-2.5 text-white shadow-md backdrop-blur-sm transition-colors hover:bg-black/65 focus-visible:outline focus-visible:ring-2 focus-visible:ring-brand-cyan"
             aria-label="Previous project image"
           >
             <ChevronLeft className="h-5 w-5" aria-hidden />
@@ -88,7 +88,7 @@ export function ProjectGalleryCarousel({
           <button
             type="button"
             onClick={() => go(1)}
-            className="pointer-events-auto rounded-lg border border-white/25 bg-black/50 p-2.5 text-white shadow-md backdrop-blur-sm transition-colors hover:bg-black/65 focus-visible:outline focus-visible:ring-2 focus-visible:ring-brand-cyan"
+            className="pointer-events-auto rounded-[4px] border border-white/25 bg-black/50 p-2.5 text-white shadow-md backdrop-blur-sm transition-colors hover:bg-black/65 focus-visible:outline focus-visible:ring-2 focus-visible:ring-brand-cyan"
             aria-label="Next project image"
           >
             <ChevronRight className="h-5 w-5" aria-hidden />

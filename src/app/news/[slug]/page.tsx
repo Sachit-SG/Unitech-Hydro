@@ -81,7 +81,7 @@ export default async function NewsArticlePage({ params }: NewsArticlePageProps) 
                 {post.category}
               </p>
 
-              <div className="relative mt-5 aspect-[16/9] w-full overflow-hidden rounded-2xl border border-slate-200/80 bg-slate-100 shadow-sm">
+              <div className="relative mt-5 aspect-[16/9] w-full overflow-hidden rounded-xl border border-slate-200/80 bg-slate-100 shadow-sm">
                 <PostCoverImage
                   src={post.cover_url ?? "/gallery/overview-1.jpeg"}
                   className="object-cover object-center"

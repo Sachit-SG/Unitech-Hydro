@@ -21,7 +21,7 @@ function FeaturedArticleCard({ article }: { article: PublicBlogArticle }) {
     <Link
       href={article.href}
       {...(external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
-      className="group relative block h-[360px] w-full overflow-hidden rounded-2xl md:h-[440px]"
+      className="group relative block h-[360px] w-full overflow-hidden rounded-xl md:h-[440px]"
     >
       <PostCoverImage
         src={article.image}

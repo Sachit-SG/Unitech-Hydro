@@ -1,13 +1,7 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import Image from "next/image";
-import { ImagePlus, RotateCcw, Trash2 } from "lucide-react";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { cn } from "@/lib/cn";
 import {
   galleryBentoItems,
@@ -45,6 +39,8 @@ export function GalleryTabContent({ onSave }: GalleryTabContentProps) {
   const [projectLoading, setProjectLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [uploading, setUploading] = useState(false);
+
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const loadCounts = useCallback(async () => {
     const res = await fetch("/api/admin/gallery?countsOnly=true", { cache: "no-store" });
@@ -188,44 +184,14 @@ export function GalleryTabContent({ onSave }: GalleryTabContentProps) {
     }
   };
 
-  const totalPhotos = useMemo(
-    () => Object.values(counts).reduce((sum, n) => sum + n, 0),
-    [counts],
-  );
-
   if (loading) {
-    return (
-      <Card>
-        <CardContent className="py-12 text-sm text-brand-slate/70">Loading gallery…</CardContent>
-      </Card>
-    );
+    return <p className="text-sm text-steel">Loading…</p>;
   }
 
   return (
-    <div className="space-y-6">
-      <Card>
-        <CardHeader className="flex flex-row flex-wrap items-start justify-between gap-4 space-y-0">
-          <div className="space-y-3">
-            <Badge className="bg-[#22D3EE] text-[#0A3A63] hover:bg-[#22D3EE]">
-              Project albums
-            </Badge>
-            <div>
-              <CardTitle>Manage Gallery</CardTitle>
-              <CardDescription>
-                Matches public <code className="text-xs">/gallery/[id]</code> albums. Filter tags:{" "}
-                {galleryImageCategories.join(", ")}. Changes save to the database immediately.
-              </CardDescription>
-            </div>
-          </div>
-          <p className="text-sm text-brand-slate/60">
-            <span className="font-semibold text-[#0A3A63]">{totalPhotos}</span> album photos across{" "}
-            {galleryBentoItems.length} projects
-          </p>
-        </CardHeader>
-      </Card>
-
+    <div className="space-y-5">
       {error ?
-        <p className="rounded-[4px] border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
+        <p className="rounded-[4px] border border-status-fault/30 bg-status-fault/10 px-4 py-3 text-sm text-status-fault">
           {error}
         </p>
       : null}
@@ -240,127 +206,131 @@ export function GalleryTabContent({ onSave }: GalleryTabContentProps) {
               type="button"
               onClick={() => setActiveProjectId(item.id)}
               className={cn(
-                "rounded-full border px-4 py-2 text-left text-sm font-medium transition-colors",
+                "rounded-[4px] border px-3 py-2 text-sm font-medium transition-colors",
                 active ?
-                  "border-[#22D3EE] bg-[#22D3EE]/15 text-[#0A3A63]"
-                : "border-slate-200 bg-white text-brand-slate hover:border-[#22D3EE]/40",
+                  "border-brand-blue bg-brand-blue text-white"
+                : "border-cloud bg-white text-brand-slate hover:border-brand-cyan/50 hover:text-brand-blue",
               )}
             >
               {item.projectName}
-              <span className="ml-2 text-xs text-brand-slate/55">({count})</span>
+              <span className={cn("ml-1.5 tabular-nums", active ? "text-white/60" : "text-steel")}>
+                {count}
+              </span>
             </button>
           );
         })}
       </div>
 
-      <Card>
-        <CardHeader className="space-y-2">
-          <CardTitle className="text-lg">{activeProject?.projectName}</CardTitle>
-          <CardDescription>
-            Slug: <span className="font-mono text-xs">{activeProjectId}</span> · Bento cover:{" "}
-            {activeProject?.location}
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-6">
-          <div className="space-y-2">
-            <Label htmlFor="gallery-upload">Add photos to this album</Label>
-            <Input
-              id="gallery-upload"
+      <div className="overflow-hidden rounded-[4px] border border-cloud bg-white">
+        <div className="flex flex-wrap items-center justify-between gap-3 border-b border-cloud bg-glacier-mist/60 px-5 py-4">
+          <div>
+            <p className="font-heading text-base font-bold text-ink">
+              {activeProject?.projectName}
+            </p>
+            {activeProject?.location ?
+              <p className="mt-0.5 text-xs text-steel">{activeProject.location}</p>
+            : null}
+          </div>
+          <div className="flex items-center gap-2">
+            <input
+              ref={fileInputRef}
               type="file"
               accept="image/jpeg,image/png,image/webp"
               multiple
               disabled={uploading || projectLoading}
+              className="sr-only"
               onChange={(e) => void handleFiles(e.target.files)}
             />
+            <button
+              type="button"
+              disabled={uploading || projectLoading}
+              onClick={() => fileInputRef.current?.click()}
+              className="rounded-[4px] bg-brand-cyan px-3 py-2 text-sm font-semibold text-brand-blue hover:bg-brand-cyan/90 disabled:opacity-50"
+            >
+              {uploading ? "Uploading…" : "Add photos"}
+            </button>
+            <button
+              type="button"
+              onClick={() => void refreshAll()}
+              className="rounded-[4px] border border-cloud bg-white px-3 py-2 text-sm font-medium text-brand-slate hover:border-brand-blue/30"
+            >
+              Refresh
+            </button>
           </div>
+        </div>
 
+        <div className="px-5 py-4">
           {projectLoading ?
-            <p className="text-sm text-brand-slate/70">Loading album photos…</p>
+            <p className="py-8 text-sm text-steel">Loading album…</p>
           : activeAlbum.length === 0 ?
-            <p className="rounded-[4px] border border-dashed border-slate-200 bg-slate-50/80 px-4 py-8 text-center text-sm text-brand-slate/70">
-              No photos in this album yet. Upload images or run the database seed.
-            </p>
-          : <ul className="space-y-4">
+            <p className="py-10 text-center text-sm text-steel">No photos in this album.</p>
+          : <ul className="divide-y divide-cloud">
               {activeAlbum.map((img) => (
                 <li
                   key={img.id}
-                  className="flex flex-col gap-4 rounded-[4px] border border-slate-200 bg-white p-4 sm:flex-row sm:items-start"
+                  className="grid grid-cols-1 items-end gap-x-4 gap-y-3 py-4 sm:grid-cols-[8rem_minmax(0,1fr)_10rem_auto]"
                 >
-                  <div className="relative h-24 w-full shrink-0 overflow-hidden rounded-[4px] bg-slate-100 sm:h-28 sm:w-36">
+                  <div className="relative h-20 w-full self-center overflow-hidden rounded-[4px] bg-glacier-mist sm:h-20 sm:w-32">
                     {img.src.startsWith("data:") ?
                       // eslint-disable-next-line @next/next/no-img-element
                       <img src={img.src} alt="" className="h-full w-full object-cover" />
-                    : <Image src={img.src} alt="" fill className="object-cover" sizes="144px" />}
+                    : <Image src={img.src} alt="" fill className="object-cover" sizes="128px" />}
                   </div>
-                  <div className="grid min-w-0 flex-1 gap-3 sm:grid-cols-2">
-                    <div className="space-y-1 sm:col-span-2">
-                      <Label htmlFor={`alt-${img.id}`}>Alt text</Label>
-                      <Input
-                        id={`alt-${img.id}`}
-                        value={img.alt}
-                        onChange={(e) =>
-                          updateActiveAlbum((prev) =>
-                            prev.map((row) =>
-                              row.id === img.id ? { ...row, alt: e.target.value } : row,
-                            ),
-                          )
-                        }
-                        onBlur={(e) => void updateImageField(img.id, { alt: e.target.value })}
-                      />
-                    </div>
-                    <div className="space-y-1">
-                      <Label htmlFor={`cat-${img.id}`}>Category</Label>
-                      <select
-                        id={`cat-${img.id}`}
-                        value={img.category}
-                        onChange={(e) =>
-                          void updateImageField(img.id, {
-                            category: e.target.value as GalleryImageCategory,
-                          })
-                        }
-                        className="flex h-10 w-full rounded-[4px] border border-slate-200 bg-white px-3 text-sm text-brand-slate focus:outline-none focus:ring-2 focus:ring-[#22D3EE]/50"
-                      >
-                        {galleryImageCategories.map((cat) => (
-                          <option key={cat} value={cat}>
-                            {cat}
-                          </option>
-                        ))}
-                      </select>
-                    </div>
-                    <div className="flex items-end">
-                      <Button
-                        type="button"
-                        variant="ghost"
-                        className="text-red-600 hover:bg-red-50 hover:text-red-700"
-                        onClick={() => void removeImage(img.id)}
-                      >
-                        <Trash2 className="size-4" aria-hidden />
-                        Remove
-                      </Button>
-                    </div>
+
+                  <div className="min-w-0">
+                    <label htmlFor={`alt-${img.id}`} className="mb-1 block text-xs font-medium text-steel">
+                      Alt text
+                    </label>
+                    <input
+                      id={`alt-${img.id}`}
+                      value={img.alt}
+                      onChange={(e) =>
+                        updateActiveAlbum((prev) =>
+                          prev.map((row) =>
+                            row.id === img.id ? { ...row, alt: e.target.value } : row,
+                          ),
+                        )
+                      }
+                      onBlur={(e) => void updateImageField(img.id, { alt: e.target.value })}
+                      className="h-10 w-full rounded-[4px] border border-cloud bg-white px-3 text-sm text-brand-slate outline-none focus:border-brand-cyan focus:ring-1 focus:ring-brand-cyan/40"
+                    />
                   </div>
+
+                  <div>
+                    <label htmlFor={`cat-${img.id}`} className="mb-1 block text-xs font-medium text-steel">
+                      Category
+                    </label>
+                    <select
+                      id={`cat-${img.id}`}
+                      value={img.category}
+                      onChange={(e) =>
+                        void updateImageField(img.id, {
+                          category: e.target.value as GalleryImageCategory,
+                        })
+                      }
+                      className="h-10 w-full rounded-[4px] border border-cloud bg-white px-3 text-sm text-brand-slate outline-none focus:border-brand-cyan focus:ring-1 focus:ring-brand-cyan/40"
+                    >
+                      {galleryImageCategories.map((cat) => (
+                        <option key={cat} value={cat}>
+                          {cat}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+
+                  <button
+                    type="button"
+                    onClick={() => void removeImage(img.id)}
+                    className="h-10 text-sm font-medium text-status-fault hover:underline"
+                  >
+                    Remove
+                  </button>
                 </li>
               ))}
             </ul>
           }
-        </CardContent>
-
-        <div className="flex flex-wrap items-center justify-end gap-3 border-t border-slate-100 px-6 py-4">
-          <Button type="button" variant="secondary" onClick={() => void refreshAll()}>
-            <RotateCcw className="size-4" aria-hidden />
-            Refresh from database
-          </Button>
-          <Button
-            type="button"
-            className="bg-[#22D3EE] text-[#0A3A63] hover:bg-[#22D3EE]/90"
-            disabled={uploading}
-            onClick={() => onSave?.("Gallery")}
-          >
-            <ImagePlus className="size-4" aria-hidden />
-            {uploading ? "Uploading…" : "Gallery synced"}
-          </Button>
         </div>
-      </Card>
+      </div>
     </div>
   );
 }

@@ -2,16 +2,14 @@
 
 import Link from "next/link";
 import { usePathname, useSearchParams } from "next/navigation";
-import { Bell, ExternalLink, ImageIcon, Newspaper } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { Separator } from "@/components/ui/separator";
 import { AdminLogoutButton } from "@/components/admin/admin-logout-button";
 
 const navItems = [
-  { tab: "gallery", label: "Gallery", icon: ImageIcon },
-  { tab: "blog", label: "Blog", icon: Newspaper },
-  { tab: "news", label: "News", icon: ExternalLink },
-  { tab: "popup", label: "Popup", icon: Bell },
+  { tab: "gallery", label: "Gallery" },
+  { tab: "blog", label: "Blog" },
+  { tab: "news", label: "News" },
+  { tab: "popup", label: "Popup" },
 ] as const;
 
 function resolveTab(raw: string | null): string {
@@ -27,49 +25,39 @@ export function AdminSidebar() {
   const onAdmin = pathname === "/admin" || pathname?.startsWith("/admin/");
 
   return (
-    <aside className="fixed inset-y-0 left-0 z-40 flex w-64 flex-col bg-[#0A3A63] text-slate-300">
-      <div className="border-b border-white/10 px-6 py-6">
-        <p className="text-[10px] font-bold uppercase tracking-[0.22em] text-[#22D3EE]">
-          Unitech CMS
+    <aside className="fixed inset-y-0 left-0 z-40 flex w-56 flex-col bg-brand-blue text-white">
+      <div className="border-b border-white/10 px-5 py-6">
+        <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-brand-cyan">
+          Unitech
         </p>
-        <p className="mt-2 font-heading text-lg font-bold leading-tight text-white">
-          Hydropower
+        <p className="mt-1 font-heading text-lg font-bold tracking-tight text-white">
+          Admin
         </p>
-        <p className="mt-1 text-xs text-slate-400">Content Manager</p>
       </div>
 
-      <nav className="flex-1 space-y-1 px-3 py-5" aria-label="Admin navigation">
+      <nav className="flex-1 space-y-0.5 px-3 py-4" aria-label="Admin navigation">
         {navItems.map((item) => {
           const isActive = onAdmin && activeTab === item.tab;
-          const Icon = item.icon;
-
           return (
             <Link
               key={item.tab}
               href={`/admin?tab=${item.tab}`}
               className={cn(
-                "flex items-center gap-3 rounded-[4px] px-3 py-2.5 text-sm font-medium transition-colors",
+                "block rounded-[4px] px-3 py-2.5 text-sm font-medium transition-colors",
                 isActive ?
-                  "bg-white/10 text-[#22D3EE]"
-                : "text-slate-300 hover:bg-white/5 hover:text-[#22D3EE]",
+                  "bg-white/10 text-brand-cyan"
+                : "text-white/70 hover:bg-white/5 hover:text-white",
               )}
               aria-current={isActive ? "page" : undefined}
             >
-              <Icon className="size-4 shrink-0" aria-hidden />
               {item.label}
             </Link>
           );
         })}
       </nav>
 
-      <Separator className="bg-white/10" />
-
-      <div className="px-3 py-3">
+      <div className="border-t border-white/10 px-3 py-3">
         <AdminLogoutButton />
-      </div>
-
-      <div className="px-6 py-4 text-xs text-slate-500">
-        <p>Gallery, blog, news links, and popup — synced to the live site.</p>
       </div>
     </aside>
   );

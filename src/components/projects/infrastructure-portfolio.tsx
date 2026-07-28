@@ -132,7 +132,7 @@ const iwaStats: BentoStat[] = [
 function StatRail({ stats }: { stats: BentoStat[] }) {
   return (
     <Reveal className="mt-8 w-full">
-      <div className="grid w-full grid-cols-2 divide-x divide-y divide-[#0A3A63]/8 overflow-hidden rounded-2xl border border-[#0A3A63]/10 bg-white sm:grid-cols-4 sm:divide-y-0">
+      <div className="grid w-full grid-cols-2 divide-x divide-y divide-[#0A3A63]/8 overflow-hidden rounded-[4px] border border-[#0A3A63]/10 bg-white sm:grid-cols-4 sm:divide-y-0">
         {stats.map((stat) => {
           const Icon = stat.icon;
           return (
@@ -164,7 +164,7 @@ function AsymmetricGallery({
   const [main, ...stacked] = images;
 
   const linkClassName =
-    "group relative block overflow-hidden rounded-2xl ring-1 ring-[#0A3A63]/10 transition-[box-shadow,ring-color] hover:ring-[#22D3EE]/40 hover:shadow-lg hover:shadow-[#0A3A63]/10";
+    "group relative block overflow-hidden rounded-xl ring-1 ring-[#0A3A63]/10 transition-[box-shadow,ring-color] hover:ring-[#22D3EE]/40 hover:shadow-lg hover:shadow-[#0A3A63]/10";
 
   return (
     <Reveal className="mt-12">
@@ -264,7 +264,7 @@ function ProjectGalleryPanel({
 
 function SpecTable({ rows }: { rows: SpecRow[] }) {
   return (
-    <div className="overflow-x-auto rounded-2xl border border-[#0A3A63]/10 bg-white">
+    <div className="overflow-x-auto rounded-[4px] border border-[#0A3A63]/10 bg-white">
       <table className="w-full min-w-[480px] border-collapse text-sm">
         <tbody>
           {rows.map((row, index) => (
@@ -364,7 +364,7 @@ function ProjectBlock({
     <section
       className={cn(
         "mx-auto max-w-[1440px] px-6 md:px-12",
-        embedded ? "py-6 md:py-8" : "py-16 md:py-20"
+        embedded ? "py-10 md:py-12" : "py-16 md:py-20"
       )}
     >
       <Reveal>
@@ -400,7 +400,7 @@ const STICKY_TOP = "top-20 md:top-24";
 
 function StickyFirstProject({ children }: { children: ReactNode }) {
   return (
-    <div className="relative z-10">
+    <div className="relative z-10 pt-10 md:pt-16">
       <div className={cn("sticky z-10", STICKY_TOP)}>{children}</div>
     </div>
   );

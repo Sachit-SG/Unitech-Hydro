@@ -71,7 +71,7 @@ const capitalCards: CapitalCard[] = [
 
 export function CapitalStructureInfographic() {
   return (
-    <div className="mx-auto mt-8 grid max-w-[1440px] grid-cols-1 divide-y divide-white/10 overflow-hidden rounded-2xl border border-white/10 bg-[#0A3A63] sm:grid-cols-2 sm:divide-x sm:divide-y-0 xl:grid-cols-4">
+    <div className="mx-auto mt-8 grid max-w-[1440px] grid-cols-1 divide-y divide-white/10 overflow-hidden rounded-[4px] border border-white/10 bg-[#0A3A63] sm:grid-cols-2 sm:divide-x sm:divide-y-0 xl:grid-cols-4">
       {capitalCards.map((item) => {
         const Icon = item.icon;
 
@@ -89,7 +89,7 @@ export function CapitalStructureInfographic() {
               </h3>
               <div
                 className={cn(
-                  "flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border md:h-9 md:w-9",
+                  "flex h-8 w-8 shrink-0 items-center justify-center rounded-[4px] border md:h-9 md:w-9",
                   item.iconBox
                 )}
                 aria-hidden

@@ -3,10 +3,9 @@ import { AdminCommandCenter } from "@/components/admin/admin-command-center";
 
 function AdminPageFallback() {
   return (
-    <div className="min-h-full bg-slate-50 p-8">
-      <div className="h-8 w-48 animate-pulse rounded-[4px] bg-slate-200" />
-      <div className="mt-4 h-4 w-96 max-w-full animate-pulse rounded-[4px] bg-slate-200" />
-      <div className="mt-8 h-11 w-full max-w-3xl animate-pulse rounded-[4px] bg-slate-200" />
+    <div className="px-6 py-8 md:px-10">
+      <div className="h-7 w-28 animate-pulse rounded-[4px] bg-cloud" />
+      <div className="mt-6 h-48 animate-pulse rounded-[4px] border border-cloud bg-white" />
     </div>
   );
 }

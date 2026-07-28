@@ -113,7 +113,7 @@ export function InteractiveFeatures({
                   id={`feature-tab-${feature.id}`}
                   onClick={() => selectFeature(index)}
                   className={cn(
-                    "w-full rounded-xl border p-5 text-left transition-all duration-300",
+                    "w-full rounded-[4px] border p-5 text-left transition-all duration-300",
                     isActive
                       ? "border-[#0A3A63] bg-[#0A3A63] text-white shadow-lg shadow-[#0A3A63]/20"
                       : "border-slate-200/80 bg-white text-slate-500 shadow-sm hover:border-slate-300 hover:shadow-md"
@@ -137,7 +137,7 @@ export function InteractiveFeatures({
                   <div className="flex items-start gap-4">
                     <span
                       className={cn(
-                        "flex h-11 w-11 shrink-0 items-center justify-center rounded-lg border shadow-sm",
+                        "flex h-11 w-11 shrink-0 items-center justify-center rounded-[4px] border shadow-sm",
                         isActive
                           ? feature.iconAccent.active.box
                           : feature.iconAccent.inactive.box

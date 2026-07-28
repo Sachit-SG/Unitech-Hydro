@@ -157,7 +157,7 @@ export function ScrollExpandMedia({
         </div>
 
         <motion.div
-          className="absolute left-1/2 top-1/2 z-[1] -translate-x-1/2 -translate-y-1/2 overflow-hidden rounded-2xl shadow-[0_28px_90px_rgba(0,0,0,0.42)] will-change-[width,height]"
+          className="absolute left-1/2 top-1/2 z-[1] -translate-x-1/2 -translate-y-1/2 overflow-hidden rounded-xl shadow-[0_28px_90px_rgba(0,0,0,0.42)] will-change-[width,height]"
           style={{
             width: mediaWidthPx,
             height: mediaHeightPx,

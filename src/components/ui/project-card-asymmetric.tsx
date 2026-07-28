@@ -83,7 +83,7 @@ export function ProjectCardAsymmetric({
           </div>
 
           <div className="flex min-h-0 flex-col lg:col-span-1">
-            <div className="shrink-0 rounded-xl border border-white/10 bg-[#0A3A63] p-6 text-white shadow-xl">
+            <div className="shrink-0 rounded-[4px] border border-white/10 bg-[#0A3A63] p-6 text-white shadow-xl">
               <p className="text-[10px] font-bold uppercase tracking-[0.28em] text-white/70">
                 {factSheetTitle}
               </p>
@@ -118,7 +118,7 @@ export function ProjectCardAsymmetric({
           {achievements.map((item) => (
             <div
               key={item.label}
-              className="rounded-2xl border border-slate-200/80 bg-white/80 px-6 py-6 shadow-sm backdrop-blur-sm md:px-8 md:py-8"
+              className="rounded-[4px] border border-slate-200/80 bg-white/80 px-6 py-6 shadow-sm backdrop-blur-sm md:px-8 md:py-8"
             >
               <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-brand-slate/55">
                 {item.label}
