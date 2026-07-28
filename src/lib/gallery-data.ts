@@ -205,11 +205,35 @@ export function getProjectCardImage(projectId: string): string {
   return first ?? "/gallery/overview-1.jpeg";
 }
 
-/** First N gallery stills for project carousels on /projects. */
+/**
+ * Hand-picked preview stills per project, in display order — deliberately sequenced
+ * to read as a story (e.g. intake → powerhouse → grid) rather than "whatever's first
+ * in the folder." Falls back to the first N album images for any project without a
+ * curated list.
+ */
+const PROJECT_GALLERY_HIGHLIGHTS: Record<string, readonly string[]> = {
+  "upper-phawa-khola": [
+    "/images/upper-phawa-headworks.jpg",
+    "/gallery/em-2.jpeg",
+    "/gallery/grid-1.jpeg",
+  ],
+};
+
+/** Curated (or first-N fallback) gallery stills for project carousels on /projects. */
 export function getProjectGalleryStills(
   projectId: string,
   limit = 3,
 ): { src: string; alt: string }[] {
   const images = getProjectGalleryImages(projectId) ?? galleryDetailImages[projectId] ?? [];
+
+  const curatedSrcs = PROJECT_GALLERY_HIGHLIGHTS[projectId];
+  if (curatedSrcs) {
+    const bySrc = new Map(images.map((img) => [img.src, img]));
+    const curated = curatedSrcs
+      .map((src) => bySrc.get(src))
+      .filter((img): img is GalleryDetailImage => Boolean(img));
+    if (curated.length) return curated.slice(0, limit).map((img) => ({ src: img.src, alt: img.alt }));
+  }
+
   return images.slice(0, limit).map((img) => ({ src: img.src, alt: img.alt }));
 }

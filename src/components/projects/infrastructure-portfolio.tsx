@@ -150,28 +150,28 @@ function Reveal({
   );
 }
 
-function BentoGrid({ stats }: { stats: BentoStat[] }) {
+function StatRail({ stats }: { stats: BentoStat[] }) {
   return (
-    <div className="mt-8 grid w-full grid-cols-2 gap-4 lg:grid-cols-4">
-      {stats.map((stat, index) => {
-        const Icon = stat.icon;
-        return (
-          <Reveal key={stat.label} delay={index * 0.06} className="h-full w-full">
-            <div className="relative h-full overflow-hidden rounded-xl border border-[#22D3EE]/20 bg-white p-6 shadow-md shadow-[#0A3A63]/8 ring-1 ring-[#0A3A63]/5 transition-shadow hover:border-[#22D3EE]/35 hover:shadow-lg">
-              <div
-                className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-[#22D3EE] via-[#00D2FF] to-[#22D3EE]/40"
-                aria-hidden
-              />
-              <Icon className="mb-4 h-5 w-5 text-[#22D3EE]" strokeWidth={1.75} aria-hidden />
-              <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">
-                {stat.label}
-              </p>
-              <p className="mt-2 text-xl font-bold text-[#0A3A63]">{stat.value}</p>
+    <Reveal className="mt-8 w-full">
+      <div className="grid w-full grid-cols-2 divide-x divide-y divide-[#0A3A63]/8 overflow-hidden rounded-2xl border border-[#0A3A63]/10 bg-white sm:grid-cols-4 sm:divide-y-0">
+        {stats.map((stat) => {
+          const Icon = stat.icon;
+          return (
+            <div key={stat.label} className="flex items-center gap-3 px-5 py-5">
+              <Icon className="h-4 w-4 shrink-0 text-[#22D3EE]" strokeWidth={1.75} aria-hidden />
+              <div>
+                <p className="text-[11px] font-semibold uppercase tracking-wide text-slate-500">
+                  {stat.label}
+                </p>
+                <p className="mt-0.5 text-lg font-bold tabular-nums text-[#0A3A63] sm:text-xl">
+                  {stat.value}
+                </p>
+              </div>
             </div>
-          </Reveal>
-        );
-      })}
-    </div>
+          );
+        })}
+      </div>
+    </Reveal>
   );
 }
 
@@ -283,18 +283,32 @@ function ProjectGalleryPanel({
   );
 }
 
-function SpecRows({ rows }: { rows: SpecRow[] }) {
+function SpecTable({ rows }: { rows: SpecRow[] }) {
   return (
-    <div className="overflow-hidden rounded-xl border border-[#0A3A63]/10 bg-white shadow-sm ring-1 ring-[#22D3EE]/10">
-      {rows.map((row) => (
-        <div
-          key={row.particular}
-          className="flex flex-col gap-1 border-b border-slate-100 px-4 py-4 last:border-0 sm:flex-row sm:items-start sm:justify-between sm:gap-8"
-        >
-          <dt className="text-sm font-medium text-[#0A3A63] sm:max-w-[34%]">{row.particular}</dt>
-          <dd className="text-sm leading-relaxed text-slate-600 sm:flex-1">{row.feature}</dd>
-        </div>
-      ))}
+    <div className="overflow-x-auto rounded-2xl border border-[#0A3A63]/10 bg-white">
+      <table className="w-full min-w-[480px] border-collapse text-sm">
+        <tbody>
+          {rows.map((row, index) => (
+            <tr
+              key={row.particular}
+              className={cn(
+                "border-b border-slate-100 last:border-0",
+                index % 2 === 1 && "bg-[#0A3A63]/[0.02]"
+              )}
+            >
+              <th
+                scope="row"
+                className="w-[34%] px-5 py-3.5 text-left align-top text-sm font-medium text-[#0A3A63]"
+              >
+                {row.particular}
+              </th>
+              <td className="px-5 py-3.5 align-top text-sm leading-relaxed tabular-nums text-slate-600">
+                {row.feature}
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
     </div>
   );
 }
@@ -311,24 +325,27 @@ function ProjectTabs({
   const galleryImages = galleryId ? getProjectGalleryImages(galleryId) : undefined;
   const galleryHref = galleryId ? getProjectGalleryHref(galleryId) : "";
 
+  const triggerClassName =
+    "flex-1 rounded-none border-b-2 border-transparent bg-transparent px-1 py-3 text-slate-500 shadow-none hover:text-[#0A3A63] data-[state=active]:border-[#22D3EE] data-[state=active]:bg-transparent data-[state=active]:text-[#0A3A63] data-[state=active]:shadow-none sm:flex-none";
+
   return (
     <Reveal className="mt-8">
       <Tabs defaultValue={defaultValue} className="w-full">
-        <TabsList className="h-auto w-full flex-wrap justify-start gap-1 border-[#0A3A63]/10 bg-[#0A3A63]/5 p-1">
+        <TabsList className="h-auto w-full flex-wrap justify-start gap-6 rounded-none border-0 border-b border-[#0A3A63]/12 bg-transparent p-0">
           {tabs.map((tab) => (
-            <TabsTrigger key={tab.value} value={tab.value} className="flex-1 sm:flex-none">
+            <TabsTrigger key={tab.value} value={tab.value} className={triggerClassName}>
               {tab.label}
             </TabsTrigger>
           ))}
           {galleryImages ? (
-            <TabsTrigger value="gallery" className="flex-1 sm:flex-none">
+            <TabsTrigger value="gallery" className={triggerClassName}>
               Gallery
             </TabsTrigger>
           ) : null}
         </TabsList>
         {tabs.map((tab) => (
           <TabsContent key={tab.value} value={tab.value}>
-            <SpecRows rows={tab.rows} />
+            <SpecTable rows={tab.rows} />
           </TabsContent>
         ))}
         {galleryImages ? (
@@ -391,7 +408,7 @@ function ProjectBlock({
           </div>
         </Reveal>
 
-        <BentoGrid stats={stats} />
+        <StatRail stats={stats} />
         <AsymmetricGallery
           images={gallery}
           galleryHref={getProjectGalleryHref(galleryId)}
