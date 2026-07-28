@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
+import { AdminDashboardStats } from "@/components/admin/admin-dashboard-stats";
 import { GalleryTabContent } from "@/components/admin/gallery-tab-content";
 import { NewsNoticesPanel } from "@/components/admin/news-notices-panel";
 import { PopupTabContent } from "@/components/admin/popup-tab-content";
@@ -81,6 +82,10 @@ export function AdminCommandCenter() {
           {savedNotice}
         </p>
       : null}
+
+      <div className="mt-6">
+        <AdminDashboardStats />
+      </div>
 
       <Tabs value={activeTab} onValueChange={handleTabChange} className="mt-6 w-full">
         <TabsList className="flex h-auto w-full max-w-xl flex-wrap justify-start gap-1 border border-slate-200/80 bg-white p-1">
