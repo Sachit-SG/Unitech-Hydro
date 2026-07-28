@@ -134,11 +134,13 @@ export default function AboutPage() {
     <PageShell title="About Us" heroPriority>
       {/* Welcome + short description */}
       <section id="introduction" className="-mx-8 scroll-mt-20 bg-slate-50 px-8 pt-32 pb-24 md:-mx-20 md:px-20 md:pb-28">
-        <p className="mb-14 text-center font-heading text-2xl font-bold text-brand-blue md:mb-20 md:text-3xl">
-          Welcome to Unitech Hydropower Company Limited
-        </p>
+        <Reveal>
+          <p className="mb-14 text-center font-heading text-2xl font-bold text-brand-blue md:mb-20 md:text-3xl">
+            Welcome to Unitech Hydropower Company Limited
+          </p>
+        </Reveal>
         <div className="grid gap-12 lg:grid-cols-[1.05fr_0.95fr] lg:items-stretch lg:gap-16">
-          <div className="relative aspect-[4/3] min-h-[260px] w-full overflow-hidden rounded-[4px] border border-slate-200/60 bg-white shadow-xl shadow-brand-blue/5 lg:aspect-auto lg:h-full lg:min-h-0">
+          <Reveal className="relative aspect-[4/3] min-h-[260px] w-full overflow-hidden rounded-[4px] border border-slate-200/60 bg-white shadow-xl shadow-brand-blue/5 lg:aspect-auto lg:h-full lg:min-h-0">
             <Image
               src={INTRO_IMAGE}
               alt="Unitech Hydropower — corporate and project context"
@@ -151,8 +153,8 @@ export default function AboutPage() {
               className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/35 to-transparent"
               aria-hidden
             />
-          </div>
-          <div>
+          </Reveal>
+          <Reveal delay={0.1}>
             <SectionHeading kicker="About us" title="Company at a glance" />
             <div className="mt-8 space-y-4 text-base leading-relaxed text-brand-slate/90 md:text-[17px] md:leading-8">
               {companyBackground.map((p, i) => (
@@ -228,7 +230,7 @@ export default function AboutPage() {
                 <p className="mt-1.5 font-heading text-sm font-bold text-brand-blue">602422574</p>
               </div>
             </div>
-          </div>
+          </Reveal>
         </div>
       </section>
 
@@ -241,10 +243,12 @@ export default function AboutPage() {
         id="chairman-message"
         className="-mx-8 border-t border-slate-200/60 bg-slate-50 px-8 pt-16 pb-24 md:-mx-20 md:px-20 md:pt-20 md:pb-28"
       >
-        <SectionHeading kicker="Leadership" title="Chairman’s message" />
-        <p className="mt-4 text-sm font-medium text-brand-slate/80 md:text-base">
-          A message from <strong className="text-brand-blue">Anoj Khadka</strong>, Chairman
-        </p>
+        <Reveal>
+          <SectionHeading kicker="Leadership" title="Chairman’s message" />
+          <p className="mt-4 text-sm font-medium text-brand-slate/80 md:text-base">
+            A message from <strong className="text-brand-blue">Anoj Khadka</strong>, Chairman
+          </p>
+        </Reveal>
         <div className="mt-12 grid gap-10 lg:grid-cols-[minmax(0,440px)_1fr] lg:items-start lg:gap-14">
           <aside className="mx-auto w-full max-w-[440px] lg:sticky lg:top-28 lg:self-start">
             <div className="overflow-hidden rounded-[4px] border border-slate-200/80 bg-white text-center shadow-sm">
@@ -265,11 +269,11 @@ export default function AboutPage() {
               </div>
             </div>
           </aside>
-          <div className="min-w-0 space-y-6 text-base leading-relaxed text-brand-slate/90 md:text-[17px] md:leading-8">
+          <Reveal delay={0.1} className="min-w-0 space-y-6 text-base leading-relaxed text-brand-slate/90 md:text-[17px] md:leading-8">
             {chairmanMessageParagraphs.map((p, i) => (
               <p key={i}>{p}</p>
             ))}
-          </div>
+          </Reveal>
         </div>
       </section>
 
@@ -284,7 +288,7 @@ export default function AboutPage() {
         />
         <div className="tex-contour-dark pointer-events-none absolute inset-0" aria-hidden />
         <div className="relative mx-auto max-w-[1440px] px-8 md:px-20">
-          <div className="text-center">
+          <Reveal className="text-center">
             <p className="text-xs font-semibold uppercase tracking-[0.22em] text-[#22D3EE]">
               Capital structure
             </p>
@@ -294,9 +298,9 @@ export default function AboutPage() {
             <p className="mx-auto mt-3 max-w-2xl text-sm leading-relaxed text-slate-300">
               Amounts in NPR crore unless stated.
             </p>
-          </div>
+          </Reveal>
 
-          <Reveal>
+          <Reveal delay={0.1}>
             <CapitalStructureInfographic />
           </Reveal>
         </div>
@@ -307,8 +311,10 @@ export default function AboutPage() {
         id="board"
         className="-mx-8 border-t border-slate-200/60 bg-white px-8 py-24 md:-mx-20 md:px-20 md:py-28"
       >
-        <SectionHeading kicker="Governance" title="Board of Directors (BOD)" />
-        <Reveal className="mt-10">
+        <Reveal>
+          <SectionHeading kicker="Governance" title="Board of Directors (BOD)" />
+        </Reveal>
+        <Reveal delay={0.1} className="mt-10">
           <LeadershipGrid members={boardMembers} />
         </Reveal>
       </section>
@@ -318,8 +324,10 @@ export default function AboutPage() {
         id="management-team"
         className="-mx-8 border-t border-slate-200/60 bg-white px-8 py-24 md:-mx-20 md:px-20 md:py-28"
       >
-        <SectionHeading kicker="Operations" title="Management team" />
-        <Reveal className="mt-10">
+        <Reveal>
+          <SectionHeading kicker="Operations" title="Management team" />
+        </Reveal>
+        <Reveal delay={0.1} className="mt-10">
           <LeadershipGrid members={managementTeamMembers} />
         </Reveal>
       </section>

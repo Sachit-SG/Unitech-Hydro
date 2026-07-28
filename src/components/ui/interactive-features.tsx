@@ -5,6 +5,7 @@ import Image from "next/image";
 import { AnimatePresence, motion } from "framer-motion";
 import type { LucideIcon } from "lucide-react";
 import { cn } from "@/lib/cn";
+import { Reveal } from "@/components/ui/reveal";
 
 export type FeatureIconAccent = {
   inactive: { box: string; icon: string };
@@ -89,12 +90,12 @@ export function InteractiveFeatures({
 
   return (
     <div className={cn("w-full", className)}>
-      <div className="mb-10 md:mb-14">
+      <Reveal className="mb-10 md:mb-14">
         <p className="font-mono text-sm uppercase tracking-[0.2em] text-[#22D3EE]">About Us</p>
         <h2 className="mt-4 font-heading text-[1.65rem] font-bold leading-tight tracking-tight text-[#0A3A63] sm:text-3xl md:text-4xl lg:text-5xl lg:whitespace-nowrap">
           Clean Energy for Nepal&apos;s&nbsp;Future.
         </h2>
-      </div>
+      </Reveal>
 
       <div className="grid grid-cols-1 items-stretch gap-10 lg:grid-cols-2 lg:gap-14">
         <ul className="flex flex-col gap-3" role="tablist" aria-label="Company pillars">

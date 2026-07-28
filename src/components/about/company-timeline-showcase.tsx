@@ -3,6 +3,7 @@ import {
   CompanyGrowthTimeline,
   type CompanyTimelineEvent,
 } from "@/components/about/company-growth-timeline";
+import { Reveal } from "@/components/ui/reveal";
 import { getProjectCardImage } from "@/lib/gallery-data";
 
 const TIMELINE_BG = getProjectCardImage("upper-phawa-khola");
@@ -39,7 +40,7 @@ export function CompanyTimelineShowcase({ events }: CompanyTimelineShowcaseProps
 
       {/* Layer 20 — timeline content, beam, dots */}
       <div className="relative z-20 mx-auto max-w-[1440px] px-8 md:px-20">
-        <header className="mx-auto max-w-2xl text-center">
+        <Reveal as="header" className="mx-auto max-w-2xl text-center">
           <p className="text-xs font-semibold uppercase tracking-[0.22em] text-[#22D3EE] drop-shadow-[0_0_18px_rgba(34,211,238,0.35)]">
             Corporate history
           </p>
@@ -53,7 +54,7 @@ export function CompanyTimelineShowcase({ events }: CompanyTimelineShowcaseProps
             Key registrations and operational milestones in Bikram Sambat (BS)—the journey
             from incorporation to commercial power generation.
           </p>
-        </header>
+        </Reveal>
 
         <CompanyGrowthTimeline events={events} theme="dark" className="mt-6 md:mt-8" />
       </div>

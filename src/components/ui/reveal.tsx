@@ -22,15 +22,21 @@ type RevealProps = {
   delay?: number;
   className?: string;
   /** Render as a specific element if needed (defaults to div). */
-  as?: "div" | "section";
+  as?: "div" | "section" | "header";
 };
+
+const MOTION_TAG = {
+  div: motion.div,
+  section: motion.section,
+  header: motion.header,
+} as const;
 
 /**
  * Fade-up on first scroll into view. Small client island so server pages stay server.
  * Respects reduced-motion via framer-motion's global reducedMotion handling.
  */
 export function Reveal({ children, delay = 0, className, as = "div" }: RevealProps) {
-  const MotionTag = as === "section" ? motion.section : motion.div;
+  const MotionTag = MOTION_TAG[as];
   return (
     <MotionTag
       className={className}
