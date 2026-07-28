@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Inter, Syne } from "next/font/google";
+import { Inter, Space_Grotesk, Syne } from "next/font/google";
 import { OrganizationJsonLd } from "@/components/seo/organization-json-ld";
 import { SiteChrome } from "@/components/site-chrome";
 import { SITE_DESCRIPTION, SITE_NAME, SITE_URL } from "@/lib/site-config";
@@ -8,6 +8,12 @@ import "./globals.css";
 const inter = Inter({
   subsets: ["latin"],
   variable: "--font-inter",
+  display: "swap",
+});
+
+const spaceGrotesk = Space_Grotesk({
+  subsets: ["latin"],
+  variable: "--font-space-grotesk",
   display: "swap",
 });
 
@@ -64,7 +70,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${inter.variable} ${syne.variable} h-full scroll-pt-16`}
+      className={`${inter.variable} ${spaceGrotesk.variable} ${syne.variable} h-full scroll-pt-16`}
     >
       <body className="flex min-h-screen flex-col bg-glacier font-sans text-brand-slate antialiased">
         <OrganizationJsonLd />

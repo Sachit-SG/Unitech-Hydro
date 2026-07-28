@@ -13,7 +13,7 @@ export type PageHeroProps = {
 };
 
 /**
- * Shared internal-page hero: 40vh banner, dark overlay, glacier-white Syne title.
+ * Shared internal-page hero: 40vh banner, dark overlay, glacier-white heading title.
  */
 export function PageHero({
   title,

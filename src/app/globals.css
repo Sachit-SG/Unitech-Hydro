@@ -51,7 +51,8 @@
 
   /* Typography */
   --font-sans: var(--font-inter);
-  --font-heading: var(--font-syne);
+  --font-heading: var(--font-space-grotesk);
+  --font-hero: var(--font-syne);
 }
 
 @layer base {
